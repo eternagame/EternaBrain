@@ -32,3 +32,5 @@ for i in range(101): # 102 total moveset solutions in epicfalcon.txt
     step5 = ast.literal_eval(step4) # converting movesets to dictionary
     movesets.append(step5['moves']) # adding each moveset to list
     
+print(movesets[0][0][0]['pos']) # first puzzle, first move, position of move
+print(movesets[15][24][0]['base']) # 16th puzzle, 25th move, base(AUGC) of move
