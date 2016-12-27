@@ -1,10 +1,16 @@
 import os
 import pandas as pd
 import ast
+from movesetreader import read_movesets
 
 f = os.getcwd() + '\movesets\epicfalcon.txt'
 epicfalcon = pd.read_csv(f, sep=" ", header='infer', delimiter='\t')
 # epicfalcon is a dataframe containging epicfalcon.txt data
+
+movesets = read_movesets(epicfalcon)
+
+print(movesets[0][0][0]['pos']) # first puzzle, first move, position of move
+print(movesets[15][24][0]['base']) # 16th puzzle, 25th move, base(AUGC) of move
 
 ''' example of converting moveset data to dictionary
 ms1 = epicfalcon[['move_set']].ix[[1]]
@@ -21,7 +27,7 @@ ms5 = ast.literal_eval(ms4)
 #print (ms5['moves'])
 # ms5 is dict of ms4
 # can now be indexed like a normal dictionary
-'''
+
 
 movesets = [] # a list of dictionaries containing the movesets
 for i in range(101): # 102 total moveset solutions in epicfalcon.txt
@@ -34,3 +40,4 @@ for i in range(101): # 102 total moveset solutions in epicfalcon.txt
     
 print(movesets[0][0][0]['pos']) # first puzzle, first move, position of move
 print(movesets[15][24][0]['base']) # 16th puzzle, 25th move, base(AUGC) of move
+'''
