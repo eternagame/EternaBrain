@@ -2,8 +2,8 @@ import os
 import pandas as pd
 import ast
 
-file = os.getcwd() + '\movesets\epicfalcon.txt'
-epicfalcon = pd.read_csv(file, sep=" ", header='infer', delimiter='\t')
+f = os.getcwd() + '\movesets\epicfalcon.txt'
+epicfalcon = pd.read_csv(f, sep=" ", header='infer', delimiter='\t')
 # epicfalcon is a dataframe containging epicfalcon.txt data
 
 ''' example of converting moveset data to dictionary
