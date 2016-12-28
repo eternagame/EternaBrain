@@ -1,6 +1,4 @@
 import os
-import pandas as pd
-import ast
 from movesetreader import read_movesets
 
 epicfalcon = os.getcwd() + '\movesets\epicfalcon.txt'
