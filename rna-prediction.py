@@ -3,9 +3,7 @@ import pandas as pd
 import ast
 from movesetreader import read_movesets
 
-f = os.getcwd() + '\movesets\epicfalcon.txt'
-epicfalcon = pd.read_csv(f, sep=" ", header='infer', delimiter='\t')
-# epicfalcon is a dataframe containging epicfalcon.txt data
+epicfalcon = os.getcwd() + '\movesets\epicfalcon.txt'
 
 movesets = read_movesets(epicfalcon)
 

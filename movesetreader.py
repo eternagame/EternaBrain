@@ -5,10 +5,13 @@ Created on Tue Dec 27 12:57:43 2016
 @author: Rohan
 """
 import ast
+import pandas as pd
+
 def read_movesets(moveset_file):
+  moveset_dataFrame = pd.read_csv(moveset_file, sep=" ", header="infer", delimiter='\t')
   movesets = [] # a list of dictionaries containing the movesets
   for i in range(101): # 102 total moveset solutions in epicfalcon.txt
-      step1 = moveset_file[['move_set']].ix[[i]] # str of pid, sol_id, uid, and moveset
+      step1 = moveset_dataFrame[['move_set']].ix[[i]] # str of pid, sol_id, uid, and moveset
       step2 = step1.to_dict() # dictionary of data
       step3 = step2['move_set'] # selecting only moveset data
       step4 = step3[i] # getting rid of labels
