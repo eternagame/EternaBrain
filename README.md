@@ -18,4 +18,14 @@ Using Eterna data to predict RNA folds
   - in RNA dot-bracket notation
 - locks
 - constraints
-- folder columns
+  - SHAPE,0
+    - target shape
+  - [base pair],[number]
+    - example: GU,1
+    - the number of those pairs needed to solve the puzzle
+  - CONSECUTIVE_[base],[number]
+    - example: CONSECUTIVE_G,5
+    - the number of consecutive bases needed to solve the puzzle
+- folder
+  - example: NuPACK, Vienna, Basic
+  - the type of folding algorithm used
