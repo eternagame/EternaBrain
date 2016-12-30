@@ -1,6 +1,6 @@
 # RNA-Prediction
 Using Eterna data to predict RNA folds
-
+## Data
 ### epicfalcon.txt (my solutions)
 - solution id (sol_id)
 - puzzle id (pid)
@@ -29,3 +29,11 @@ Using Eterna data to predict RNA folds
 - folder
   - example: NuPACK, Vienna, Basic
   - the type of folding algorithm used
+
+## Programs
+### movesetreader.py
+Reads in a file containing movesets with puzzle ID's and returns a list of dicts containing the movesets.
+
+### structure.py
+Reads in a file containing puzzle information and returns a pandas dataframe (accessible by headers and row numbers)
+containing the data.
