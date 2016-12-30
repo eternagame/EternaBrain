@@ -32,8 +32,13 @@ Using Eterna data to predict RNA folds
 
 ## Programs
 ### movesetreader.py
-Reads in a file containing movesets with puzzle ID's and returns a list of dicts containing the movesets.
+- read_movesets
+  - Reads in a file containing movesets data and returns a list of dicts containing the movesets.
+- get_puzzleData
+  - Reads in a file containing movesets data and returns a list of the solution id, puzzle id, or user id, depending on what the
+  user specifies in the function.
 
 ### structure.py
-Reads in a file containing puzzle information and returns a pandas dataframe (accessible by headers and row numbers)
+- read_structure
+  - Reads in a file containing puzzle information and returns a pandas dataframe (accessible by headers and row numbers)
 containing the data.
