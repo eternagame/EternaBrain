@@ -1,5 +1,5 @@
 import os
-from movesetreader import read_movesets, get_puzzleID
+from movesetreader import read_movesets, get_puzzleData
 from structure import read_structure
 
 # read moveset file
@@ -7,7 +7,7 @@ from structure import read_structure
 epicfalcon = os.getcwd() + '\movesets\epicfalcon.txt'
 
 movesets = read_movesets(epicfalcon)
-pid = get_puzzleID(epicfalcon)
+pid = get_puzzleData(epicfalcon,'pid')
 print pid[100]
 
 #print(movesets[0][0][0]['pos']) # first puzzle, first move, position of move

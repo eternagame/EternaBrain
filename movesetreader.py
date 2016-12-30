@@ -21,12 +21,12 @@ def read_movesets(moveset_file):
       
   return movesets
   
-def get_puzzleID(moveset_file):
+def get_puzzleData(moveset_file, attribute):
   moveset_dataFrame = pd.read_csv(moveset_file, sep=" ", header="infer", delimiter='\t')
   pid = []
   for i in range(101):
-    step1 = moveset_dataFrame[['pid']].ix[[i]]
-    step2 = step1['pid']
+    step1 = moveset_dataFrame[[attribute]].ix[[i]]
+    step2 = step1[attribute]
     step3 = step2[i]
     step4 = str(step3)
     step5 = int(step4)
