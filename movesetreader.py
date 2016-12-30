@@ -23,16 +23,16 @@ def read_movesets(moveset_file):
   
 def get_puzzleData(moveset_file, attribute):
   moveset_dataFrame = pd.read_csv(moveset_file, sep=" ", header="infer", delimiter='\t')
-  pid = []
+  attribute_list = []
   for i in range(101):
     step1 = moveset_dataFrame[[attribute]].ix[[i]]
     step2 = step1[attribute]
     step3 = step2[i]
     step4 = str(step3)
     step5 = int(step4)
-    pid.append(step5)
+    attribute_list.append(step5)
     
-  return pid
+  return attribute_list
 
 '''taking pid and making a list of all the puzzle ID's in a list with indexes corresponding to movesets
 epicfalcon = os.getcwd() + '\movesets\epicfalcon.txt'

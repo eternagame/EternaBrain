@@ -7,16 +7,23 @@ from structure import read_structure
 epicfalcon = os.getcwd() + '\movesets\epicfalcon.txt'
 
 movesets = read_movesets(epicfalcon)
-pid = get_puzzleData(epicfalcon,'pid')
-print pid[100]
+pid = get_puzzleData(epicfalcon,'pid') #puzzle ID
+sol_id = get_puzzleData(epicfalcon,'sol_id') # solution ID
+uid = get_puzzleData(epicfalcon,'uid') # user ID
 
-#print(movesets[0][0][0]['pos']) # first puzzle, first move, position of move
-#print(movesets[15][24][0]['base']) # 16th puzzle, 25th move, base(AUGC) of move
-
-# read puzzle structure data file
+# read puzzle data file
 puzzle_structure_data = os.getcwd() + '\movesets\puzzle-structure-data.txt'
 
 structure = read_structure(puzzle_structure_data)
 
+# The puzzle ID, solution ID, and moveset for the final puzzle in epicfalcon.txt
+print pid[100]
+print sol_id[100]
+print uid[100] # uid will be the same as they are only 1 player's solutions
+print movesets[100]
+
+
+#print(movesets[0][0][0]['pos']) # first puzzle, first move, position of move
+#print(movesets[15][24][0]['base']) # 16th puzzle, 25th move, base(AUGC) of move
 #print(structure['structure'][20672]) # 20,673 solutions
 
