@@ -6,6 +6,7 @@ Created on Tue Dec 27 12:57:43 2016
 """
 import ast
 import pandas as pd
+import os
 
 def read_movesets(moveset_file):
   moveset_dataFrame = pd.read_csv(moveset_file, sep=" ", header="infer", delimiter='\t')
@@ -19,6 +20,32 @@ def read_movesets(moveset_file):
       movesets.append(step5['moves']) # adding each moveset to list
       
   return movesets
+  
+def get_puzzleID(moveset_file):
+  moveset_dataFrame = pd.read_csv(moveset_file, sep=" ", header="infer", delimiter='\t')
+  pid = []
+  for i in range(101):
+    step1 = moveset_dataFrame[['pid']].ix[[i]]
+    step2 = step1['pid']
+    step3 = step2[i]
+    step4 = str(step3)
+    step5 = int(step4)
+    pid.append(step5)
+    
+  return pid
+
+'''taking pid and making a list of all the puzzle ID's in a list with indexes corresponding to movesets
+epicfalcon = os.getcwd() + '\movesets\epicfalcon.txt'
+epicfalcon_dataframe = pd.read_csv(epicfalcon, sep=' ', header='infer', delimiter='\t')
+a = epicfalcon_dataframe[['pid']].ix[[1]]
+b = a['pid']
+print b
+c = b[1]
+print c
+d = str(c)
+e = int(d)
+print (type(e))
+'''
 
 ''' example of converting moveset data to dictionary
 ms1 = epicfalcon[['move_set']].ix[[1]]
