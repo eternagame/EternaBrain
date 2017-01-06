@@ -1,6 +1,7 @@
 import os
 from movesetreader import read_movesets, puzzle_attributes
 from structure import read_structure
+from getData import getData_pid
 import pandas as pd
 
 # read moveset file
@@ -23,6 +24,14 @@ print sol_id[100]
 print uid[100] # uid will be the same as they are only 1 player's solutions
 print movesets[100]
 
+
+ms_6503049,stctr_6503049 = getData_pid(6503049,pid,movesets,structure)
+ms_6502960,stctr_6502960 = getData_pid(6502960,pid,movesets,structure)
+print ms_6502960,stctr_6502960
+
+
+
+'''
 print pid.index(6503049)
 
 
@@ -44,7 +53,7 @@ print type(pid2)
 p3 = list(pid2)
 print type(p3)
 print p3.index(6503049)
-
+'''
 '''
 pid2 = pd.Series(pid)
 print type(pid2)
