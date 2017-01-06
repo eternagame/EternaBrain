@@ -1,7 +1,6 @@
 import os
 from movesetreader import read_movesets, puzzle_attributes
 from structure import read_structure
-from getData import getData_pid, getData_index
 import pandas as pd
 
 # read moveset file

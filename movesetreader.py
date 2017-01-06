@@ -6,7 +6,6 @@ Created on Tue Dec 27 12:57:43 2016
 """
 import ast
 import pandas as pd
-import os
 
 def read_movesets(moveset_file):
   moveset_dataFrame = pd.read_csv(moveset_file, sep=" ", header="infer", delimiter='\t')
