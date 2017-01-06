@@ -21,7 +21,7 @@ def read_movesets(moveset_file):
       
   return movesets
   
-def get_puzzleData(moveset_file, attribute):
+def puzzle_attributes(moveset_file, attribute):
   moveset_dataFrame = pd.read_csv(moveset_file, sep=" ", header="infer", delimiter='\t')
   attribute_list = []
   for i in range(101):

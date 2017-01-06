@@ -1,5 +1,5 @@
 import os
-from movesetreader import read_movesets, get_puzzleData
+from movesetreader import read_movesets, puzzle_attributes
 from structure import read_structure
 import pandas as pd
 
@@ -8,9 +8,9 @@ import pandas as pd
 epicfalcon = os.getcwd() + '\movesets\epicfalcon.txt'
 
 movesets = read_movesets(epicfalcon)
-pid = get_puzzleData(epicfalcon,'pid') #puzzle ID
-sol_id = get_puzzleData(epicfalcon,'sol_id') # solution ID
-uid = get_puzzleData(epicfalcon,'uid') # user ID
+pid = puzzle_attributes(epicfalcon,'pid') #puzzle ID
+sol_id = puzzle_attributes(epicfalcon,'sol_id') # solution ID
+uid = puzzle_attributes(epicfalcon,'uid') # user ID
 
 # read puzzle data file
 puzzle_structure_data = os.getcwd() + '\movesets\puzzle-structure-data.txt'
@@ -23,10 +23,14 @@ print sol_id[100]
 print uid[100] # uid will be the same as they are only 1 player's solutions
 print movesets[100]
 
-print type(structure['pid'])
-pid = structure['pid']
+print type(movesets)
+ms = pd.Series(movesets)
 
-print pid[pid==6503049]
+
+print type(structure['pid'])
+pid2 = structure['pid']
+
+print pid2[pid2==6503049]
 print structure['structure'][19195]
 
 '''
