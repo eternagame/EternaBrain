@@ -42,3 +42,7 @@ Using Eterna data to predict RNA folds
 - read_structure
   - Reads in a file containing puzzle information and returns a pandas dataframe (accessible by headers and row numbers)
 containing the data.
+
+### getData.py
+- getData_pid
+  - Returns the movesets and structure given the pid, pid list (from the movesets), movesets, and puzzle structure.
