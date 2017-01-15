@@ -30,6 +30,8 @@ ms_6503049,stctr_6503049 = getData_pid(6503049,pid,movesets,structure)
 ms_6502960,stctr_6502960 = getData_pid(6502960,pid,movesets,structure)
 print ms_6503049,stctr_6503049
 
+print type(stctr_6503049)
+
 
 
 '''
