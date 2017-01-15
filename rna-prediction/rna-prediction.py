@@ -28,12 +28,25 @@ print movesets[100]
 
 ms_6503049,stctr_6503049 = getData_pid(6503049,pid,movesets,structure)
 ms_6502960,stctr_6502960 = getData_pid(6502960,pid,movesets,structure)
-print ms_6503049,stctr_6503049
+#print ms_6502960,stctr_6502960
 
-print type(stctr_6503049)
+print type(stctr_6502960)
+
+encoded_structure = []
+for i in stctr_6502960:
+  if i == ".":
+    encoded_structure.append([0])
+  elif i == "(" or i == ")":
+    encoded_structure.append([1])
+    
+  #print encoded_structure
+    
+  
+print encoded_structure
 
 
-
+def abc(s):
+  pass
 '''
 print pid.index(6503049)
 
