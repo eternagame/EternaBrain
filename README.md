@@ -46,3 +46,7 @@ containing the data.
 ### getData.py
 - getData_pid
   - Returns the movesets and structure given the pid, pid list (from the movesets), movesets, and puzzle structure.
+  
+### encode_RNA.py
+- encode_structure
+  - Takes an RNA structure in dot-bracket notation and returns it encoded (0 for unpaired base, 1 for paired base).
