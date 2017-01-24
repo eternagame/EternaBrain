@@ -24,17 +24,6 @@ structure = read_structure(puzzle_structure_data)
 ms_6503049,stctr_6503049 = getData_pid(6503049,pid,movesets,structure)
 ms_6502960,stctr_6502960 = getData_pid(6502960,pid,movesets,structure)
 
-encoded_ms = []
-for i in ms_6503049:
-  print (i[0]['pos'])
-  if i[0]['base'] == 'A':
-    encoded_ms.append([1,i[0]['pos']])
-  elif i[0]['base'] == 'U':
-    encoded_ms.append([1,i[0]['pos']])
-  elif i[0]['base'] == 'G':
-    encoded_ms.append([1,i[0]['pos']])
-  elif i[0]['base'] == 'C':
-    encoded_ms.append([1,i[0]['pos']])
 
 
 '''
