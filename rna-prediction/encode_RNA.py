@@ -21,3 +21,5 @@ def encode_structure(structure):
 
 def encode_movesets(moveset):
   pass
+
+

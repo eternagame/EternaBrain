@@ -15,9 +15,6 @@ def getData_pid(pid,pidList,movesets,structure): # returns moveset and puzzzle s
   
   return movesets[i1], structure['structure'][i2]
 
-def getData_index(index,movesets,structure,pid):
-  pass
-  
   
   
   
