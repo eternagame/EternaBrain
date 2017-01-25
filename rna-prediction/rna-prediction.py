@@ -2,13 +2,12 @@ import os
 from movesetreader import read_movesets, puzzle_attributes
 from structure import read_structure
 from getData import getData_pid
-from encode_RNA import encode_structure
 
 # read moveset file
 # 102 total movesets
 epicfalcon = os.getcwd() + '\movesets\epicfalcon.txt'
 epicfalcon = os.getcwd().replace("\RNA-Prediction","") + '\RNA-Prediction\movesets\epicfalcon.txt'
-print os.getcwd()
+
 
 movesets = read_movesets(epicfalcon)
 pid = puzzle_attributes(epicfalcon,'pid') #puzzle ID
@@ -23,6 +22,7 @@ structure = read_structure(puzzle_structure_data)
 
 ms_6503049,stctr_6503049 = getData_pid(6503049,pid,movesets,structure)
 ms_6502960,stctr_6502960 = getData_pid(6502960,pid,movesets,structure)
+
 
 
 
