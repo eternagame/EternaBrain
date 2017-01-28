@@ -2,6 +2,7 @@ import os
 from movesetreader import read_movesets, puzzle_attributes
 from structure import read_structure
 from getData import getData_pid
+from sklearn import mixture
 
 # read moveset file
 # 102 total movesets
@@ -23,7 +24,7 @@ structure = read_structure(puzzle_structure_data)
 ms_6503049,stctr_6503049 = getData_pid(6503049,pid,movesets,structure)
 ms_6502960,stctr_6502960 = getData_pid(6502960,pid,movesets,structure)
 
-
+gmm = mixture.GMM().fit([[[[3,8]]],[[[1,3],[2,8]]]])
 
 
 '''
