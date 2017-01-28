@@ -4,7 +4,6 @@ Created on Thu Jan 05 18:30:26 2017
 
 @author: Rohan
 """
-import pandas as pd
 
 def getData_pid(pid,pidList,movesets,structure): # returns moveset and puzzzle structure together
   i1 = pidList.index(pid)

@@ -33,6 +33,14 @@ def encode_movesets(moveset):
     
   return encoded_ms
 
+l = []
+movesets = [[{'base':'G','pos':3}],[{'base':'A','pos':8},{'base':'U','pos':12}]]
+for move in movesets:
+  for i in move:
+    pass
+    
+
+
 '''
 encoded_ms = []
 for i in ms_6503049:
