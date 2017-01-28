@@ -50,3 +50,5 @@ containing the data.
 ### encode_RNA.py
 - encode_structure
   - Takes an RNA structure in dot-bracket notation and returns it encoded (0 for unpaired base, 1 for paired base).
+- encode_movesets
+  - Takes moveset data and returns a list containing each move with base (A = 1, U = 2, G = 3, C = 4) and location.
