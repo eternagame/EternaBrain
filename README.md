@@ -31,23 +31,21 @@ Using Eterna data to predict RNA folds
   - the type of folding algorithm used
 
 ## Programs
-### movesetreader.py
+### readData.py
 - read_movesets
   - Reads in a file containing movesets data and returns a list of dicts containing the movesets.
 - puzzle_attributes
   - Reads in a file containing movesets data and returns a list of the solution id, puzzle id, or user id, depending on what the
-  user specifies in the function.
-
-### structure.py
+    user specifies in the function.
 - read_structure
   - Reads in a file containing puzzle information and returns a pandas dataframe (accessible by headers and row numbers)
-containing the data.
+    containing the data.
 
 ### getData.py
 - getData_pid
   - Returns the movesets and structure given the pid, pid list (from the movesets), movesets, and puzzle structure.
   
-### encode_RNA.py
+### encodeRNA.py
 - encode_structure
   - Takes an RNA structure in dot-bracket notation and returns it encoded (0 for unpaired base, 1 for paired base).
 - encode_movesets
