@@ -6,7 +6,7 @@ from getData import getData_pid
 
 # read moveset file
 # 102 total movesets
-epicfalcon = os.getcwd().replace("\RNA-Prediction","") + '\RNA-Prediction\movesets\epicfalcon.txt'
+epicfalcon = os.getcwd().replace("\RNA-Prediction","") + '/movesets/epicfalcon.txt'
 
 movesets = read_movesets(epicfalcon)
 pid = puzzle_attributes(epicfalcon,'pid') #puzzle ID
@@ -14,7 +14,7 @@ sol_id = puzzle_attributes(epicfalcon,'sol_id') # solution ID
 uid = puzzle_attributes(epicfalcon,'uid') # user ID
 
 # read puzzle data file
-puzzle_structure_data = os.getcwd().replace('\RNA-Prediction','') + '\RNA-Prediction\movesets\puzzle-structure-data.txt'
+puzzle_structure_data = os.getcwd().replace('\RNA-Prediction','') + '/movesets/puzzle-structure-data.txt'
 
 structure = read_structure(puzzle_structure_data)
 
