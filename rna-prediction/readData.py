@@ -33,6 +33,12 @@ def puzzle_attributes(moveset_file, attribute):
     
   return attribute_list
 
+def read_structure(puzzle_data):
+  puzzle_structure = pd.read_csv(puzzle_data, sep=" ", header='infer', delimiter='\t')
+  
+  return puzzle_structure
+
+
 '''taking pid and making a list of all the puzzle ID's in a list with indexes corresponding to movesets
 epicfalcon = os.getcwd() + '\movesets\epicfalcon.txt'
 epicfalcon_dataframe = pd.read_csv(epicfalcon, sep=' ', header='infer', delimiter='\t')
@@ -61,4 +67,25 @@ ms5 = ast.literal_eval(ms4)
 #print (ms5['moves'])
 # ms5 is dict of ms4
 # can now be indexed like a normal dictionary
+'''
+
+'''
+f = os.getcwd() + '\movesets\puzzle-structure-data.txt'
+puzzle_structure = pd.read_csv(f, sep=" ", header='infer', delimiter='\t')
+
+print puzzle_structure['pid'][10]
+'''
+'''
+ms1 = puzzle_structure[['structure']].ix[[0]]
+# ms1 is moveset for pid 6502951
+ms2 = ms1.to_dict()
+# ms2 is dictionary of ms1
+ms3 = (ms2['structure'])
+# ms3 is moveset of ms2
+ms4 = ms3[0]
+# ms4 is ms3 w/o labels
+
+
+ms5 = ast.literal_eval(ms4)
+#print (ms5['moves'])
 '''
