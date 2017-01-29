@@ -1,6 +1,7 @@
 import os
 from readData import read_movesets, puzzle_attributes, read_structure
 from getData import getData_pid
+from encodeRNA import encode_movesets
 
 
 # read moveset file
@@ -20,7 +21,7 @@ structure = read_structure(puzzle_structure_data)
 ms_6503049,stctr_6503049 = getData_pid(6503049,pid,movesets,structure)
 ms_6502960,stctr_6502960 = getData_pid(6502960,pid,movesets,structure)
 
-
+encoded_6503049 = encode_movesets(ms_6503049)
 
 
 '''
