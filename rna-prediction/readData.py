@@ -7,10 +7,22 @@ Created on Tue Dec 27 12:57:43 2016
 import ast
 import pandas as pd
 
-def read_movesets(moveset_file):
+def read_movesets(moveset_file,pid):
+  moveset_dataFrame = pd.read_csv(moveset_file, sep=" ", header="infer", delimiter='\t')
+  puzzles_pid = moveset_dataFrame.loc[moveset_dataFrame['pid'] == pid]
+  plist = list(puzzles_pid['move_set'])
+  plist_dict = []
+  for i in plist:
+    s1 = (ast.literal_eval(i))
+    s2 = s1['moves']
+    plist_dict.append(s2)
+  
+  return plist_dict
+'''
+def read_movesets_v0(moveset_file):
   moveset_dataFrame = pd.read_csv(moveset_file, sep=" ", header="infer", delimiter='\t')
   movesets = [] # a list of dictionaries containing the movesets
-  for i in range(101): # 102 total moveset solutions in epicfalcon.txt
+  for i in range(len(moveset_dataFrame)): # 102 total moveset solutions in epicfalcon.txt
       step1 = moveset_dataFrame[['move_set']].ix[[i]] # str of pid, sol_id, uid, and moveset
       step2 = step1.to_dict() # dictionary of data
       step3 = step2['move_set'] # selecting only moveset data
@@ -19,7 +31,7 @@ def read_movesets(moveset_file):
       movesets.append(step5['moves']) # adding each moveset to list
       
   return movesets
-  
+'''
 def puzzle_attributes(moveset_file, attribute):
   moveset_dataFrame = pd.read_csv(moveset_file, sep=" ", header="infer", delimiter='\t')
   attribute_list = []
@@ -38,6 +50,22 @@ def read_structure(puzzle_data):
   
   return puzzle_structure
 
+
+'''
+complete = os.getcwd() + '/movesets/move-set-11-14-2016.txt'
+complete = pd.read_csv(complete, sep=" ", header='infer', delimiter='\t')
+puzzles_6892344 = complete.loc[complete['pid'] == 6892344]
+#print puzzles_6892344['move_set']
+plist = list(puzzles_6892344['move_set'])
+print type(plist[0])
+plist_dict = []
+for i in plist:
+  s1 = (ast.literal_eval(i))
+  s2 = s1['moves']
+  plist_dict.append(s2)
+  
+print (plist_dict[25])
+'''
 
 '''taking pid and making a list of all the puzzle ID's in a list with indexes corresponding to movesets
 epicfalcon = os.getcwd() + '\movesets\epicfalcon.txt'

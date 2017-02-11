@@ -1,12 +1,15 @@
 import os
-from readData import read_movesets, puzzle_attributes, read_structure
-from getData import getData_pid
+from readData import read_movesets
 from encodeRNA import encode_movesets
 
 
+read_movesets(os.getcwd() + '/movesets/move-set-11-14-2016.txt',6892344)
+
+
+
+'''
 # read moveset file
 # 102 total movesets
-print os.getcwd()
 
 epicfalcon = os.getcwd() + '/movesets/epicfalcon.txt'
 
@@ -24,8 +27,7 @@ ms_6503049,stctr_6503049 = getData_pid(6503049,pid,movesets,structure)
 ms_6502960,stctr_6502960 = getData_pid(6502960,pid,movesets,structure)
 
 encoded_6503049 = encode_movesets(ms_6503049)
-
-
+'''
 '''
 # The puzzle ID, solution ID, and moveset for the final puzzle in epicfalcon.txt
 print pid[100]
