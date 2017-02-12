@@ -2,11 +2,67 @@ import os
 from readData import read_movesets
 from encodeRNA import encode_movesets
 
+def longest(a):
+    return max(len(a), *map(longest, a)) if isinstance(a, list) and a else 0
 
-read_movesets(os.getcwd() + '/movesets/move-set-11-14-2016.txt',6892344)
+test = read_movesets(os.getcwd() + '/movesets/move-set-11-14-2016.txt',6892344)[15]
+max_len = len(max(test,key=len))
+movesets = []
+for i in test:
+    num_moves = len(i)
+    ind_moves = []
+    for j in i:
+        if j['base'] == 'A':
+            ind_moves.append([1,j['pos']])
+        elif j['base'] == 'U':
+            ind_moves.append([2,j['pos']])
+        elif j['base'] == 'G':
+            ind_moves.append([3,j['pos']])
+        elif j['base'] == 'C':
+            ind_moves.append([4,j['pos']])
+    ind_moves = [ind_moves]
+    ind_moves = ind_moves + (max_len - num_moves)*[[0,0]]
+    movesets.append(ind_moves)
 
+19*[[0,0]] + [[2,5],[1,20]] #this works
+#print movesets[len(movesets)-1]
 
+data_6892344 = read_movesets(os.getcwd() + '/movesets/move-set-11-14-2016.txt',6892344)
+#print data_6892344
+ms = []
+for k in data_6892344:
+    #max_moves = len(max(k,key=len))
+    max_moves = longest(k)
+    soln = []
+    #if k[0][0]['type'] == 'reset':
+     #   data_6892344.pop(data_6892344.index(k))
+    for i in k:
+        n_moves = len(i)
+        i_moves = []
+        for j in i:
+            if 'type' in j:
+                i_moves.append([1,12345])
+            elif j['base'] == 'A':
+                i_moves.append([1,j['pos']])
+            elif j['base'] == 'U':
+                i_moves.append([2,j['pos']])
+            elif j['base'] == 'G':
+                i_moves.append([3,j['pos']])
+            elif j['base'] == 'C':
+                i_moves.append([4,j['pos']])
+            elif j['type'] == 'paste' or j['type'] == 'reset':
+                continue
+        #i_moves = [i_moves]
+        i_moves = i_moves + (max_moves - n_moves)*[[0,0]]
+        soln.append(i_moves)
+    ms.append(soln)
+    
+#print ms[1]
 
+from sklearn import mixture,cluster
+kmm = cluster.k_means([[[[3,1],[0,0],[0,0],[0,0]],[[3,3],[1,5],[0,0],[0,0]]],[[[1,5],[2,7],[0,0],[0,0]],[[1,7],[0,0],[0,0],[0,0]]]],3)
+gmm = mixture.GMM()
+kmm.fit([[[[3,1],[0,0],[0,0],[0,0]],[[3,3],[1,5],[0,0],[0,0]]],[[[1,5],[2,7],[0,0],[0,0]],[[1,7],[0,0],[0,0],[0,0]]]])
 '''
 # read moveset file
 # 102 total movesets
