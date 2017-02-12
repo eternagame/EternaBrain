@@ -4,7 +4,7 @@ from encodeRNA import encode_movesets
 
 def longest(a):
     return max(len(a), *map(longest, a)) if isinstance(a, list) and a else 0
-
+'''
 test = read_movesets(os.getcwd() + '/movesets/move-set-11-14-2016.txt',6892344)[15]
 max_len = len(max(test,key=len))
 movesets = []
@@ -26,9 +26,16 @@ for i in test:
 
 19*[[0,0]] + [[2,5],[1,20]] #this works
 #print movesets[len(movesets)-1]
-
+'''
 data_6892344 = read_movesets(os.getcwd() + '/movesets/move-set-11-14-2016.txt',6892344)
 #print data_6892344
+from sklearn.feature_extraction import DictVectorizer
+vec = DictVectorizer()
+t2 = vec.fit_transform(data_6892344[0][0]).toarray()
+print data_6892344[0][0]
+
+
+
 ms = []
 for k in data_6892344:
     #max_moves = len(max(k,key=len))
@@ -56,13 +63,30 @@ for k in data_6892344:
         i_moves = i_moves + (max_moves - n_moves)*[[0,0]]
         soln.append(i_moves)
     ms.append(soln)
-    
-#print ms[1]
 
-from sklearn import mixture,cluster
-kmm = cluster.k_means([[[[3,1],[0,0],[0,0],[0,0]],[[3,3],[1,5],[0,0],[0,0]]],[[[1,5],[2,7],[0,0],[0,0]],[[1,7],[0,0],[0,0],[0,0]]]],3)
+movesets_6892344 = encode_movesets(data_6892344)
+#print ms[1]
+test_ms = [[[[3,1],[0,0],[0,0],[0,0]],[[3,3],[1,5],[0,0],[0,0]]],[[[1,5],[2,7],[0,0],[0,0]],[[1,7],[0,0],[0,0],[0,0]]]]
+
+from sklearn import mixture,cluster,decomposition
+from sklearn.feature_selection import chi2,SelectKBest
+#X_new = SelectKBest(chi2, k=2).fit_transform(test_ms)
+
+
+
+'''
+pca = decomposition.PCA(n_components=2)
+pca.fit(test_ms,4)
+pca.transform(test_ms)
+#X = pca.transform(ms)
+#kmm = cluster.k_means(,3)
 gmm = mixture.GMM()
-kmm.fit([[[[3,1],[0,0],[0,0],[0,0]],[[3,3],[1,5],[0,0],[0,0]]],[[[1,5],[2,7],[0,0],[0,0]],[[1,7],[0,0],[0,0],[0,0]]]])
+#kmm.fit([[[[3,1],[0,0],[0,0],[0,0]],[[3,3],[1,5],[0,0],[0,0]]],[[[1,5],[2,7],[0,0],[0,0]],[[1,7],[0,0],[0,0],[0,0]]]])
+
+#kmm = cluster.k_means(t2,2)
+'''
+
+
 '''
 # read moveset file
 # 102 total movesets
