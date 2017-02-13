@@ -1,7 +1,8 @@
 # RNA-Prediction
-Using Eterna data to predict RNA folds
+Using Eterna data to understand how players solve RNA folding puzzles
+
 ## Data
-### epicfalcon.txt (my solutions)
+### epicfalcon.txt (my solutions) & move-set-11-14-2016.txt (all recorded solutions to puzzles)
 - solution id (sol_id)
 - puzzle id (pid)
 - user id (uid)
