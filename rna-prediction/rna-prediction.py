@@ -1,6 +1,8 @@
 import os
 from readData import read_movesets
-from encodeRNA import encode_movesets
+from encodeRNA import encode_movesets, encode_movesets_v3
+import pandas as pd
+import numpy as np
 
 def longest(a):
     return max(len(a), *map(longest, a)) if isinstance(a, list) and a else 0
@@ -27,15 +29,30 @@ for i in test:
 19*[[0,0]] + [[2,5],[1,20]] #this works
 #print movesets[len(movesets)-1]
 '''
+
 data_6892344 = read_movesets(os.getcwd() + '/movesets/move-set-11-14-2016.txt',6892344)
-#print data_6892344
+lens = [len(x) for j in x for x in data_6892344]
+#print data_6892344[-48]
+encoded_6892344 = encode_movesets_v3(data_6892344)
+print encoded_6892344[0]
+print np.array(encoded_6892344).shape
+
+from sklearn import mixture
+gmm = mixture.GMM()
+gmm.fit(encoded_6892344)
+
+#print data_6892344[-2]
+
+#print(data_6892344[0])
+#print (data_6892344[4])
+'''
 from sklearn.feature_extraction import DictVectorizer
 vec = DictVectorizer()
 t2 = vec.fit_transform(data_6892344[0][0]).toarray()
 print data_6892344[0][0]
+'''
 
-
-
+'''
 ms = []
 for k in data_6892344:
     #max_moves = len(max(k,key=len))
@@ -63,13 +80,42 @@ for k in data_6892344:
         i_moves = i_moves + (max_moves - n_moves)*[[0,0]]
         soln.append(i_moves)
     ms.append(soln)
-
-movesets_6892344 = encode_movesets(data_6892344)
+'''
+#movesets_6892344 = encode_movesets(data_6892344)
 #print ms[1]
-test_ms = [[[[3,1],[0,0],[0,0],[0,0]],[[3,3],[1,5],[0,0],[0,0]]],[[[1,5],[2,7],[0,0],[0,0]],[[1,7],[0,0],[0,0],[0,0]]]]
+'''
+test = [[[[3,10],[1,5],[3,18]],[[3,1],[0,0],[0,0]],[[3,3],[1,5],[0,0]]],[[[1,5],[2,7],[0,0]],[[1,7],[0,0],[0,0]],[[0,0],[0,0],[0,0]]]]
+t2 = np.reshape(test,(1,-1))
+print t2
+from sklearn import mixture,cluster
+gmm = mixture.GMM()
+kmm = cluster.KMeans(n_clusters=8)
+kmm.fit(t2)
+'''
+'''
+test_ms = np.array([[[[3,1],[0,0],[0,0],[0,0]],[[3,3],[1,5],[0,0],[0,0]]],[[[1,5],[2,7],[0,0],[0,0]],[[1,7],[0,0],[0,0],[0,0]]]])
+test = [[[[3,10],[1,5],[3,18]],[[3,1],[0,0],[0,0]],[[3,3],[1,5],[0,0]]],[[[1,5],[2,7],[0,0]],[[1,7],[0,0],[0,0]],[[0,0],[0,0],[0,0]]]]
+test = np.array(test)
+from sklearn import cluster, mixture, decomposition, datasets
+#pca = decomposition.PCA().fit(test)
+gmm = mixture.GMM()
+test = np.array(test)
+print test.shape
+move1 = [[2,5],[3,7],[3,8]]
+gmm.fit(move1)
+iris = datasets.load_iris()
+X = iris.data
 
-from sklearn import mixture,cluster,decomposition
-from sklearn.feature_selection import chi2,SelectKBest
+kmm = cluster.KMeans()
+kmm.fit_transform(test)
+'''
+'''
+moveset_df = pd.DataFrame(movesets_6892344)
+moveset_df.to_csv(os.getcwd()+'/movesets/encoded-movesets.csv',sep=',')
+'''
+
+#from sklearn import mixture,cluster,decomposition
+#from sklearn.feature_selection import chi2,SelectKBest
 #X_new = SelectKBest(chi2, k=2).fit_transform(test_ms)
 
 

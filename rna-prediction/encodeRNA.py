@@ -8,7 +8,9 @@ Created on Sun Jan 15 12:51:30 2017
 '''
 encode RNA strucutre and encode movesets
 '''
-
+import pandas as pd
+from readData import read_movesets
+import os
 def longest(a):
     return max(len(a), *map(longest, a)) if isinstance(a, list) and a else 0
 
@@ -74,6 +76,57 @@ def encode_movesets(moveset):
         
     return ms
 
+
+def encode_movesets_v3(moveset):
+    ms = []
+    #lens = [len(x) for j in x for x in moveset]
+    #max_lens = max(lens)
+    for k in moveset:
+        player = []
+        for i in k:
+            for j in i:
+                if 'type' in j:
+                    player.append(1)
+                    player.append(12345)
+                elif j['base'] == 'A':
+                    player.append(1)
+                    player.append(j['pos'])
+                elif j['base'] == 'U':
+                    player.append(2)
+                    player.append(j['pos'])
+                elif j['base'] == 'G':
+                    player.append(3)
+                    player.append(j['pos'])
+                elif j['base'] == 'C':
+                    player.append(4)
+                    player.append(j['pos'])
+                elif j['type'] == 'paste' or j['type'] == 'reset':
+                    continue
+        ms.append(player)
+    lens = [len(j) for j in ms]
+    max_lens = max(lens)
+    ms2 = []
+    for l in ms:
+        l.extend([0]*(max_lens-len(l)))
+        
+    
+    return ms
+
+'''
+data_6892344 = read_movesets(os.getcwd() + '/movesets/move-set-11-14-2016.txt',6892344)
+print len(data_6892344)
+lens = [len(x) for x in j for j in data_6892344]
+print lens
+print sum(lens)
+
+def encode_movesets_dataframe(moveset):
+    
+    pass
+
+columns = ['pid','time','base','loc']
+edf = pd.DataFrame(index=range(sum(lens)),columns=columns,dtype='float')
+print edf
+'''
 '''
 encoded_ms = []
 for i in ms_6503049:
@@ -88,4 +141,6 @@ for i in ms_6503049:
     encoded_ms.append([4,i[0]['pos']])
 
 print encoded_ms
+
 '''
+
