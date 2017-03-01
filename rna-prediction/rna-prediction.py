@@ -4,8 +4,28 @@ from encodeRNA import encode_movesets, encode_movesets_v3
 import pandas as pd
 import numpy as np
 
+
+data_6892344 = read_movesets(os.getcwd() + '/movesets/move-set-11-14-2016.txt',6892344)
+#lens = [len(x) for j in x for x in data_6892344]
+#print data_6892344[-48]
+encoded_6892344 = encode_movesets_v3(data_6892344)
+#print encoded_6892344[0]
+print np.array(encoded_6892344).shape
+
+from sklearn import mixture
+gmm = mixture.GMM()
+gmm.fit(encoded_6892344[0:5])
+
+#print data_6892344[-2]
+
+#print(data_6892344[0])
+#print (data_6892344[4])
+
+'''
 def longest(a):
     return max(len(a), *map(longest, a)) if isinstance(a, list) and a else 0
+'''
+
 '''
 test = read_movesets(os.getcwd() + '/movesets/move-set-11-14-2016.txt',6892344)[15]
 max_len = len(max(test,key=len))
@@ -29,22 +49,6 @@ for i in test:
 19*[[0,0]] + [[2,5],[1,20]] #this works
 #print movesets[len(movesets)-1]
 '''
-
-data_6892344 = read_movesets(os.getcwd() + '/movesets/move-set-11-14-2016.txt',6892344)
-lens = [len(x) for j in x for x in data_6892344]
-#print data_6892344[-48]
-encoded_6892344 = encode_movesets_v3(data_6892344)
-print encoded_6892344[0]
-print np.array(encoded_6892344).shape
-
-from sklearn import mixture
-gmm = mixture.GMM()
-gmm.fit(encoded_6892344)
-
-#print data_6892344[-2]
-
-#print(data_6892344[0])
-#print (data_6892344[4])
 '''
 from sklearn.feature_extraction import DictVectorizer
 vec = DictVectorizer()

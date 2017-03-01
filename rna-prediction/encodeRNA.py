@@ -8,11 +8,45 @@ Created on Sun Jan 15 12:51:30 2017
 '''
 encode RNA strucutre and encode movesets
 '''
-import pandas as pd
-from readData import read_movesets
-import os
+
+
 def longest(a):
     return max(len(a), *map(longest, a)) if isinstance(a, list) and a else 0
+    
+def encode_movesets(moveset):
+    ms = []
+    #lens = [len(x) for j in x for x in moveset]
+    #max_lens = max(lens)
+    for k in moveset:
+        player = []
+        for i in k:
+            for j in i:
+                if 'type' in j:
+                    player.append(1)
+                    player.append(12345)
+                elif j['base'] == 'A':
+                    player.append(1)
+                    player.append(j['pos'])
+                elif j['base'] == 'U':
+                    player.append(2)
+                    player.append(j['pos'])
+                elif j['base'] == 'G':
+                    player.append(3)
+                    player.append(j['pos'])
+                elif j['base'] == 'C':
+                    player.append(4)
+                    player.append(j['pos'])
+                elif j['type'] == 'paste' or j['type'] == 'reset':
+                    continue
+        ms.append(player)
+    lens = [len(j) for j in ms]
+    max_lens = max(lens)
+    ms2 = []
+    for l in ms:
+        l.extend([0]*(max_lens-len(l)))
+        
+    
+    return ms
 
 def encode_structure(structure):
   encoded_structure = []
@@ -44,7 +78,7 @@ for move in movesets:
   for i in move:
     pass
     
-def encode_movesets(moveset):
+def encode_movesets_v0(moveset):
     ms = []
     max_moves = longest(moveset)
     for k in moveset:
@@ -77,7 +111,7 @@ def encode_movesets(moveset):
     return ms
 
 
-def encode_movesets_v3(moveset):
+def encode_movesets(moveset):
     ms = []
     #lens = [len(x) for j in x for x in moveset]
     #max_lens = max(lens)
