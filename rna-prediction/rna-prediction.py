@@ -1,20 +1,51 @@
 import os
 from readData import read_movesets
-from encodeRNA import encode_movesets, encode_movesets_v3
-import pandas as pd
+from encodeRNA import encode_movesets
 import numpy as np
-
+from sklearn import mixture, decomposition
+from matplotlib import pyplot as plt
+import seaborn; seaborn.set()
 
 data_6892344 = read_movesets(os.getcwd() + '/movesets/move-set-11-14-2016.txt',6892344)
 #lens = [len(x) for j in x for x in data_6892344]
 #print data_6892344[-48]
-encoded_6892344 = encode_movesets_v3(data_6892344)
+
+encoded_6892344 = np.matrix(encode_movesets(data_6892344))
+
 #print encoded_6892344[0]
 print np.array(encoded_6892344).shape
 
-from sklearn import mixture
-gmm = mixture.GMM()
-gmm.fit(encoded_6892344[0:5])
+#gmm = mixture.GMM()
+#gmm.fit(encoded_6892344[0:5])
+
+pca = decomposition.PCA(n_components=2)
+#sklearn_pca = sklearnPCA(n_components=2)
+pca.fit(encoded_6892344)
+transf = pca.transform(encoded_6892344)
+x,y = [],[]
+for i in transf:
+    x.append(i[0])
+    y.append(i[1])
+
+#plt.scatter(x,y)
+#plt.show()
+
+gmm = mixture.GMM(3)
+gmm.fit(transf)
+y_gmm = gmm.predict(transf)
+plt.scatter(transf[:,0], transf[:,1],c=y_gmm,cmap='RdYlBu',s=150)
+
+reds,blues,yellows = 0,0,0
+
+for i in y_gmm:
+    if i == 0:
+        reds += 1
+    elif i == 1:
+        yellows += 1
+    elif i ==2:
+        blues += 1
+        
+print 'Reds:',reds,'\nBlues:',blues,'\nYellows:',yellows
 
 #print data_6892344[-2]
 

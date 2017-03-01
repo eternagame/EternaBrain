@@ -43,7 +43,7 @@ def encode_movesets(moveset):
     max_lens = max(lens)
     ms2 = []
     for l in ms:
-        l.extend([0]*(max_lens-len(l)))
+        l.extend([None]*(max_lens-len(l)))
         
     
     return ms
