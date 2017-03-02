@@ -6,22 +6,18 @@ from sklearn import mixture, decomposition
 from matplotlib import pyplot as plt
 import seaborn; seaborn.set()
 
-data_6892344 = read_movesets(os.getcwd() + '/movesets/move-set-11-14-2016.txt',6892344)
-#lens = [len(x) for j in x for x in data_6892344]
-#print data_6892344[-48]
-
-encoded_6892344 = np.matrix(encode_movesets(data_6892344))
+data = read_movesets(os.getcwd() + '/movesets/move-set-11-14-2016.txt',7254761)
+encoded = np.matrix(encode_movesets(data))
 
 #print encoded_6892344[0]
-print np.array(encoded_6892344).shape
+print np.array(encoded).shape
 
 #gmm = mixture.GMM()
 #gmm.fit(encoded_6892344[0:5])
 
 pca = decomposition.PCA(n_components=2)
-#sklearn_pca = sklearnPCA(n_components=2)
-pca.fit(encoded_6892344)
-transf = pca.transform(encoded_6892344)
+pca.fit(encoded)
+transf = pca.transform(encoded)
 x,y = [],[]
 for i in transf:
     x.append(i[0])
@@ -34,6 +30,11 @@ gmm = mixture.GMM(3)
 gmm.fit(transf)
 y_gmm = gmm.predict(transf)
 plt.scatter(transf[:,0], transf[:,1],c=y_gmm,cmap='RdYlBu',s=150)
+plt.suptitle("Puzzle 7254761",fontsize=18)
+plt.xlabel('Component 1',fontsize=14)
+plt.ylabel('Component 2',fontsize=14)
+
+#plt.savefig(os.getcwd() + '/clustering-graphs/pid_7254761.pdf')
 
 reds,blues,yellows = 0,0,0
 
