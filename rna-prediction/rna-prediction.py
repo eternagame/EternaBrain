@@ -18,6 +18,14 @@ print np.array(encoded).shape
 pca = decomposition.PCA(n_components=2)
 pca.fit(encoded)
 transf = pca.transform(encoded)
+pc_variance = pca.explained_variance_ratio_
+
+pc1 = str(pc_variance[0]*100)
+pc1 = pc1[0:4]+'%'
+
+pc2 = str(pc_variance[1]*100)
+pc2 = pc2[0:4]+'%'
+
 x,y = [],[]
 for i in transf:
     x.append(i[0])
@@ -26,16 +34,17 @@ for i in transf:
 #plt.scatter(x,y)
 #plt.show()
 
-gmm = mixture.GMM(3)
+gmm = mixture.GaussianMixture(7)
 gmm.fit(transf)
+print gmm.bic(transf)
 y_gmm = gmm.predict(transf)
 plt.scatter(transf[:,0], transf[:,1],c=y_gmm,cmap='RdYlBu',s=150)
 plt.suptitle("Puzzle 7254761",fontsize=18)
-plt.xlabel('Component 1',fontsize=14)
-plt.ylabel('Component 2',fontsize=14)
+plt.xlabel('Component 1 (Explained Variance: %s)'%(pc1),fontsize=14)
+plt.ylabel('Component 2 (Explained Variance: %s)'%(pc2),fontsize=14)
 
 #plt.savefig(os.getcwd() + '/clustering-graphs/pid_7254761.pdf')
-
+'''
 reds,blues,yellows = 0,0,0
 
 for i in y_gmm:
@@ -52,7 +61,7 @@ print 'Reds:',reds,'\nBlues:',blues,'\nYellows:',yellows
 
 #print(data_6892344[0])
 #print (data_6892344[4])
-
+'''
 '''
 def longest(a):
     return max(len(a), *map(longest, a)) if isinstance(a, list) and a else 0
