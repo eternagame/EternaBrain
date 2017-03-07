@@ -34,16 +34,16 @@ for i in transf:
 #plt.scatter(x,y)
 #plt.show()
 
-gmm = mixture.GaussianMixture(7)
-gmm.fit(transf)
-print gmm.bic(transf)
-y_gmm = gmm.predict(transf)
+gmm = mixture.GaussianMixture(5)
+gmm.fit(encoded)
+print gmm.bic(encoded)
+y_gmm = gmm.predict(encoded)
 plt.scatter(transf[:,0], transf[:,1],c=y_gmm,cmap='RdYlBu',s=150)
 plt.suptitle("Puzzle 7254761",fontsize=18)
 plt.xlabel('Component 1 (Explained Variance: %s)'%(pc1),fontsize=14)
 plt.ylabel('Component 2 (Explained Variance: %s)'%(pc2),fontsize=14)
 
-#plt.savefig(os.getcwd() + '/clustering-graphs/pid_7254761.pdf')
+plt.savefig(os.getcwd() + '/clustering-graphs/gmm/pid_7254761.pdf')
 '''
 reds,blues,yellows = 0,0,0
 
