@@ -6,7 +6,7 @@ from sklearn import mixture, decomposition
 from matplotlib import pyplot as plt
 import seaborn; seaborn.set()
 
-data = read_movesets(os.getcwd() + '/movesets/move-set-11-14-2016.txt',7254761)
+data, users = read_movesets(os.getcwd() + '/movesets/move-set-11-14-2016.txt',6892346)
 encoded = np.matrix(encode_movesets(data))
 
 #print encoded_6892344[0]
@@ -38,12 +38,15 @@ gmm = mixture.GaussianMixture(5)
 gmm.fit(encoded)
 print gmm.bic(encoded)
 y_gmm = gmm.predict(encoded)
+print len(y_gmm)
+print len(users)
+''' Plotting PCA
 plt.scatter(transf[:,0], transf[:,1],c=y_gmm,cmap='RdYlBu',s=150)
 plt.suptitle("Puzzle 7254761",fontsize=18)
 plt.xlabel('Component 1 (Explained Variance: %s)'%(pc1),fontsize=14)
 plt.ylabel('Component 2 (Explained Variance: %s)'%(pc2),fontsize=14)
-
-plt.savefig(os.getcwd() + '/clustering-graphs/gmm/pid_7254761.pdf')
+'''
+#plt.savefig(os.getcwd() + '/clustering-graphs/gmm/pid_7254761.pdf')
 '''
 reds,blues,yellows = 0,0,0
 

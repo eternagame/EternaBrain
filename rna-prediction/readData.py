@@ -11,13 +11,14 @@ def read_movesets(moveset_file,pid):
   moveset_dataFrame = pd.read_csv(moveset_file, sep=" ", header="infer", delimiter='\t')
   puzzles_pid = moveset_dataFrame.loc[moveset_dataFrame['pid'] == pid]
   plist = list(puzzles_pid['move_set'])
+  ulist = list(puzzles_pid['uid'])
   plist_dict = []
   for i in plist:
     s1 = (ast.literal_eval(i))
     s2 = s1['moves']
     plist_dict.append(s2)
   
-  return plist_dict
+  return plist_dict, ulist
 '''
 def read_movesets_v0(moveset_file):
   moveset_dataFrame = pd.read_csv(moveset_file, sep=" ", header="infer", delimiter='\t')
