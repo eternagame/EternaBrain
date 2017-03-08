@@ -36,10 +36,35 @@ for i in transf:
 
 gmm = mixture.GaussianMixture(5)
 gmm.fit(encoded)
-print gmm.bic(encoded)
+#print gmm.bic(encoded)
 y_gmm = gmm.predict(encoded)
-print len(y_gmm)
-print len(users)
+#print(y_gmm)
+#print(users)
+
+c1,c2,c3,c4,c5,c6,c7 = [],[],[],[],[],[],[]
+clusters = [c1,c2,c3,c4,c5,c6,c7]
+for i in range(len(users)):
+  if y_gmm[i] == 0:
+    c1.append(users[i])
+  elif y_gmm[i] == 1:
+    c2.append(users[i])
+  elif y_gmm[i] == 2:
+    c3.append(users[i])
+  elif y_gmm[i] == 3:
+    c4.append(users[i])
+  elif y_gmm[i] == 4:
+    c5.append(users[i])
+  elif y_gmm[i] == 5:
+    c6.append(users[i]) 
+  elif y_gmm[i] == 6:
+    c7.append(users[i])
+
+#print('Cluster 1:',y_gmm.count(0),'\n',c1)
+
+for i in range(len(clusters)):
+  print '\nCluster %i:' %(i+1),np.count_nonzero(y_gmm == i)
+  print clusters[i]
+    
 ''' Plotting PCA
 plt.scatter(transf[:,0], transf[:,1],c=y_gmm,cmap='RdYlBu',s=150)
 plt.suptitle("Puzzle 7254761",fontsize=18)
