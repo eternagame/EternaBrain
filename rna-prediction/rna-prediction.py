@@ -1,13 +1,16 @@
 import os
-from readData import read_movesets_pid
+from readData import read_movesets_pid, read_movesets_uid_pid, read_movesets_uid
 from encodeRNA import encode_movesets
 import numpy as np
 from sklearn import mixture, decomposition
 from matplotlib import pyplot as plt
 import seaborn; seaborn.set()
 
-data, users = read_movesets_pid(os.getcwd() + '/movesets/move-set-11-14-2016.txt',7254757)
+filepath = os.getcwd() + '/movesets/move-set-11-14-2016.txt'
+data, users = read_movesets_pid(filepath,7254757)
 encoded = np.matrix(encode_movesets(data))
+
+print read_movesets_uid_pid(filepath,8627,7254757)
 
 #print encoded_6892344[0]
 print np.array(encoded).shape
@@ -60,11 +63,12 @@ for i in range(len(users)):
     c7.append(users[i])
 
 #print('Cluster 1:',y_gmm.count(0),'\n',c1)
-
+'''
 for i in range(len(clusters)):
   print '\nCluster %i:' %(i+1),np.count_nonzero(y_gmm == i)
   print clusters[i]
-    
+'''
+  
 ''' Plotting PCA
 plt.scatter(transf[:,0], transf[:,1],c=y_gmm,cmap='RdYlBu',s=150)
 plt.suptitle("Puzzle 7254761",fontsize=18)
