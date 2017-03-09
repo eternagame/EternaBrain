@@ -1,12 +1,12 @@
 import os
-from readData import read_movesets
+from readData import read_movesets_pid
 from encodeRNA import encode_movesets
 import numpy as np
 from sklearn import mixture, decomposition
 from matplotlib import pyplot as plt
 import seaborn; seaborn.set()
 
-data, users = read_movesets(os.getcwd() + '/movesets/move-set-11-14-2016.txt',6892346)
+data, users = read_movesets_pid(os.getcwd() + '/movesets/move-set-11-14-2016.txt',7254757)
 encoded = np.matrix(encode_movesets(data))
 
 #print encoded_6892344[0]

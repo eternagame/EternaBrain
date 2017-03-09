@@ -7,7 +7,7 @@ Created on Tue Dec 27 12:57:43 2016
 import ast
 import pandas as pd
 
-def read_movesets(moveset_file,pid):
+def read_movesets_pid(moveset_file,pid): # get data from puzzle ID
   moveset_dataFrame = pd.read_csv(moveset_file, sep=" ", header="infer", delimiter='\t')
   puzzles_pid = moveset_dataFrame.loc[moveset_dataFrame['pid'] == pid]
   plist = list(puzzles_pid['move_set'])
@@ -19,6 +19,20 @@ def read_movesets(moveset_file,pid):
     plist_dict.append(s2)
   
   return plist_dict, ulist
+
+def read_movesets_uid(moveset_file,uid): # get data from user ID
+  moveset_dataFrame = pd.read_csv(moveset_file, sep=" ", header="infer", delimiter='\t')
+  puzzles_uid = moveset_dataFrame.loc[moveset_dataFrame['uid'] == uid]
+  plist = list(puzzles_uid['move_set'])
+  pidList = list(puzzles_uid['pid'])
+  plist_dict = []
+  for i in plist:
+    s1 = (ast.literal_eval(i))
+    s2 = s1['moves']
+    plist_dict.append(s2)
+  
+  return plist_dict, pidList
+
 '''
 def read_movesets_v0(moveset_file):
   moveset_dataFrame = pd.read_csv(moveset_file, sep=" ", header="infer", delimiter='\t')
