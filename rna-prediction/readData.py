@@ -33,11 +33,14 @@ def read_movesets_uid(moveset_file,uid): # get data from user ID
   
   return plist_dict, pidList
 
-def read_movesets_uid_pid(moveset_file,uid,pid): # get data from user ID
+def read_movesets_uid_pid(moveset_file,uid,pid,df='list'): # get data from user ID
   moveset_dataFrame = pd.read_csv(moveset_file, sep=" ", header="infer", delimiter='\t')
   puzzles1 = moveset_dataFrame.loc[moveset_dataFrame['uid'] == uid]
   puzzles2 = puzzles1.loc[puzzles1['pid'] == pid]
-  return puzzles2
+  if df == "list":
+    return list(puzzles2['move_set'])
+  elif df == "df":
+    return puzzles2
   '''
   plist = list(puzzles2)
   plist_dict = []

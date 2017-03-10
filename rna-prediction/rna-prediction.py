@@ -10,14 +10,14 @@ filepath = os.getcwd() + '/movesets/move-set-11-14-2016.txt'
 data, users = read_movesets_pid(filepath,7254757)
 encoded = np.matrix(encode_movesets(data))
 
-print read_movesets_uid_pid(filepath,8627,7254757)
+print read_movesets_uid_pid(filepath,8627,7254757,df='df')
 
 #print encoded_6892344[0]
 print np.array(encoded).shape
 
 #gmm = mixture.GMM()
 #gmm.fit(encoded_6892344[0:5])
-
+''' Uncomment when running GMM and PCA
 pca = decomposition.PCA(n_components=2)
 pca.fit(encoded)
 transf = pca.transform(encoded)
@@ -61,14 +61,14 @@ for i in range(len(users)):
     c6.append(users[i]) 
   elif y_gmm[i] == 6:
     c7.append(users[i])
-
+'''
 #print('Cluster 1:',y_gmm.count(0),'\n',c1)
 '''
 for i in range(len(clusters)):
   print '\nCluster %i:' %(i+1),np.count_nonzero(y_gmm == i)
   print clusters[i]
 '''
-  
+
 ''' Plotting PCA
 plt.scatter(transf[:,0], transf[:,1],c=y_gmm,cmap='RdYlBu',s=150)
 plt.suptitle("Puzzle 7254761",fontsize=18)
