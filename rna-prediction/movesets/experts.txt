@@ -1,0 +1,14 @@
+uid, name, bot
+267, mat747, N
+8627, Eli Fisker, N
+57675, Omei, N
+124111, Nando, N
+11775, starryjess, N
+24263, Brourd, N
+40299, Jennifer Pearl, N
+224023, SaraBot, Y
+154390, Eternabot, Y
+42833, JR, N
+52361, Malcolm, N
+32627, jandersonlee, N
+219533, John Nicol, N
