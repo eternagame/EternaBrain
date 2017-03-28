@@ -72,13 +72,13 @@ for i in range(len(clusters)):
 
 # Plotting PCA
 plt.scatter(transf[:,0], transf[:,1],c=y_gmm,cmap='RdYlBu',s=150)
-plt.suptitle("Puzzle 7254761",fontsize=18)
+plt.suptitle("Puzzle",fontsize=18)
 plt.xlabel('Component 1 (Explained Variance: %s)'%(pc1),fontsize=14)
 plt.ylabel('Component 2 (Explained Variance: %s)'%(pc2),fontsize=14)
 
 #Pickling
-pickle.dump(transf, open(os.getcwd()+'/pickles/pca-7254761.p','wb'))
-pickle.dump(y_gmm, open(os.getcwd()+'/pickles/gmm-7254761.p','wb'))
+pickle.dump(transf, open(os.getcwd()+'/pickles/pca-7254761','wb'))
+pickle.dump(y_gmm, open(os.getcwd()+'/pickles/gmm-7254761','wb'))
 
 #plt.savefig(os.getcwd() + '/clustering-graphs/gmm/pid_7254761.pdf')
 '''

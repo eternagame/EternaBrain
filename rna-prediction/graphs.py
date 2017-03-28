@@ -13,8 +13,8 @@ import pickle
 
 puzzle = raw_input("Puzzle ID: ")
 
-y_gmm = pickle.load(open(os.getcwd() + '/pickles/gmm-' + puzzle + '.p','rb'))
-transf = pickle.load(open(os.getcwd() + '/pickles/pca-' + puzzle + '.p','rb'))
+y_gmm = pickle.load(open(os.getcwd() + '/pickles/gmm-' + puzzle,'rb'))
+transf = pickle.load(open(os.getcwd() + '/pickles/pca-' + puzzle,'rb'))
 
 plt.scatter(transf[:,0], transf[:,1],c=y_gmm, cmap='RdYlBu',s=150)
 plt.suptitle("Puzzle " + puzzle,fontsize=18)
