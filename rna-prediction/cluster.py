@@ -8,7 +8,7 @@ import seaborn; seaborn.set()
 import pickle
 
 filepath = os.getcwd() + '/movesets/move-set-11-14-2016.txt'
-data, users = read_movesets_pid(filepath,7254761)
+data, users = read_movesets_pid(filepath,6892348)
 encoded = np.matrix(encode_movesets(data))
 
 #print read_movesets_uid_pid(filepath,8627,6892346,df='df')
@@ -77,8 +77,9 @@ plt.xlabel('Component 1 (Explained Variance: %s)'%(pc1),fontsize=14)
 plt.ylabel('Component 2 (Explained Variance: %s)'%(pc2),fontsize=14)
 
 #Pickling
-pickle.dump(transf, open(os.getcwd()+'/pickles/pca-7254761','wb'))
-pickle.dump(y_gmm, open(os.getcwd()+'/pickles/gmm-7254761','wb'))
+#pickle.dump(transf, open(os.getcwd()+'/pickles/pca-7254760','wb'))
+#pickle.dump(y_gmm, open(os.getcwd()+'/pickles/gmm-7254760','wb'))
+pickle.dump([pc1,pc2], open(os.getcwd()+'/pickles/components-6892348','wb'))
 
 #plt.savefig(os.getcwd() + '/clustering-graphs/gmm/pid_7254761.pdf')
 '''
