@@ -18,6 +18,9 @@ puzzle = raw_input("Puzzle ID: ")
 
 y_gmm = pickle.load(open(os.getcwd() + '/pickles/gmm-' + puzzle,'rb'))
 transf = pickle.load(open(os.getcwd() + '/pickles/pca-' + puzzle,'rb'))
+pc = pickle.load(open(os.getcwd() + '/pickles/components-' + puzzle,'rb'))
+plt.xlabel('Component 1 (Explained Variance: %s)'%(pc[0]),fontsize=14)
+plt.ylabel('Component 2 (Explained Variance: %s)'%(pc[1]),fontsize=14)
 #data, users = read_movesets_pid(filepath,7254760)
 
 plt.scatter(transf[:,0], transf[:,1],c=y_gmm, cmap='RdYlBu',s=150)
