@@ -65,6 +65,20 @@ def read_movesets_v0(moveset_file):
       
   return movesets
 '''
+
+def read_movesets_all(moveset_file): # get data from puzzle ID
+  moveset_dataFrame = pd.read_csv(moveset_file, sep=" ", header="infer", delimiter='\t')
+  puzzles_pid = moveset_dataFrame.loc[moveset_dataFrame['pid']]
+  plist = list(puzzles_pid['move_set'])
+  #ulist = list(puzzles_pid['uid'])
+  plist_dict = []
+  for i in plist:
+    s1 = (ast.literal_eval(i))
+    s2 = s1['moves']
+    plist_dict.append(s2)
+  
+  return plist_dict
+
 def puzzle_attributes(moveset_file, attribute):
   moveset_dataFrame = pd.read_csv(moveset_file, sep=" ", header="infer", delimiter='\t')
   attribute_list = []

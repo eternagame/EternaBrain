@@ -110,7 +110,7 @@ def encode_movesets_v0(moveset):
         
     return ms
 
-
+'''
 def encode_movesets(moveset):
     ms = []
     #lens = [len(x) for j in x for x in moveset]
@@ -142,9 +142,9 @@ def encode_movesets(moveset):
     ms2 = []
     for l in ms:
         l.extend([0]*(max_lens-len(l)))
-        
+'''        
     
-    return ms
+#    return ms
 
 '''
 data_6892344 = read_movesets(os.getcwd() + '/movesets/move-set-11-14-2016.txt',6892344)
