@@ -1,6 +1,6 @@
-# EternaCluster
-Using Eterna data to understand how players solve RNA folding puzzles.
-EternaCluster uses unsupervised machine learning to group Eterna players based on their style of solving RNA folding puzzles.
+# EternaBrain
+Using Eterna data to understand and predict how players solve RNA folding puzzles.
+EternaBrain uses unsupervised machine learning to group Eterna players based on their style of solving RNA folding puzzles, and uses supervised machine learning with neural networks to predict how players will solve RNA folding puzzles.
 
 ## Key Puzzles
 6892343, 6892344, 6892345, 6892346, 6892347, 6892348, 7254756, 7254757, 7254758, 7254759, 7254760, 7254761
