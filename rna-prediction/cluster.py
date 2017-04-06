@@ -14,8 +14,8 @@ encoded = np.matrix(encode_movesets(data))
 #print read_movesets_uid_pid(filepath,8627,6892346,df='df')
 
 #print encoded_6892344[0]
-#print np.array(encoded).shape
-
+print np.array(encoded).shape
+'''
 #gmm = mixture.GMM()
 #gmm.fit(encoded_6892344[0:5])
  # Uncomment when running GMM and PCA
@@ -37,7 +37,7 @@ for i in transf:
 
 #plt.scatter(x,y)
 #plt.show()
-
+'''
 gmm = mixture.GaussianMixture(5)
 gmm.fit(encoded)
 #print gmm.bic(encoded)
@@ -79,7 +79,7 @@ plt.ylabel('Component 2 (Explained Variance: %s)'%(pc2),fontsize=14)
 #Pickling
 #pickle.dump(transf, open(os.getcwd()+'/pickles/pca-7254760','wb'))
 #pickle.dump(y_gmm, open(os.getcwd()+'/pickles/gmm-7254760','wb'))
-pickle.dump([pc1,pc2], open(os.getcwd()+'/pickles/components-6892348','wb'))
+#pickle.dump([pc1,pc2], open(os.getcwd()+'/pickles/components-6892348','wb'))
 
 #plt.savefig(os.getcwd() + '/clustering-graphs/gmm/pid_7254761.pdf')
 '''
