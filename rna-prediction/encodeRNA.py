@@ -52,9 +52,9 @@ def encode_structure(structure):
   encoded_structure = []
   for i in structure:
     if i == ".":
-      encoded_structure.append([0])
+      encoded_structure.append(0)
     elif i == "(" or i == ")":
-      encoded_structure.append([1])
+      encoded_structure.append(1)
   
   return encoded_structure
 '''
