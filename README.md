@@ -22,7 +22,7 @@ puzzles, pid = read_movesets_uid(filepath,uid) # change uid to a user's ID
 ```
 This will output all the player's solutions to every Eterna puzzle he/she has solved.
 
-## To find a player's solution(s) to a specific puzzle
+### To find a player's solution(s) to a specific puzzle
 ```python
 puzzles = read_movesets_uid_pid(filepath,uid,pid,df='list') # change uid and pid to user ID or player ID; df is to display the movesets in either a list or dataframe format
 ```
