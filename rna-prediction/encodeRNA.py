@@ -48,6 +48,37 @@ def encode_movesets(moveset):
     
     return ms
 
+def encode_movesets_style(moveset):
+    ms = []
+    #lens = [len(x) for j in x for x in moveset]
+    #max_lens = max(lens)
+    for k in moveset:
+        player = []
+        for i in k:
+            for j in i:
+                if 'type' in j:
+                    player.append([1,1]) # FIX THIS URGENT
+                elif j['base'] == 'A':
+                    player.append([1,j['pos']])
+                elif j['base'] == 'U':
+                    player.append([2,j['pos']])
+                elif j['base'] == 'G':
+                    player.append([3,j['pos']])
+                elif j['base'] == 'C':
+                    player.append([4,j['pos']])
+                elif j['type'] == 'paste' or j['type'] == 'reset':
+                    continue
+        ms.append(player)
+    lens = [len(j) for j in ms]
+    max_lens = max(lens)
+    #ms2 = []
+    '''
+    for l in ms:
+        l.extend([None]*(max_lens-len(l)))
+    '''
+    
+    return ms
+
 def encode_structure(structure):
   encoded_structure = []
   for i in structure:

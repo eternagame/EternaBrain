@@ -7,14 +7,14 @@ Created on Sun Apr  9 13:42:03 2017
 
 import os
 from readData import read_movesets_pid
-from encodeRNA import encode_movesets
+from encodeRNA import encode_movesets, encode_movesets_style
 import numpy as np
 import pandas as pd
 import ast
 
 filepath = os.getcwd() + '/movesets/move-set-11-14-2016.txt'
 data, users = read_movesets_pid(filepath,6892348)
-encoded = (encode_movesets(data))
+encoded = (encode_movesets_style(data))
 
 moveset_dataFrame = pd.read_csv(filepath, sep=" ", header="infer", delimiter='\t')
 puzzles_pid = (moveset_dataFrame.loc[moveset_dataFrame['pid'] == 6892348])
@@ -48,3 +48,27 @@ for start in bf_list:
 
 print encoded_bf[0]
 print encoded[0]
+
+for i in ((encoded)):
+    for j in range(len(i)):
+        pass
+
+X,y = [],[]
+
+
+for i,j in (zip(encoded_bf,encoded)):
+    for m in (((j))):
+        #print m[1]
+        X.append(i)
+        y.append(m)
+        loc = m[1] - 1
+        #i = i[loc].replace(m[0])
+        i[loc] = m[0]
+
+
+
+
+
+
+
+
