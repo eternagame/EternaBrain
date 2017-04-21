@@ -31,7 +31,7 @@ for i in plist:
 
 #print bf_list[0]
 
-encoded_bf = []
+encoded_bf = [] # this is input for getting structure from Vienna webserver
 
 for start in bf_list:
     enc = []
@@ -46,8 +46,8 @@ for start in bf_list:
             enc.append(4)
     encoded_bf.append(enc)
 
-print encoded_bf[0]
-print encoded[0]
+#print encoded_bf[0]
+#print len(encoded[0])
 
 for i in ((encoded)):
     for j in range(len(i)):
@@ -57,7 +57,8 @@ X,y = [],[]
 
 
 for i,j in (zip(encoded_bf,encoded)):
-    for m in (((j))):
+    print i
+    for m in j:
         #print m[1]
         X.append(i)
         y.append(m)
@@ -65,10 +66,16 @@ for i,j in (zip(encoded_bf,encoded)):
         #i = i[loc].replace(m[0])
         i[loc] = m[0]
 
+#print X[0]
+#print X[110]
+#print X[114]
+#print len(X)
+#print len(y)
 
+X2,y2 = [],[]
 
-
-
+while i in range(len(encoded_bf)):
+    pass
 
 
 
