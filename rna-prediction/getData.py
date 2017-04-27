@@ -43,7 +43,7 @@ def getStructure(sequence): # gets structure using Vienna algorithm
     struc = ''.join(struc)
     return struc
 
-
+'''
 driver = webdriver.Chrome('/Users/rohankoodli/Desktop/chromedriver')
 driver.get("http://rna.tbi.univie.ac.at//cgi-bin/RNAWebSuite/RNAfold.cgi")
 inputElement = driver.find_element_by_id("SCREEN")
@@ -51,8 +51,10 @@ seq = ['G','G','G','A','A','A','C','C','C']
 for i in seq:
     inputElement.send_keys(i)
 driver.find_element_by_class_name('proceed').click()
+
 time.sleep(20)
 web_struc = driver.find_element_by_id('MFE_structure_span').text
+
 print web_struc
 
 
@@ -64,4 +66,4 @@ for i in (web_struc):
 struc = ''.join(struc)
 print struc
 print type(struc)
-
+'''
