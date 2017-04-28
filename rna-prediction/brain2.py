@@ -69,7 +69,7 @@ for move in ((encoded)):
 '''
 X = [[[1,1,1,1],[1,1,1,1]],[[1,2,3,1],[1,2,3,1]],[[1,1,1,3,4],[1,1,1,3,4]]]
 ebf = [[1,1,1,1],[1,2,3,1],[1,1,1,3,4]]
-ecd = [[[4,2],[3,2]],[[4,1],[3,4]],[[1,4],[2,2]]]
+ecd = [[[4,2],[3,2]],[[4,1],[3,4]],[[1,4],[2,2],[3,1],[4,4]]]
 #
 #for i,j in zip(ebf,ecd):
 #    #print X
@@ -104,7 +104,8 @@ Z = []
 Z1 = []
 for i in ecd:
     Z = []
-    for j in range(1,len(ecd)):
+
+    for j in range(0,len(i)):
         temp = copy.deepcopy(ebf[ecd.index(i)])
         Z.append(temp)
     print Z
@@ -113,7 +114,11 @@ for i in ecd:
 print "Z1 = "
 print Z1    
 
+
 print X
+
+#print X
+
 #for i in X:
 #    i[1] = 4
 y0 = []
@@ -122,6 +127,9 @@ for i in ecd:
         y0.append(j)
 
 print ecd
+
+#print ecd
+
 
 #for i in range(len(X)):
 #    try:
