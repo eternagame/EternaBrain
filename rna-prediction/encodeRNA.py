@@ -57,7 +57,7 @@ def encode_movesets_style(moveset):
         for i in k:
             for j in i:
                 if 'type' in j:
-                    player.append([1,1]) # FIX THIS URGENT
+                    player.append([0,0]) # FIX THIS URGENT
                 elif j['base'] == 'A':
                     player.append([1,j['pos']])
                 elif j['base'] == 'U':

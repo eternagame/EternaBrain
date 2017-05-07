@@ -69,7 +69,7 @@ for move in ((encoded)):
 '''
 X = [[[1,1,1,1],[1,1,1,1]],[[1,2,3,1],[1,2,3,1]],[[1,1,1,3,4],[1,1,1,3,4]]]
 ebf = [[1,1,1,1],[1,2,3,1],[1,1,1,3,4]]
-ecd = [[[4,2],[3,2]],[[4,1],[3,4]],[[1,4],[2,2],[3,1],[4,4]]]
+ecd = [[[4,2],[3,2],[1,1]],[[4,1],[3,4]],[[1,4],[2,2],[3,1],[4,4]]]
 #
 #for i,j in zip(ebf,ecd):
 #    #print X
@@ -155,7 +155,8 @@ for i in (Z1):
         except IndexError:
             continue
 
-print '\n',Z1
+print '\n',Z1,'\n'
+print ecd
 
 #print X
 #print y
@@ -165,4 +166,26 @@ print '\n',Z1
 #print len(y)
 
 
+#from Bio import SeqIO
+#
+#sequences = ['AAAAA','ACCA','GGGGAAAAAGGGG']
+#
+#
+#with open("example.fasta", "w") as output_handle:
+#    SeqIO.write(sequences, output_handle, "fasta")
+import tflearn
+
+X = np.array([[[1,2,3,4],[0,1,0,1],[1,1,1,1],[-3,0,0,0]],[[4,3,2,1],[1,0,1,0],[0,0,0,0],[9,0,0,0]]])
+Y = np.array([[4,2],[3,3]])
+
+tflearn.init_graph(num_cores=1)
+
+net = tflearn.input_data(shape=[None, 2,4,4])
+net = tflearn.fully_connected(net, 64)
+net = tflearn.dropout(net, 0.5)
+net = tflearn.fully_connected(net, 10, activation='softmax')
+net = tflearn.regression(net, optimizer='adam', loss='categorical_crossentropy')
+
+model = tflearn.DNN(net)
+model.fit(X, Y)
 

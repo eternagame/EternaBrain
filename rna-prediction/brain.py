@@ -34,8 +34,11 @@ n_nodes_hl3 = 500
 n_classes = 10
 batch_size = 100 # load 100 features at a time 
 
-x = tf.placeholder('float',[None,4716]) # 4716 w/ pid 6892348
-y = tf.placeholder('float')
+x = tf.placeholder('float',[None,2,4,4]) # 4716 w/ pid 6892348
+y = tf.placeholder('float',[None,100,66])
+
+enc = np.array([[[1,2,3,4],[0,1,0,1],[1,1,1,1],[-3,0,0,0]],[[4,3,2,1],[1,0,1,0],[0,0,0,0],[9,0,0,0]]])
+out = np.array([[4,2],[3,3]])
 
 
 def neuralNet(data):
@@ -79,8 +82,8 @@ def train(x):
         
         for epoch in range(num_epochs):
             epoch_loss = 0
-            for _ in range(int(encoded_100.shape[0])):#mnist.train.num_examples/batch_size)):
-                epoch_x,epoch_y = encoded_100,s2_100#mnist.train.next_batch(batch_size)
+            for _ in range(int(enc.shape[0])):#mnist.train.num_examples/batch_size)):
+                epoch_x,epoch_y = enc,out#mnist.train.next_batch(batch_size)
                 _,c = sess.run([optimizer,cost],feed_dict={x:epoch_x,y:epoch_y})
                 epoch_loss += c
             print 'Epoch', epoch + 1, 'completed out of', num_epochs, '\nLoss:',epoch_loss,'\n'
