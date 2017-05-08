@@ -12,7 +12,7 @@ encode RNA strucutre and encode movesets
 
 def longest(a):
     return max(len(a), *map(longest, a)) if isinstance(a, list) and a else 0
-    
+
 def encode_movesets(moveset):
     ms = []
     #lens = [len(x) for j in x for x in moveset]
@@ -44,8 +44,8 @@ def encode_movesets(moveset):
     #ms2 = []
     for l in ms:
         l.extend([None]*(max_lens-len(l)))
-        
-    
+
+
     return ms
 
 def encode_movesets_style(moveset):
@@ -76,7 +76,7 @@ def encode_movesets_style(moveset):
     for l in ms:
         l.extend([None]*(max_lens-len(l)))
     '''
-    
+
     return ms
 
 def encode_structure(structure):
@@ -86,8 +86,11 @@ def encode_structure(structure):
       encoded_structure.append(0)
     elif i == "(" or i == ")":
       encoded_structure.append(1)
-  
+
   return encoded_structure
+
+#########################################################################
+
 '''
 def encode_movesets(moveset):
   encoded_ms = []
@@ -100,15 +103,16 @@ def encode_movesets(moveset):
       encoded_ms.append([3,move[0]['pos']])
     elif move[0]['base'] == 'C':
       encoded_ms.append([4,move[0]['pos']])
-    
+
   return encoded_ms
+'''
 '''
 l = []
 movesets = [[{'base':'G','pos':3}],[{'base':'A','pos':8},{'base':'U','pos':12}]]
 for move in movesets:
   for i in move:
     pass
-    
+
 def encode_movesets_v0(moveset):
     ms = []
     max_moves = longest(moveset)
@@ -138,9 +142,9 @@ def encode_movesets_v0(moveset):
             i_moves = i_moves + (max_moves - n_moves)*[[0,0]]
             soln.append(i_moves)
         ms.append(soln)
-        
-    return ms
 
+    return ms
+'''
 '''
 def encode_movesets(moveset):
     ms = []
@@ -173,8 +177,8 @@ def encode_movesets(moveset):
     ms2 = []
     for l in ms:
         l.extend([0]*(max_lens-len(l)))
-'''        
-    
+'''
+
 #    return ms
 
 '''
@@ -185,7 +189,7 @@ print lens
 print sum(lens)
 
 def encode_movesets_dataframe(moveset):
-    
+
     pass
 
 columns = ['pid','time','base','loc']
@@ -208,4 +212,3 @@ for i in ms_6503049:
 print encoded_ms
 
 '''
-

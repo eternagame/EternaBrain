@@ -15,7 +15,7 @@ encoded = np.matrix(encode_movesets(data))
 
 #print encoded_6892344[0]
 print np.array(encoded).shape
-'''
+
 #gmm = mixture.GMM()
 #gmm.fit(encoded_6892344[0:5])
  # Uncomment when running GMM and PCA
@@ -37,7 +37,7 @@ for i in transf:
 
 #plt.scatter(x,y)
 #plt.show()
-'''
+
 gmm = mixture.GaussianMixture(5)
 gmm.fit(encoded)
 #print gmm.bic(encoded)
@@ -59,7 +59,7 @@ for i in range(len(users)):
   elif y_gmm[i] == 4:
     c5.append(users[i])
   elif y_gmm[i] == 5:
-    c6.append(users[i]) 
+    c6.append(users[i])
   elif y_gmm[i] == 6:
     c7.append(users[i])
 
@@ -82,6 +82,11 @@ plt.ylabel('Component 2 (Explained Variance: %s)'%(pc2),fontsize=14)
 #pickle.dump([pc1,pc2], open(os.getcwd()+'/pickles/components-6892348','wb'))
 
 #plt.savefig(os.getcwd() + '/clustering-graphs/gmm/pid_7254761.pdf')
+
+
+###################################################################################
+
+
 '''
 reds,blues,yellows = 0,0,0
 
@@ -92,7 +97,7 @@ for i in y_gmm:
         yellows += 1
     elif i ==2:
         blues += 1
-        
+
 print 'Reds:',reds,'\nBlues:',blues,'\nYellows:',yellows
 
 #print data_6892344[-2]
@@ -276,4 +281,3 @@ print pid2[pid2==6503049]
 #print(movesets[0][0][0]['pos']) # first puzzle, first move, position of move
 #print(movesets[15][24][0]['base']) # 16th puzzle, 25th move, base(AUGC) of move
 #print(structure['structure'][20672]) # 20,673 solutions
-

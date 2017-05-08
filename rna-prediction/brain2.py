@@ -7,6 +7,7 @@ Created on Sun Apr  9 13:42:03 2017
 
 import os
 from readData import read_movesets_pid
+from getData import getStructure
 from encodeRNA import encode_movesets, encode_movesets_style
 import numpy as np
 import pandas as pd
@@ -99,7 +100,7 @@ for i,j in zip(ebf,ecd):
 #    temp = copy.deepcopy(i)
 #    X.append([temp] * len(j))
 
-print "Trying a diff loop"
+#print "Trying a diff loop"
 Z = []
 Z1 = []
 for i in ecd:
@@ -108,14 +109,14 @@ for i in ecd:
     for j in range(0,len(i)):
         temp = copy.deepcopy(ebf[ecd.index(i)])
         Z.append(temp)
-    print Z
+    #print Z
     Z1.append(Z)
 
-print "Z1 = "
-print Z1    
+#print "Z1 = "
+#print Z1
 
 
-print X
+#print X
 
 #print X
 
@@ -126,7 +127,7 @@ for i in ecd:
     for j in i:
         y0.append(j)
 
-print ecd
+#print ecd
 
 #print ecd
 
@@ -139,53 +140,62 @@ print ecd
 #        print X
 #    except IndexError:
 #        break
-#    
+#
 #print '\n',X
 
 for i in (Z1):
     for j in range(len(i)):
         try:
-            print j
+            #print j
             loc = ecd[Z1.index(i)][j][1] - 1
-            print loc
+            #print loc
             #print 'index',i[j+1][loc]
-            print i[j+1]
+            #print i[j+1]
             i[j+1][loc] = ecd[Z1.index(i)][j][0]
-            print Z1
+            #print Z1
         except IndexError:
             continue
 
-print '\n',Z1,'\n'
+print Z1,'\n'
 print ecd
-
-#print X
-#print y
-#print X[110]
-#print X[114]
-#print len(X)
-#print len(y)
+# Z1 and ecd are properly encoded
 
 
-#from Bio import SeqIO
+
+# import tflearn
 #
-#sequences = ['AAAAA','ACCA','GGGGAAAAAGGGG']
+# X = np.array([[[1,2,3,4],[0,1,0,1],[1,1,1,1],[-3,0,0,0]],[[4,3,2,1],[1,0,1,0],[0,0,0,0],[9,0,0,0]]])
+# Y = np.array([[4,2],[3,3]])
 #
+# tflearn.init_graph(num_cores=1)
 #
-#with open("example.fasta", "w") as output_handle:
-#    SeqIO.write(sequences, output_handle, "fasta")
-import tflearn
+# net = tflearn.input_data(shape=[None, 2,4,4])
+# net = tflearn.fully_connected(net, 64)
+# net = tflearn.dropout(net, 0.5)
+# net = tflearn.fully_connected(net, 10, activation='softmax')
+# net = tflearn.regression(net, optimizer='adam', loss='categorical_crossentropy')
+#
+# model = tflearn.DNN(net)
+# model.fit(X, Y)
+# abc = [[[1,1,1,1],[000000],[010010],[-1.62]],[[1,2,3,4],[000000],[101000],[2.34]]]
+# xyz = [[[1,2],[0,1],[0,1],[-1.62,0]],[[1,2],[1,0],[0,1],[-1.62,0]]]
+# xyz = [[1,2],[0,1],[0,1],[-1.62,0]]
+# dfg = [[4,2],[3,7]]
+# X = [[1,2,3,4],[3,2,3,2]]
+# Y = [[4,2],[3,3]]
+# x = [1,2,3,4]
+# y = [5,6,7,8]
 
-X = np.array([[[1,2,3,4],[0,1,0,1],[1,1,1,1],[-3,0,0,0]],[[4,3,2,1],[1,0,1,0],[0,0,0,0],[9,0,0,0]]])
-Y = np.array([[4,2],[3,3]])
-
-tflearn.init_graph(num_cores=1)
-
-net = tflearn.input_data(shape=[None, 2,4,4])
-net = tflearn.fully_connected(net, 64)
-net = tflearn.dropout(net, 0.5)
-net = tflearn.fully_connected(net, 10, activation='softmax')
-net = tflearn.regression(net, optimizer='adam', loss='categorical_crossentropy')
-
-model = tflearn.DNN(net)
-model.fit(X, Y)
-
+# import tflearn
+# from sklearn import tree
+#
+# tflearn.init_graph(num_cores=1)
+#
+# net = tflearn.input_data(shape=[None,2,4])
+# net = tflearn.fully_connected(net, 64)
+# net = tflearn.dropout(net, 0.5)
+# net = tflearn.fully_connected(net, 10, activation='softmax')
+# net = tflearn.regression(net, optimizer='adam', loss='categorical_crossentropy')
+#
+# model = tflearn.DNN(net)
+# model.fit(X,Y)

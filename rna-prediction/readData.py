@@ -17,7 +17,7 @@ def read_movesets_pid(moveset_file,pid): # get data from puzzle ID
     s1 = (ast.literal_eval(i))
     s2 = s1['moves']
     plist_dict.append(s2)
-  
+
   return plist_dict, ulist
 
 def read_movesets_uid(moveset_file,uid): # get data from user ID
@@ -30,7 +30,7 @@ def read_movesets_uid(moveset_file,uid): # get data from user ID
     s1 = (ast.literal_eval(i))
     s2 = s1['moves']
     plist_dict.append(s2)
-  
+
   return plist_dict, pidList
 
 def read_movesets_uid_pid(moveset_file,uid,pid,df='list'): # get data from user ID
@@ -48,23 +48,10 @@ def read_movesets_uid_pid(moveset_file,uid,pid,df='list'): # get data from user 
     s1 = (ast.literal_eval(i))
     s2 = s1['moves']
     plist_dict.append(s2)
-  
+
   return plist_dict
   '''
-'''
-def read_movesets_v0(moveset_file):
-  moveset_dataFrame = pd.read_csv(moveset_file, sep=" ", header="infer", delimiter='\t')
-  movesets = [] # a list of dictionaries containing the movesets
-  for i in range(len(moveset_dataFrame)): # 102 total moveset solutions in epicfalcon.txt
-      step1 = moveset_dataFrame[['move_set']].ix[[i]] # str of pid, sol_id, uid, and moveset
-      step2 = step1.to_dict() # dictionary of data
-      step3 = step2['move_set'] # selecting only moveset data
-      step4 = step3[i] # getting rid of labels
-      step5 = ast.literal_eval(step4) # converting movesets to dictionary
-      movesets.append(step5['moves']) # adding each moveset to list
-      
-  return movesets
-'''
+
 
 def read_movesets_all(moveset_file): # get data from puzzle ID
   moveset_dataFrame = pd.read_csv(moveset_file, sep=" ", header="infer", delimiter='\t')
@@ -76,7 +63,7 @@ def read_movesets_all(moveset_file): # get data from puzzle ID
     s1 = (ast.literal_eval(i))
     s2 = s1['moves']
     plist_dict.append(s2)
-  
+
   return plist_dict
 
 def puzzle_attributes(moveset_file, attribute):
@@ -89,14 +76,30 @@ def puzzle_attributes(moveset_file, attribute):
     step4 = str(step3)
     step5 = int(step4)
     attribute_list.append(step5)
-    
+
   return attribute_list
 
 def read_structure(puzzle_data):
   puzzle_structure = pd.read_csv(puzzle_data, sep=" ", header='infer', delimiter='\t')
-  
+
   return puzzle_structure
 
+#####################################################################
+
+'''
+def read_movesets_v0(moveset_file):
+  moveset_dataFrame = pd.read_csv(moveset_file, sep=" ", header="infer", delimiter='\t')
+  movesets = [] # a list of dictionaries containing the movesets
+  for i in range(len(moveset_dataFrame)): # 102 total moveset solutions in epicfalcon.txt
+      step1 = moveset_dataFrame[['move_set']].ix[[i]] # str of pid, sol_id, uid, and moveset
+      step2 = step1.to_dict() # dictionary of data
+      step3 = step2['move_set'] # selecting only moveset data
+      step4 = step3[i] # getting rid of labels
+      step5 = ast.literal_eval(step4) # converting movesets to dictionary
+      movesets.append(step5['moves']) # adding each moveset to list
+
+  return movesets
+'''
 
 '''
 complete = os.getcwd() + '/movesets/move-set-11-14-2016.txt'
@@ -110,7 +113,7 @@ for i in plist:
   s1 = (ast.literal_eval(i))
   s2 = s1['moves']
   plist_dict.append(s2)
-  
+
 print (plist_dict[25])
 '''
 
