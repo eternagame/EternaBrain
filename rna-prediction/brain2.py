@@ -159,8 +159,20 @@ for i in (Z1):
 print Z1,'\n'
 print ecd
 # Z1 and ecd are properly encoded
+Z2 = []
+for i in Z1:
+    for j in i:
+        struc,energy = (getStructure(j))
+        enc_struc = []
+        for k in struc:
+            if k == '.':
+                enc_struc.append(0)
+            elif k == '(' or k == ')':
+                enc_struc.append(1)
+        attrs = [j,enc_struc,energy]
+        Z2.append(attrs)
 
-
+print Z2
 
 # import tflearn
 #
