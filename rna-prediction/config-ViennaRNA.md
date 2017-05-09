@@ -9,11 +9,11 @@ nano .bash_profile
 In the bash profile, type
 ```
 export PYTHONPATH=/usr/local/lib/python2.7/site-packages:${PYTHONPATH}
-Ctrl O
-Return
-Ctrl X
 ```
+Then hit ```Ctrl O```, ```Return```,  and ```Ctrl X``` to exit the bash profile editor.
+
 In the terminal:
 ```
 source .bash_profile
 ```
+Now, you can run Python scripts with the Vienna RNA library installed.
