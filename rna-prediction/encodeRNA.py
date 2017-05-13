@@ -9,9 +9,59 @@ Created on Sun Jan 15 12:51:30 2017
 encode RNA strucutre and encode movesets
 '''
 
+import copy
+from getData import getStructure
 
 def longest(a):
     return max(len(a), *map(longest, a)) if isinstance(a, list) and a else 0
+
+def base_sequence_at_current_time(ms,struc):
+    Z = []
+    Z1 = []
+    for i in ms:
+        Z = []
+
+        for j in range(0,len(i)):
+            temp = copy.deepcopy(struc[ms.index(i)])
+            Z.append(temp)
+        #print Z
+        Z1.append(Z)
+
+    y0 = []
+    for i in ms:
+        for j in i:
+            y0.append(j)
+
+    for i in (Z1):
+        for j in range(len(i)):
+            try:
+                #print j
+                loc = ms[Z1.index(i)][j][1] - 1
+                #print loc
+                #print 'index',i[j+1][loc]
+                #print i[j+1]
+                i[j+1][loc] = ms[Z1.index(i)][j][0]
+                #print Z1
+            except IndexError:
+                continue
+
+    return Z1
+
+def structure_and_energy_at_current_time(base_seq):
+    Z2 = []
+    for i in base_seq:
+        for j in i:
+            struc,energy = (getStructure(j))
+            enc_struc = []
+            for k in struc:
+                if k == '.':
+                    enc_struc.append(0)
+                elif k == '(' or k == ')':
+                    enc_struc.append(1)
+            attrs = [j,enc_struc,energy]
+            Z2.append(attrs)
+
+    return Z2
 
 def encode_movesets(moveset):
     ms = []

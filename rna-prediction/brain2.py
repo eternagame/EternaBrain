@@ -8,7 +8,7 @@ Created on Sun Apr  9 13:42:03 2017
 import os
 from readData import read_movesets_pid
 from getData import getStructure
-from encodeRNA import encode_movesets, encode_movesets_style
+from encodeRNA import encode_movesets, encode_movesets_style, base_sequence_at_current_time, structure_and_energy_at_current_time
 import numpy as np
 import pandas as pd
 import ast
@@ -71,108 +71,115 @@ for move in ((encoded)):
 X = [[[1,1,1,1],[1,1,1,1]],[[1,2,3,1],[1,2,3,1]],[[1,1,1,3,4],[1,1,1,3,4]]]
 ebf = [[1,1,1,1],[1,2,3,1],[1,1,1,3,4]]
 ecd = [[[4,2],[3,2],[1,1]],[[4,1],[3,4]],[[1,4],[2,2],[3,1],[4,4]]]
+# #
+# #for i,j in zip(ebf,ecd):
+# #    #print X
+# #    temp = copy.deepcopy(i)
+# #    X.append(temp)
+# #    #print X
+# #    for m in j:
+# #        y.append(m)
+# #        loc = m[1] - 1
+# #        temp[loc] = m[0]
+# #        #print 'temp',temp
+# #        #print X
+# #        #X.append(temp)
+# # #       print X
+# #
+# #print X
+# #print y
 #
-#for i,j in zip(ebf,ecd):
-#    #print X
-#    temp = copy.deepcopy(i)
-#    X.append(temp)
-#    #print X
-#    for m in j:
-#        y.append(m)
-#        loc = m[1] - 1
-#        temp[loc] = m[0]
-#        #print 'temp',temp
-#        #print X
-#        #X.append(temp)
-# #       print X
+# #X,y = [],[]
+# for i,j in zip(ebf,ecd):
+#     #print X
+#     #print i
+#     #X.append(i*len(j))
+#     pass
 #
-#print X
-#print y
-
-#X,y = [],[]
-for i,j in zip(ebf,ecd):
-    #print X
-    #print i
-    #X.append(i*len(j))
-    pass
-
-#for i,j in zip(ebf,ecd):
-#    temp = copy.deepcopy(i)
-#    X.append([temp] * len(j))
-
-#print "Trying a diff loop"
-Z = []
-Z1 = []
-for i in ecd:
-    Z = []
-
-    for j in range(0,len(i)):
-        temp = copy.deepcopy(ebf[ecd.index(i)])
-        Z.append(temp)
-    #print Z
-    Z1.append(Z)
-
-#print "Z1 = "
-#print Z1
-
-
-#print X
-
-#print X
-
-#for i in X:
-#    i[1] = 4
-y0 = []
-for i in ecd:
-    for j in i:
-        y0.append(j)
-
+# #for i,j in zip(ebf,ecd):
+# #    temp = copy.deepcopy(i)
+# #    X.append([temp] * len(j))
+#
+# #print "Trying a diff loop"
+# Z = []
+# Z1 = []
+# for i in ecd:
+#     Z = []
+#
+#     for j in range(0,len(i)):
+#         temp = copy.deepcopy(ebf[ecd.index(i)])
+#         Z.append(temp)
+#     #print Z
+#     Z1.append(Z)
+#
+# #print "Z1 = "
+# #print Z1
+#
+#
+# #print X
+#
+# #print X
+#
+# #for i in X:
+# #    i[1] = 4
+# y0 = []
+# for i in ecd:
+#     for j in i:
+#         y0.append(j)
+#
+# #print ecd
+#
+# #print ecd
+#
+#
+# #for i in range(len(X)):
+# #    try:
+# #        print i
+# #        loc = y0[i][1] - 1
+# #        X[i+1][loc] = y0[i][0]
+# #        print X
+# #    except IndexError:
+# #        break
+# #
+# #print '\n',X
+#
+# for i in (Z1):
+#     for j in range(len(i)):
+#         try:
+#             #print j
+#             loc = ecd[Z1.index(i)][j][1] - 1
+#             #print loc
+#             #print 'index',i[j+1][loc]
+#             #print i[j+1]
+#             i[j+1][loc] = ecd[Z1.index(i)][j][0]
+#             #print Z1
+#         except IndexError:
+#             continue
+#
+# print Z1,'\n'
+bases = base_sequence_at_current_time(ecd,ebf)
+#print bases,'\n'
 #print ecd
+X = structure_and_energy_at_current_time(bases)
+y = ecd
 
-#print ecd
+print X,y
 
-
-#for i in range(len(X)):
-#    try:
-#        print i
-#        loc = y0[i][1] - 1
-#        X[i+1][loc] = y0[i][0]
-#        print X
-#    except IndexError:
-#        break
-#
-#print '\n',X
-
-for i in (Z1):
-    for j in range(len(i)):
-        try:
-            #print j
-            loc = ecd[Z1.index(i)][j][1] - 1
-            #print loc
-            #print 'index',i[j+1][loc]
-            #print i[j+1]
-            i[j+1][loc] = ecd[Z1.index(i)][j][0]
-            #print Z1
-        except IndexError:
-            continue
-
-print Z1,'\n'
-print ecd
 # Z1 and ecd are properly encoded
-Z2 = []
-for i in Z1:
-    for j in i:
-        struc,energy = (getStructure(j))
-        enc_struc = []
-        for k in struc:
-            if k == '.':
-                enc_struc.append(0)
-            elif k == '(' or k == ')':
-                enc_struc.append(1)
-        attrs = [j,enc_struc,energy]
-        Z2.append(attrs)
-
-print Z2
+# Z2 = []
+# for i in Z1:
+#     for j in i:
+#         struc,energy = (getStructure(j))
+#         enc_struc = []
+#         for k in struc:
+#             if k == '.':
+#                 enc_struc.append(0)
+#             elif k == '(' or k == ')':
+#                 enc_struc.append(1)
+#         attrs = [j,enc_struc,energy]
+#         Z2.append(attrs)
+#
+# print Z2
 
 # import tflearn
 #
