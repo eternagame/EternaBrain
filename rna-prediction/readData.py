@@ -6,6 +6,7 @@ Created on Tue Dec 27 12:57:43 2016
 """
 import ast
 import pandas as pd
+import os
 
 def read_movesets_pid(moveset_file,pid): # get data from puzzle ID
   moveset_dataFrame = pd.read_csv(moveset_file, sep=" ", header="infer", delimiter='\t')
@@ -19,6 +20,21 @@ def read_movesets_pid(moveset_file,pid): # get data from puzzle ID
     plist_dict.append(s2)
 
   return plist_dict, ulist
+
+def read_structure(pid):
+    puzzle_structure = pd.read_csv(os.getcwd()+'/movesets/puzzle-structure-data.txt', sep=" ", header='infer', delimiter='\t')
+    puzzles_pid = puzzle_structure.loc[puzzle_structure['pid'] == pid]
+
+    str_struc = ''.join(list(puzzles_pid['structure']))
+    enc_struc = []
+    for k in str_struc:
+        if k == '.':
+            enc_struc.append(0)
+        elif k == '(' or k == ')':
+            enc_struc.append(1)
+
+    return enc_struc
+
 
 def read_movesets_uid(moveset_file,uid): # get data from user ID
   moveset_dataFrame = pd.read_csv(moveset_file, sep=" ", header="infer", delimiter='\t')
@@ -79,7 +95,7 @@ def puzzle_attributes(moveset_file, attribute):
 
   return attribute_list
 
-def read_structure(puzzle_data):
+def read_structure_all(puzzle_data):
   puzzle_structure = pd.read_csv(puzzle_data, sep=" ", header='infer', delimiter='\t')
 
   return puzzle_structure

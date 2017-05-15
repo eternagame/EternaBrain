@@ -4,73 +4,79 @@ Created on Sun Apr  9 13:42:03 2017
 
 @author: rohankoodli
 """
-
+# takes 50 mins to run
 import os
-from readData import read_movesets_pid
+from readData import read_movesets_pid, read_structure
 from getData import getStructure
 from encodeRNA import encode_movesets, encode_movesets_style, base_sequence_at_current_time, structure_and_energy_at_current_time
 import numpy as np
 import pandas as pd
 import ast
 import copy
+import pickle
 
-#filepath = os.getcwd() + '/movesets/move-set-11-14-2016.txt'
-#data, users = read_movesets_pid(filepath,6892348)
-#encoded = (encode_movesets_style(data))
+filepath = os.getcwd() + '/movesets/move-set-11-14-2016.txt'
 #
-#moveset_dataFrame = pd.read_csv(filepath, sep=" ", header="infer", delimiter='\t')
-#puzzles_pid = (moveset_dataFrame.loc[moveset_dataFrame['pid'] == 6892348])
-##print puzzles_pid
-#
-#plist = list(puzzles_pid['move_set'])
-##print plist
-#bf_list = []
-#for i in plist:
-#  s1 = (ast.literal_eval(i))
-#  s2 = s1['begin_from']
-#  bf_list.append(s2)
-#
-#
-##print bf_list[0]
-#
-#encoded_bf = [] # this is input for getting structure from Vienna webserver
-#
-#for start in bf_list:
-#    enc = []
-#    for i in start:
-#        if i == 'A':
-#            enc.append(1)
-#        elif i == 'U':
-#            enc.append(2)
-#        elif i == 'G':
-#            enc.append(3)
-#        elif i == 'C':
-#            enc.append(4)
-#    encoded_bf.append(enc)
+data, users = read_movesets_pid(filepath,6892348)
+encoded = (encode_movesets_style(data))
+
+moveset_dataFrame = pd.read_csv(filepath, sep=" ", header="infer", delimiter='\t')
+puzzles_pid = (moveset_dataFrame.loc[moveset_dataFrame['pid'] == 6892348])
+structure_file = os.getcwd() + '/movesets/puzzle-structure-data.txt'
+#print puzzles_pid
+
+plist = list(puzzles_pid['move_set'])
+#print plist
+bf_list = []
+for i in plist:
+ s1 = (ast.literal_eval(i))
+ s2 = s1['begin_from']
+ bf_list.append(s2)
+
+
+#print bf_list[0]
+
+encoded_bf = [] # this is input for getting structure from Vienna webserver
+
+for start in bf_list:
+   enc = []
+   for i in start:
+       if i == 'A':
+           enc.append(1)
+       elif i == 'U':
+           enc.append(2)
+       elif i == 'G':
+           enc.append(3)
+       elif i == 'C':
+           enc.append(4)
+   encoded_bf.append(enc)
 
 #print encoded_bf[0]
 #print (encoded[0])
 
 X,y = [],[]
 
-'''
-for i,j in (zip(encoded_bf,encoded)):
-    #print i
-    for m in j:
-        #print m[1]
-        X.append(i)
-        y.append(m)
-        loc = m[1] - 1
-        #i = i[loc].replace(m[0])
-        i[loc] = m[0]
-
-for move in ((encoded)):
-    for i in move:
-        pass
+# '''
+# for i,j in (zip(encoded_bf,encoded)):
+#     #print i
+#     for m in j:
+#         #print m[1]
+#         X.append(i)
+#         y.append(m)
+#         loc = m[1] - 1
+#         #i = i[loc].replace(m[0])
+#         i[loc] = m[0]
+#
+# for move in ((encoded)):
+#     for i in move:
+#         pass
+# '''
 '''
 X = [[[1,1,1,1],[1,1,1,1]],[[1,2,3,1],[1,2,3,1]],[[1,1,1,3,4],[1,1,1,3,4]]]
 ebf = [[1,1,1,1],[1,2,3,1],[1,1,1,3,4]]
 ecd = [[[4,2],[3,2],[1,1]],[[4,1],[3,4]],[[1,4],[2,2],[3,1],[4,4]]]
+'''
+
 # #
 # #for i,j in zip(ebf,ecd):
 # #    #print X
@@ -157,13 +163,16 @@ ecd = [[[4,2],[3,2],[1,1]],[[4,1],[3,4]],[[1,4],[2,2],[3,1],[4,4]]]
 #             continue
 #
 # print Z1,'\n'
-bases = base_sequence_at_current_time(ecd,ebf)
+bases = base_sequence_at_current_time(encoded,encoded_bf)
 #print bases,'\n'
 #print ecd
-X = structure_and_energy_at_current_time(bases)
-y = ecd
+X = (structure_and_energy_at_current_time(bases,6892348))
+y = encoded
 
-print X,y
+pickle.dump(X, open(os.getcwd()+'/pickles/X-6892348','wb'))
+pickle.dump(y, open(os.getcwd()+'/pickles/y-6892348','wb'))
+
+#print X,y
 
 # Z1 and ecd are properly encoded
 # Z2 = []

@@ -11,6 +11,7 @@ encode RNA strucutre and encode movesets
 
 import copy
 from getData import getStructure
+from readData import read_structure
 
 def longest(a):
     return max(len(a), *map(longest, a)) if isinstance(a, list) and a else 0
@@ -47,7 +48,7 @@ def base_sequence_at_current_time(ms,struc):
 
     return Z1
 
-def structure_and_energy_at_current_time(base_seq):
+def structure_and_energy_at_current_time(base_seq,pid):
     Z2 = []
     for i in base_seq:
         for j in i:
@@ -58,7 +59,8 @@ def structure_and_energy_at_current_time(base_seq):
                     enc_struc.append(0)
                 elif k == '(' or k == ')':
                     enc_struc.append(1)
-            attrs = [j,enc_struc,energy]
+            target = read_structure(pid)
+            attrs = [j,enc_struc,target,energy]
             Z2.append(attrs)
 
     return Z2
