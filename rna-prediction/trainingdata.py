@@ -16,7 +16,7 @@ import copy
 import pickle
 
 filepath = os.getcwd() + '/movesets/move-set-11-14-2016.txt'
-#
+
 data, users = read_movesets_pid(filepath,6892348)
 encoded = (encode_movesets_style(data))
 
