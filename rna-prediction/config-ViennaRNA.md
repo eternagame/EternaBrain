@@ -1,4 +1,6 @@
 # Create Python Environment with RNA package
+NOTE: Only compatible with Python 2.
+
 Download ViennaRNA (http://www.tbi.univie.ac.at/RNA/), unpack, and navigate to the folder. Then in terminal, type
 ```
 ./configure
