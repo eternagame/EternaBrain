@@ -16,28 +16,32 @@ from tensorflow.examples.tutorials.mnist import input_data
 mnist = input_data.read_data_sets("/Users/rohankoodli/Documents/MNIST/",one_hot=True)
 
 
-enc = np.array([[[[1,2,3,4],[0,1,0,1],[-33,0,0,0]],[[1,2,3,4],[0,1,1,0],[-23,0,0,0]]],[[[3,3,3,3],[0,0,0,0],[2,0,0,0]],[[1,1,1,0],[1,0,1,0],[-23,0,0,0]]]])
-ms = np.array([[[2,1],[4,3]],[[1,6],[2,9]]])
+# enc0 = np.array([[[[1,2,3,4],[0,1,0,1],[-33,0,0,0]],[[1,2,3,4],[0,1,1,0],[-23,0,0,0]]],[[[3,3,3,3],[0,0,0,0],[2,0,0,0]],[[1,1,1,0],[1,0,1,0],[-23,0,0,0]]]])
+# ms0 = np.array([[[2,1],[4,3]],[[1,6],[2,9]]])
 
 # enc = np.array([[[1,2,3,4],[0,1,0,1],[1,1,1,1],[-3,0,0,0]],[[4,3,2,1],[1,0,1,0],[0,0,0,0],[9,0,0,0]]])
 # out = np.array([[4,2],[3,3]])
+enc0 = np.array([[[1,2,3,4],[0,1,0,1],[-33,0,0,0],[1,1,1,1]],[[2,3,3,2],[0,0,0,0],[9,0,0,0],[0,0,0,1]],[[2,3,3,2],[0,0,0,0],[9,0,0,0],[0,0,0,1]],[[2,3,3,2],[0,0,0,0],[9,0,0,0],[0,0,0,1]],[[2,3,3,2],[0,0,0,0],[9,0,0,0],[0,0,0,1]],[[2,3,3,2],[0,0,0,0],[9,0,0,0],[0,0,0,1]],[[2,3,3,2],[0,0,0,0],[9,0,0,0],[0,0,0,1]],[[2,3,3,2],[0,0,0,0],[9,0,0,0],[0,0,0,1]],[[2,3,3,2],[0,0,0,0],[9,0,0,0],[0,0,0,1]],[[2,3,3,2],[0,0,0,0],[9,0,0,0],[0,0,0,1]]])
+ms0 = np.array([[1,6],[2,7],[2,7],[2,7],[2,7],[2,7],[2,7],[2,7],[2,7],[2,7]])
 
 n_nodes_hl1 = 500 # hidden layer 1
 n_nodes_hl2 = 500
 n_nodes_hl3 = 500
 
-n_classes = 10
+n_classes = 2
 batch_size = 100 # load 100 features at a time
 
 
-x = tf.placeholder('float',[None,2,2,3,4]) # 4716 w/ pid 6892348
-y = tf.placeholder('float')
+x = tf.placeholder('float',[None,16]) # 4716 w/ pid 6892348
+y = tf.placeholder('float',[None,2])
 
-enc = enc.reshape([-1,24])
+enc = enc0.reshape([-1,16])
+ms = ms0#.reshape([-1,4])
 
+#e1 = tf.reshape(enc0,[])
 
 def neuralNet(data):
-    hl_1 = {'weights':tf.Variable(tf.random_normal([2,2,3,4, n_nodes_hl1])),
+    hl_1 = {'weights':tf.Variable(tf.random_normal([16, n_nodes_hl1])),
             'biases':tf.Variable(tf.random_normal([n_nodes_hl1]))}
 
     hl_2 = {'weights':tf.Variable(tf.random_normal([n_nodes_hl1, n_nodes_hl2])),
