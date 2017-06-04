@@ -60,6 +60,9 @@ def structure_and_energy_at_current_time(base_seq,pid):
                 elif k == '(' or k == ')':
                     enc_struc.append(1)
             target = read_structure(pid)
+            num_bases = len(target)
+            e2 = [energy]
+            e3 = e2+([0.0]*(num_bases-1))
             attrs = [j,enc_struc,target,energy]
             Z2.append(attrs)
 
@@ -121,6 +124,68 @@ def encode_movesets_style(moveset):
                 elif j['type'] == 'paste' or j['type'] == 'reset':
                     continue
         ms.append(player)
+    lens = [len(j) for j in ms]
+    max_lens = max(lens)
+    #ms2 = []
+    '''
+    for l in ms:
+        l.extend([None]*(max_lens-len(l)))
+    '''
+
+    return ms
+
+def encode_movesets_style_dev(moveset):
+    ms = []
+    #lens = [len(x) for j in x for x in moveset]
+    #max_lens = max(lens)
+    for k in moveset:
+        #player = []
+        for i in k:
+            for j in i:
+                if 'type' in j:
+                    ms.append([0,0]) # FIX THIS URGENT
+                elif j['base'] == 'A':
+                    ms.append([1,j['pos']])
+                elif j['base'] == 'U':
+                    ms.append([2,j['pos']])
+                elif j['base'] == 'G':
+                    ms.append([3,j['pos']])
+                elif j['base'] == 'C':
+                    ms.append([4,j['pos']])
+                elif j['type'] == 'paste' or j['type'] == 'reset':
+                    continue
+        #ms.append(player)
+    lens = [len(j) for j in ms]
+    max_lens = max(lens)
+    #ms2 = []
+    '''
+    for l in ms:
+        l.extend([None]*(max_lens-len(l)))
+    '''
+
+    return ms
+
+def encode_bases(moveset):
+    ms = []
+    #lens = [len(x) for j in x for x in moveset]
+    #max_lens = max(lens)
+    for k in moveset:
+        player = []
+        for i in k:
+            for j in i:
+                if 'type' in j:
+                    continue #player.append([0,0]) # FIX THIS URGENT
+                elif j['base'] == 'A':
+                    ms.append([1,0,0,0])
+                elif j['base'] == 'U':
+                    ms.append([0,1,0,0])
+                elif j['base'] == 'G':
+                    ms.append([0,0,1,0])
+                elif j['base'] == 'C':
+                    ms.append([0,0,0,1])
+                elif j['type'] == 'paste' or j['type'] == 'reset':
+                    continue
+        #ms.append(player)
     lens = [len(j) for j in ms]
     max_lens = max(lens)
     #ms2 = []

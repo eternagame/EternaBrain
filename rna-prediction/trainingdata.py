@@ -8,7 +8,7 @@ Created on Sun Apr  9 13:42:03 2017
 import os
 from readData import read_movesets_pid, read_structure
 from getData import getStructure
-from encodeRNA import encode_movesets, encode_movesets_style, base_sequence_at_current_time, structure_and_energy_at_current_time
+from encodeRNA import encode_movesets, encode_movesets_style, base_sequence_at_current_time, structure_and_energy_at_current_time, encode_bases
 import numpy as np
 import pandas as pd
 import ast
@@ -169,8 +169,8 @@ bases = base_sequence_at_current_time(encoded,encoded_bf)
 X = (structure_and_energy_at_current_time(bases,6892348))
 y = encoded
 
-pickle.dump(X, open(os.getcwd()+'/pickles/X-6892348','wb'))
-pickle.dump(y, open(os.getcwd()+'/pickles/y-6892348','wb'))
+#pickle.dump(X, open(os.getcwd()+'/pickles/X-6892348','wb'))
+#pickle.dump(y, open(os.getcwd()+'/pickles/y-6892348','wb'))
 
 #print X,y
 

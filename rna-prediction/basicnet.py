@@ -10,11 +10,14 @@ import os
 from readData import read_movesets_pid, read_structure
 from encodeRNA import encode_movesets, encode_structure
 import tensorflow as tf
+import pickle
 
 from tensorflow.examples.tutorials.mnist import input_data
 
 mnist = input_data.read_data_sets("/Users/rohankoodli/Documents/MNIST/",one_hot=True)
 
+real_X = pickle.load(open(os.getcwd()+'/pickles/X-6892348','rb'))
+real_y = pickle.load(open(os.getcwd()+'/pickles/y-6892348','rb'))
 
 # enc0 = np.array([[[[1,2,3,4],[0,1,0,1],[-33,0,0,0]],[[1,2,3,4],[0,1,1,0],[-23,0,0,0]]],[[[3,3,3,3],[0,0,0,0],[2,0,0,0]],[[1,1,1,0],[1,0,1,0],[-23,0,0,0]]]])
 # ms0 = np.array([[[2,1],[4,3]],[[1,6],[2,9]]])

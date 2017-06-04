@@ -34,7 +34,7 @@ def getStructure(sequence):
 
     base_seq = ''.join(base_seq)
     struc,energy = RNA.fold(base_seq)
-    e = [energy]+(len(base_seq)*[0])
+    e = [energy]+((len(base_seq)-1)*[0.0])
     return struc,e
 
 
