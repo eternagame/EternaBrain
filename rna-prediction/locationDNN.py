@@ -1,16 +1,10 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Fri Mar 31 21:49:27 2017
-
-@author: rohankoodli
-"""
-
 import numpy as np
 import os
 from readData import read_movesets_pid, read_structure
 from encodeRNA import encode_movesets, encode_structure
 import tensorflow as tf
 import pickle
+from sklearn.cross_validation import train_test_split
 
 # from tensorflow.examples.tutorials.mnist import input_data
 # mnist = input_data.read_data_sets("/Users/rohankoodli/Documents/MNIST/",one_hot=True)
@@ -22,12 +16,22 @@ import pickle
 
 
 real_X = pickle.load(open(os.getcwd()+'/pickles/X-6892348','rb'))
-real_y = pickle.load(open(os.getcwd()+'/pickles/y-6892348','rb'))
+real_y = pickle.load(open(os.getcwd()+'/pickles/y-6892348-loc','rb'))
+'''
+for i in (real_X[432:]):
+    current_structure = i[1]
+    energy = i[3]
+    current_structure.insert(len(current_structure),0)
+    energy.insert(len(energy),0.0)
+'''
 
-real_X_9 = np.array(real_X[0:50]).reshape([-1,340])
-real_y_9 = np.array(real_y[0:50])
-test_real_X = np.array(real_X[50:55]).reshape([-1,340])
-test_real_y = np.array(real_y[50:55])
+real_X_9 = np.array(real_X[0:400]).reshape([-1,340])
+real_y_9 = np.array(real_y[0:400])
+test_real_X = np.array(real_X[400:405]).reshape([-1,340])
+test_real_y = np.array(real_y[400:405])
+
+#real_X_9, test_real_X, real_y_9, test_real_y = np.array(train_test_split(real_X[0:500],real_y[0:500],test_size=0.2))
+#real_X_9, test_real_X, real_y_9, test_real_y = np.array(real_X_9).reshape([-1,340]), np.array(test_real_X).reshape([-1,340]), np.array(real_y_9), np.array(test_real_y)
 
 enc0 = np.array([[[1,2,3,4],[0,1,0,1],[-33,0,0,0],[1,1,1,1]],[[2,3,3,2],[0,0,0,0],[9,0,0,0],[0,0,0,1]],[[2,3,3,2],[0,0,0,0],[9,0,0,0],[0,0,0,1]],[[2,3,3,2],[0,0,0,0],[9,0,0,0],[0,0,0,1]],[[2,3,3,2],[0,0,0,0],[9,0,0,0],[0,0,0,1]],[[2,3,3,2],[0,0,0,0],[9,0,0,0],[0,0,0,1]],[[2,3,3,2],[0,0,0,0],[9,0,0,0],[0,0,0,1]],[[2,3,3,2],[0,0,0,0],[9,0,0,0],[0,0,0,1]],[[2,3,3,2],[0,0,0,0],[9,0,0,0],[0,0,0,1]]])
 ms0 = np.array([[1,6],[2,7],[2,7],[2,7],[2,7],[2,7],[2,7],[2,7],[2,7]])
@@ -41,7 +45,7 @@ n_nodes_hl1 = 500 # hidden layer 1
 n_nodes_hl2 = 500
 n_nodes_hl3 = 500
 
-n_classes = 4
+n_classes = 121
 batch_size = 100 # load 100 features at a time
 
 
@@ -90,7 +94,7 @@ def train(x):
     optimizer = tf.train.AdamOptimizer().minimize(cost) # learning rate = 0.001
 
     # cycles of feed forward and backprop
-    num_epochs = 25
+    num_epochs = 5
 
     with tf.Session() as sess:
         sess.run(tf.global_variables_initializer())
