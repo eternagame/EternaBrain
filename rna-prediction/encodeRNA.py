@@ -12,6 +12,7 @@ encode RNA strucutre and encode movesets
 import copy
 from getData import getStructure
 from readData import read_structure
+import numpy as np
 
 def longest(a):
     return max(len(a), * map(longest, a)) if isinstance(a, list) and a else 0
@@ -155,7 +156,7 @@ def encode_movesets_style(moveset):
         for i in k:
             for j in i:
                 if 'type' in j:
-                    player.append([0,0]) # FIX THIS URGENT
+                    player.append([1,1]) # FIX THIS URGENT
                 elif j['base'] == 'A':
                     player.append([1,j['pos']])
                 elif j['base'] == 'U':
@@ -165,7 +166,7 @@ def encode_movesets_style(moveset):
                 elif j['base'] == 'C':
                     player.append([4,j['pos']])
                 elif j['type'] == 'paste' or j['type'] == 'reset':
-                    continue
+                    player.append([1,1]) #continue #FIX
         ms.append(player)
     lens = [len(j) for j in ms]
     max_lens = max(lens)
@@ -238,6 +239,37 @@ def encode_bases(moveset):
     '''
 
     return ms
+
+def encode_location(moveset):
+    ms = []
+    #lens = [len(x) for j in x for x in moveset]
+    #max_lens = max(lens)
+    for k in moveset:
+        player = []
+        for i in k:
+            for j in i:
+                if 'type' in j:
+                    continue #player.append([0,0]) # FIX THIS URGENT
+
+                # elif j['type'] == 'paste' or j['type'] == 'reset':
+                #     continue
+                else:
+                    loc = j['pos'] - 1
+                    num_bases = len(moveset) # this is the number of classes for tf DNN/RNN
+                    loc_list = [0] * num_bases
+                    loc_list[loc] = 1
+                    ms.append(loc_list)
+        #ms.append(player)
+    lens = [len(j) for j in ms]
+    max_lens = max(lens)
+    #ms2 = []
+    '''
+    for l in ms:
+        l.extend([None]*(max_lens-len(l)))
+    '''
+
+    return ms
+
 
 def encode_structure(structure):
   encoded_structure = []

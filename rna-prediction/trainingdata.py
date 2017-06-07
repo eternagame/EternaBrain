@@ -8,7 +8,7 @@ Created on Sun Apr  9 13:42:03 2017
 import os
 from readData import read_movesets_pid, read_structure
 from getData import getStructure
-from encodeRNA import encode_movesets, encode_movesets_style, base_sequence_at_current_time, structure_and_energy_at_current_time, encode_bases
+from encodeRNA import encode_movesets, encode_movesets_style, base_sequence_at_current_time, structure_and_energy_at_current_time, encode_bases, encode_location
 import numpy as np
 import pandas as pd
 import ast
@@ -19,6 +19,7 @@ filepath = os.getcwd() + '/movesets/move-set-11-14-2016.txt'
 
 data, users = read_movesets_pid(filepath,6892348)
 encoded = (encode_movesets_style(data))
+encoded_loc = encode_location(data)
 
 moveset_dataFrame = pd.read_csv(filepath, sep=" ", header="infer", delimiter='\t')
 puzzles_pid = (moveset_dataFrame.loc[moveset_dataFrame['pid'] == 6892348])
@@ -71,31 +72,30 @@ X,y = [],[]
 #     for i in move:
 #         pass
 # '''
-'''
-X = [[[1,1,1,1],[1,1,1,1]],[[1,2,3,1],[1,2,3,1]],[[1,1,1,3,4],[1,1,1,3,4]]]
-ebf = [[1,1,1,1],[1,2,3,1],[1,1,1,3,4]]
-ecd = [[[4,2],[3,2],[1,1]],[[4,1],[3,4]],[[1,4],[2,2],[3,1],[4,4]]]
-'''
 
-# #
-# #for i,j in zip(ebf,ecd):
-# #    #print X
-# #    temp = copy.deepcopy(i)
-# #    X.append(temp)
-# #    #print X
-# #    for m in j:
-# #        y.append(m)
-# #        loc = m[1] - 1
-# #        temp[loc] = m[0]
-# #        #print 'temp',temp
-# #        #print X
-# #        #X.append(temp)
-# # #       print X
-# #
-# #print X
-# #print y
+# X = [[[1,1,1,1],[1,1,1,1]],[[1,2,3,1],[1,2,3,1]],[[1,1,1,3,4],[1,1,1,3,4]]]
+# ebf = [[1,1,1,1],[1,2,3,1],[1,1,1,3,4]]
+# ecd = [[[4,2],[3,2],[1,1]],[[4,1],[3,4]],[[1,4],[2,2],[3,1],[4,4]]]
+
 #
-# #X,y = [],[]
+#for i,j in zip(ebf,ecd):
+#    #print X
+#    temp = copy.deepcopy(i)
+#    X.append(temp)
+#    #print X
+#    for m in j:
+#        y.append(m)
+#        loc = m[1] - 1
+#        temp[loc] = m[0]
+#        #print 'temp',temp
+#        #print X
+#        #X.append(temp)
+# #       print X
+#
+#print X
+#print y
+
+#X,y = [],[]
 # for i,j in zip(ebf,ecd):
 #     #print X
 #     #print i
@@ -134,20 +134,20 @@ ecd = [[[4,2],[3,2],[1,1]],[[4,1],[3,4]],[[1,4],[2,2],[3,1],[4,4]]]
 #         y0.append(j)
 #
 # #print ecd
+
+#print ecd
+
+
+#for i in range(len(X)):
+#    try:
+#        print i
+#        loc = y0[i][1] - 1
+#        X[i+1][loc] = y0[i][0]
+#        print X
+#    except IndexError:
+#        break
 #
-# #print ecd
-#
-#
-# #for i in range(len(X)):
-# #    try:
-# #        print i
-# #        loc = y0[i][1] - 1
-# #        X[i+1][loc] = y0[i][0]
-# #        print X
-# #    except IndexError:
-# #        break
-# #
-# #print '\n',X
+#print '\n',X
 #
 # for i in (Z1):
 #     for j in range(len(i)):
@@ -163,15 +163,22 @@ ecd = [[[4,2],[3,2],[1,1]],[[4,1],[3,4]],[[1,4],[2,2],[3,1],[4,4]]]
 #             continue
 #
 # print Z1,'\n'
+# print bases,'\n'
+# print ecd
+
+#print encoded_loc[1]
+pickle.dump(encoded_loc,open(os.getcwd()+'/pickles/y-6892348-loc','wb'))
+np.save(open(os.getcwd()+'/pickles/y-6892348-loc-npy','wb'),encoded_loc)
+
+'''
 bases = base_sequence_at_current_time(encoded,encoded_bf)
-#print bases,'\n'
-#print ecd
+
 X = (structure_and_energy_at_current_time(bases,6892348))
 y = encoded
 
-#pickle.dump(X, open(os.getcwd()+'/pickles/X-6892348','wb'))
-#pickle.dump(y, open(os.getcwd()+'/pickles/y-6892348','wb'))
-
+pickle.dump(X, open(os.getcwd()+'/pickles/X-6892348','wb'))
+pickle.dump(y, open(os.getcwd()+'/pickles/y-6892348','wb'))
+'''
 #print X,y
 
 # Z1 and ecd are properly encoded
