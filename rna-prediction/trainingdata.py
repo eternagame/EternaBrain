@@ -166,9 +166,9 @@ X,y = [],[]
 # print bases,'\n'
 # print ecd
 
-#print encoded_loc[1]
-pickle.dump(encoded_loc,open(os.getcwd()+'/pickles/y-6892348-loc','wb'))
-np.save(open(os.getcwd()+'/pickles/y-6892348-loc-npy','wb'),encoded_loc)
+#print len(encoded_loc)
+#pickle.dump(encoded_loc,open(os.getcwd()+'/pickles/y-6892348-loc','wb'))
+#np.save(open(os.getcwd()+'/pickles/y-6892348-loc-npy','wb'),encoded_loc)
 
 '''
 bases = base_sequence_at_current_time(encoded,encoded_bf)
