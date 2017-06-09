@@ -51,16 +51,16 @@ test_real_y = np.array(real_y[train:train+test])
 # test_ms0 = np.array([[4,20],[3,15]])
 # test_ms0 = np.array([[0,0,0,1],[1,0,0,0]]) # just base
 
-n_nodes_hl1 = 700 # hidden layer 1
-n_nodes_hl2 = 700
-n_nodes_hl3 = 700
-n_nodes_hl4 = 700
-n_nodes_hl5 = 700
-n_nodes_hl6 = 700
-n_nodes_hl7 = 700
-n_nodes_hl8 = 700
-n_nodes_hl9 = 700
-n_nodes_hl10 = 700
+n_nodes_hl1 = 500 # hidden layer 1
+n_nodes_hl2 = 500
+n_nodes_hl3 = 500
+n_nodes_hl4 = 500
+n_nodes_hl5 = 500
+n_nodes_hl6 = 500
+n_nodes_hl7 = 500
+n_nodes_hl8 = 500
+n_nodes_hl9 = 500
+n_nodes_hl10 = 500
 
 n_classes = 4
 batch_size = 100 # load 100 features at a time
@@ -153,7 +153,7 @@ def train(x):
     optimizer = tf.train.AdamOptimizer().minimize(cost) # learning rate = 0.001
 
     # cycles of feed forward and backprop
-    num_epochs = 10
+    num_epochs = 15
 
     with tf.Session() as sess:
         sess.run(tf.global_variables_initializer())
@@ -171,5 +171,11 @@ def train(x):
 
         print 'Accuracy', accuracy.eval(feed_dict={x:test_real_X, y:test_real_y}) #X, y #mnist.test.images, mnist.test.labels
 
+        writer = tf.summary.FileWriter('/tensorboard/baseDNN-500-20-10-500-15')
+        writer.add_graph(sess.graph)
+        '''
+        Run this:
+        tensorboard --logdir=tensorboard/baseRNN --debug
+        '''
 
 train(x)

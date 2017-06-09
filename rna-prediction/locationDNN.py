@@ -25,8 +25,8 @@ for i in (real_X[432:]):
     energy.insert(len(energy),0.0)
 '''
 
-train = 1000
-test = 20
+train = 100
+test = 10
 
 real_X_9 = np.array(real_X[0:train]).reshape([-1,340])
 real_y_9 = np.array(real_y[0:train])
@@ -164,5 +164,11 @@ def train(x):
 
         print 'Accuracy', accuracy.eval(feed_dict={x:test_real_X, y:test_real_y}) #X, y #mnist.test.images, mnist.test.labels
 
+        writer = tf.summary.FileWriter('/tensorboard/locationDNN-100-10-10-700-10')
+        writer.add_graph(sess.graph)
+        '''
+        Run this:
+        tensorboard --logdir=tensorboard/baseRNN --debug
+        '''
 
 train(x)

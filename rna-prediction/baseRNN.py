@@ -21,10 +21,10 @@ import pickle
 real_X = pickle.load(open(os.getcwd()+'/pickles/X-6892348','rb'))
 real_y = pickle.load(open(os.getcwd()+'/pickles/y-6892348','rb'))
 
-real_X_9 = np.array(real_X[0:100]).reshape([-1,340])
-real_y_9 = np.array(real_y[0:100])
-test_real_X = np.array(real_X[100:105]).reshape([-1,340])
-test_real_y = np.array(real_y[100:105])
+real_X_9 = np.array(real_X[0:400]).reshape([-1,340])
+real_y_9 = np.array(real_y[0:400])
+test_real_X = np.array(real_X[400:440]).reshape([-1,340])
+test_real_y = np.array(real_y[400:440])
 
 #real_X_9, test_real_X, real_y_9, test_real_y = np.array(train_test_split(real_X[0:500],real_y[0:500],test_size=0.2))
 #real_X_9, test_real_X, real_y_9, test_real_y = np.array(real_X_9).reshape([-1,340]), np.array(test_real_X).reshape([-1,340]), np.array(real_y_9), np.array(test_real_y)
@@ -39,10 +39,10 @@ test_real_y = np.array(real_y[100:105])
 
 num_epochs = 10
 n_classes = 4
-batch_size = 100 # load 100 features at a time
+batch_size = 400 # same as training size
 chunk_size = 4
 n_chunks = 85
-rnn_size = 256
+rnn_size = 128
 
 x = tf.placeholder('float',[None,n_chunks,chunk_size]) # 16 with enc0
 y = tf.placeholder('float')
@@ -61,7 +61,7 @@ def recurrentNeuralNet(x):
 
     x = tf.transpose(x, [1,0,2])
     x = tf.reshape(x, [-1,chunk_size])
-    x = tf.split(x, n_chunks, 0) # order needs to be flipped
+    x = tf.split(x, n_chunks, 0)
 
     lstm_cell = rnn.BasicLSTMCell(rnn_size)
     outputs, states = rnn.static_rnn(lstm_cell, x, dtype=tf.float32)
@@ -95,6 +95,14 @@ def train(x):
         accuracy = tf.reduce_mean(tf.cast(correct,'float'))
 
         print 'Accuracy', accuracy.eval(feed_dict={x:test_real_X.reshape((-1, n_chunks, chunk_size)), y:test_real_y}) #X, y #mnist.test.images, mnist.test.labels
+
+        # data for tensorboard
+        writer = tf.summary.FileWriter('/tensorboard/baseRNN-400-40-128-10')
+        writer.add_graph(sess.graph)
+        '''
+        Run this:
+        tensorboard --logdir=tensorboard/baseRNN-SPECIFICATIONS --debug
+        '''
 
 
 train(x)
