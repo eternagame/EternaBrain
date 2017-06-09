@@ -32,21 +32,24 @@ for i in (real_X[432:]):
     energy.insert(len(energy),0.0)
 '''
 
-real_X_9 = np.array(real_X[0:600]).reshape([-1,340])
-real_y_9 = np.array(real_y[0:600])
-test_real_X = np.array(real_X[600:605]).reshape([-1,340])
-test_real_y = np.array(real_y[600:605])
+train = 1000
+test = 20
+
+real_X_9 = np.array(real_X[0:train]).reshape([-1,340])
+real_y_9 = np.array(real_y[0:train])
+test_real_X = np.array(real_X[train:train+test]).reshape([-1,340])
+test_real_y = np.array(real_y[train:train+test])
 
 #real_X_9, test_real_X, real_y_9, test_real_y = np.array(train_test_split(real_X[0:500],real_y[0:500],test_size=0.2))
 #real_X_9, test_real_X, real_y_9, test_real_y = np.array(real_X_9).reshape([-1,340]), np.array(test_real_X).reshape([-1,340]), np.array(real_y_9), np.array(test_real_y)
 
-enc0 = np.array([[[1,2,3,4],[0,1,0,1],[-33,0,0,0],[1,1,1,1]],[[2,3,3,2],[0,0,0,0],[9,0,0,0],[0,0,0,1]],[[2,3,3,2],[0,0,0,0],[9,0,0,0],[0,0,0,1]],[[2,3,3,2],[0,0,0,0],[9,0,0,0],[0,0,0,1]],[[2,3,3,2],[0,0,0,0],[9,0,0,0],[0,0,0,1]],[[2,3,3,2],[0,0,0,0],[9,0,0,0],[0,0,0,1]],[[2,3,3,2],[0,0,0,0],[9,0,0,0],[0,0,0,1]],[[2,3,3,2],[0,0,0,0],[9,0,0,0],[0,0,0,1]],[[2,3,3,2],[0,0,0,0],[9,0,0,0],[0,0,0,1]]])
-ms0 = np.array([[1,6],[2,7],[2,7],[2,7],[2,7],[2,7],[2,7],[2,7],[2,7]])
-ms0 = np.array([[1,0,0,0],[0,1,0,0],[0,1,0,0],[0,1,0,0],[0,1,0,0],[0,1,0,0],[0,1,0,0],[0,1,0,0],[0,1,0,0]]) # just base
-
-test_enc0 = np.array([[[2,3,3,2],[0,0,0,0],[6,0,0,0],[0,0,1,1]],[[1,2,3,4],[0,1,0,1],[-33,0,0,0],[1,1,1,1]]])
-test_ms0 = np.array([[4,20],[3,15]])
-test_ms0 = np.array([[0,0,0,1],[1,0,0,0]]) # just base
+# enc0 = np.array([[[1,2,3,4],[0,1,0,1],[-33,0,0,0],[1,1,1,1]],[[2,3,3,2],[0,0,0,0],[9,0,0,0],[0,0,0,1]],[[2,3,3,2],[0,0,0,0],[9,0,0,0],[0,0,0,1]],[[2,3,3,2],[0,0,0,0],[9,0,0,0],[0,0,0,1]],[[2,3,3,2],[0,0,0,0],[9,0,0,0],[0,0,0,1]],[[2,3,3,2],[0,0,0,0],[9,0,0,0],[0,0,0,1]],[[2,3,3,2],[0,0,0,0],[9,0,0,0],[0,0,0,1]],[[2,3,3,2],[0,0,0,0],[9,0,0,0],[0,0,0,1]],[[2,3,3,2],[0,0,0,0],[9,0,0,0],[0,0,0,1]]])
+# ms0 = np.array([[1,6],[2,7],[2,7],[2,7],[2,7],[2,7],[2,7],[2,7],[2,7]])
+# ms0 = np.array([[1,0,0,0],[0,1,0,0],[0,1,0,0],[0,1,0,0],[0,1,0,0],[0,1,0,0],[0,1,0,0],[0,1,0,0],[0,1,0,0]]) # just base
+#
+# test_enc0 = np.array([[[2,3,3,2],[0,0,0,0],[6,0,0,0],[0,0,1,1]],[[1,2,3,4],[0,1,0,1],[-33,0,0,0],[1,1,1,1]]])
+# test_ms0 = np.array([[4,20],[3,15]])
+# test_ms0 = np.array([[0,0,0,1],[1,0,0,0]]) # just base
 
 n_nodes_hl1 = 700 # hidden layer 1
 n_nodes_hl2 = 700
@@ -66,11 +69,11 @@ batch_size = 100 # load 100 features at a time
 x = tf.placeholder('float',[None,340]) # 16 with enc0
 y = tf.placeholder('float')
 
-enc = enc0.reshape([-1,16])
-ms = ms0#.reshape([-1,4])
-
-test_enc = test_enc0.reshape([-1,16])
-test_ms = test_ms0
+# enc = enc0.reshape([-1,16])
+# ms = ms0#.reshape([-1,4])
+#
+# test_enc = test_enc0.reshape([-1,16])
+# test_ms = test_ms0
 
 #e1 = tf.reshape(enc0,[])
 
