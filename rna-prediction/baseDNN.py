@@ -32,16 +32,16 @@ for i in (real_X[432:]):
     energy.insert(len(energy),0.0)
 '''
 
-train = 25
+train = 500
 test = 5
 
-real_X_9 = np.array(real_X[0:train]).reshape([-1,340])
-real_y_9 = np.array(real_y[0:train])
-test_real_X = np.array(real_X[train:train+test]).reshape([-1,340])
-test_real_y = np.array(real_y[train:train+test])
+# real_X_9 = np.array(real_X[0:train]).reshape([-1,340])
+# real_y_9 = np.array(real_y[0:train])
+# test_real_X = np.array(real_X[train:train+test]).reshape([-1,340])
+# test_real_y = np.array(real_y[train:train+test])
 
-#real_X_9, test_real_X, real_y_9, test_real_y = np.array(train_test_split(real_X[0:500],real_y[0:500],test_size=0.2))
-#real_X_9, test_real_X, real_y_9, test_real_y = np.array(real_X_9).reshape([-1,340]), np.array(test_real_X).reshape([-1,340]), np.array(real_y_9), np.array(test_real_y)
+real_X_9, test_real_X, real_y_9, test_real_y = np.array(train_test_split(real_X[0:500],real_y[0:500],test_size=0.01))
+real_X_9, test_real_X, real_y_9, test_real_y = np.array(real_X_9).reshape([-1,340]), np.array(test_real_X).reshape([-1,340]), np.array(real_y_9), np.array(test_real_y)
 
 # enc0 = np.array([[[1,2,3,4],[0,1,0,1],[-33,0,0,0],[1,1,1,1]],[[2,3,3,2],[0,0,0,0],[9,0,0,0],[0,0,0,1]],[[2,3,3,2],[0,0,0,0],[9,0,0,0],[0,0,0,1]],[[2,3,3,2],[0,0,0,0],[9,0,0,0],[0,0,0,1]],[[2,3,3,2],[0,0,0,0],[9,0,0,0],[0,0,0,1]],[[2,3,3,2],[0,0,0,0],[9,0,0,0],[0,0,0,1]],[[2,3,3,2],[0,0,0,0],[9,0,0,0],[0,0,0,1]],[[2,3,3,2],[0,0,0,0],[9,0,0,0],[0,0,0,1]],[[2,3,3,2],[0,0,0,0],[9,0,0,0],[0,0,0,1]]])
 # ms0 = np.array([[1,6],[2,7],[2,7],[2,7],[2,7],[2,7],[2,7],[2,7],[2,7]])
@@ -51,16 +51,17 @@ test_real_y = np.array(real_y[train:train+test])
 # test_ms0 = np.array([[4,20],[3,15]])
 # test_ms0 = np.array([[0,0,0,1],[1,0,0,0]]) # just base
 
-n_nodes_hl1 = 500 # hidden layer 1
-n_nodes_hl2 = 500
-n_nodes_hl3 = 500
-n_nodes_hl4 = 500
-n_nodes_hl5 = 500
-n_nodes_hl6 = 500
-n_nodes_hl7 = 500
-n_nodes_hl8 = 500
-n_nodes_hl9 = 500
-n_nodes_hl10 = 500
+num_nodes = 200
+n_nodes_hl1 = num_nodes # hidden layer 1
+n_nodes_hl2 = num_nodes
+n_nodes_hl3 = num_nodes
+n_nodes_hl4 = num_nodes
+n_nodes_hl5 = num_nodes
+n_nodes_hl6 = num_nodes
+n_nodes_hl7 = num_nodes
+n_nodes_hl8 = num_nodes
+n_nodes_hl9 = num_nodes
+n_nodes_hl10 = num_nodes
 
 n_classes = 4
 batch_size = 100 # load 100 features at a time
@@ -143,21 +144,62 @@ def neuralNet(data):
 
     ol = tf.matmul(l10, output_layer['weights']) + output_layer['biases']
 
+    tf.summary.histogram('weights-hl_1',hl_1['weights'])
+    tf.summary.histogram('biases-hl_1',hl_1['biases'])
+    tf.summary.histogram('act-hl_1',l1)
+
+    tf.summary.histogram('weights-hl_2',hl_2['weights'])
+    tf.summary.histogram('biases-hl_2',hl_2['biases'])
+    tf.summary.histogram('act-hl_2',l2)
+
+    tf.summary.histogram('weights-hl_3',hl_3['weights'])
+    tf.summary.histogram('biases-hl_3',hl_3['biases'])
+    tf.summary.histogram('act-hl_3',l3)
+
+    tf.summary.histogram('weights-hl_4',hl_4['weights'])
+    tf.summary.histogram('biases-hl_4',hl_4['biases'])
+    tf.summary.histogram('act-hl_4',l4)
+
+    tf.summary.histogram('weights-hl_5',hl_5['weights'])
+    tf.summary.histogram('biases-hl_5',hl_5['biases'])
+    tf.summary.histogram('act-hl_5',l5)
+
+    tf.summary.histogram('weights-hl_6',hl_6['weights'])
+    tf.summary.histogram('biases-hl_6',hl_6['biases'])
+    tf.summary.histogram('act-hl_6',l6)
+
+    tf.summary.histogram('weights-hl_7',hl_7['weights'])
+    tf.summary.histogram('biases-hl_7',hl_7['biases'])
+    tf.summary.histogram('act-hl_7',l7)
+
+    tf.summary.histogram('weights-hl_8',hl_8['weights'])
+    tf.summary.histogram('biases-hl_8',hl_8['biases'])
+    tf.summary.histogram('act-hl_8',l8)
+
+    tf.summary.histogram('weights-hl_9',hl_9['weights'])
+    tf.summary.histogram('biases-hl_9',hl_9['biases'])
+    tf.summary.histogram('act-hl_9',l9)
+
+    tf.summary.histogram('weights-hl_10',hl_10['weights'])
+    tf.summary.histogram('biases-hl_10',hl_10['biases'])
+    tf.summary.histogram('act-hl_10',l10)
+
     return ol
 
 
 def train(x):
     prediction = neuralNet(x)
     #print prediction
-    with tf.name_scope('cost'):
+    with tf.name_scope('cross_entropy'):
         cost = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=prediction,labels=y))
+        tf.summary.scalar('cross_entropy',cost)
+
     with tf.name_scope('train'):
         optimizer = tf.train.AdamOptimizer().minimize(cost) # learning rate = 0.001
 
     with tf.name_scope('accuracy'):
         correct = tf.equal(tf.argmax(prediction,1),tf.argmax(y,1))
         accuracy = tf.reduce_mean(tf.cast(correct,'float'))
-        tf.summary.scalar('cross_entropy',cost)
         tf.summary.scalar('accuracy',accuracy)
 
     # cycles of feed forward and backprop
@@ -167,7 +209,7 @@ def train(x):
         sess.run(tf.global_variables_initializer())
 
         merged_summary = tf.summary.merge_all()
-        writer = tf.summary.FileWriter(os.getcwd()+'/tensorboard/baseDNN-25-5-10-500-10')
+        writer = tf.summary.FileWriter(os.getcwd()+'/tensorboard/baseDNN-500-5-10-200-10-dev')
         writer.add_graph(sess.graph)
 
         for epoch in range(num_epochs):
