@@ -32,8 +32,8 @@ for i in (real_X[432:]):
     energy.insert(len(energy),0.0)
 '''
 
-train = 1000
-test = 20
+train = 25
+test = 5
 
 real_X_9 = np.array(real_X[0:train]).reshape([-1,340])
 real_y_9 = np.array(real_y[0:train])
@@ -78,38 +78,38 @@ y = tf.placeholder('float')
 #e1 = tf.reshape(enc0,[])
 
 def neuralNet(data):
-    hl_1 = {'weights':tf.Variable(tf.random_normal([340, n_nodes_hl1])),
-            'biases':tf.Variable(tf.random_normal([n_nodes_hl1]))}
+    hl_1 = {'weights':tf.Variable(tf.random_normal([340, n_nodes_hl1]),name='Weights'),
+            'biases':tf.Variable(tf.random_normal([n_nodes_hl1]),name='Biases')}
 
-    hl_2 = {'weights':tf.Variable(tf.random_normal([n_nodes_hl1, n_nodes_hl2])),
-            'biases':tf.Variable(tf.random_normal([n_nodes_hl2]))}
+    hl_2 = {'weights':tf.Variable(tf.random_normal([n_nodes_hl1, n_nodes_hl2]),name='Weights'),
+            'biases':tf.Variable(tf.random_normal([n_nodes_hl2]),name='Biases')}
 
-    hl_3 = {'weights':tf.Variable(tf.random_normal([n_nodes_hl2, n_nodes_hl3])),
-            'biases':tf.Variable(tf.random_normal([n_nodes_hl3]))}
+    hl_3 = {'weights':tf.Variable(tf.random_normal([n_nodes_hl2, n_nodes_hl3]),name='Weights'),
+            'biases':tf.Variable(tf.random_normal([n_nodes_hl3]),name='Biases')}
 
-    hl_4 = {'weights':tf.Variable(tf.random_normal([n_nodes_hl3, n_nodes_hl4])),
-            'biases':tf.Variable(tf.random_normal([n_nodes_hl4]))}
+    hl_4 = {'weights':tf.Variable(tf.random_normal([n_nodes_hl3, n_nodes_hl4]),name='Weights'),
+            'biases':tf.Variable(tf.random_normal([n_nodes_hl4]),name='Biases')}
 
-    hl_5 = {'weights':tf.Variable(tf.random_normal([n_nodes_hl4, n_nodes_hl5])),
-            'biases':tf.Variable(tf.random_normal([n_nodes_hl5]))}
+    hl_5 = {'weights':tf.Variable(tf.random_normal([n_nodes_hl4, n_nodes_hl5]),name='Weights'),
+            'biases':tf.Variable(tf.random_normal([n_nodes_hl5]),name='Biases')}
 
-    hl_6 = {'weights':tf.Variable(tf.random_normal([n_nodes_hl5, n_nodes_hl6])),
-            'biases':tf.Variable(tf.random_normal([n_nodes_hl6]))}
+    hl_6 = {'weights':tf.Variable(tf.random_normal([n_nodes_hl5, n_nodes_hl6]),name='Weights'),
+            'biases':tf.Variable(tf.random_normal([n_nodes_hl6]),name='Biases')}
 
-    hl_7 = {'weights':tf.Variable(tf.random_normal([n_nodes_hl6, n_nodes_hl7])),
-            'biases':tf.Variable(tf.random_normal([n_nodes_hl7]))}
+    hl_7 = {'weights':tf.Variable(tf.random_normal([n_nodes_hl6, n_nodes_hl7]),name='Weights'),
+            'biases':tf.Variable(tf.random_normal([n_nodes_hl7]),name='Biases')}
 
-    hl_8 = {'weights':tf.Variable(tf.random_normal([n_nodes_hl7, n_nodes_hl8])),
-            'biases':tf.Variable(tf.random_normal([n_nodes_hl8]))}
+    hl_8 = {'weights':tf.Variable(tf.random_normal([n_nodes_hl7, n_nodes_hl8]),name='Weights'),
+            'biases':tf.Variable(tf.random_normal([n_nodes_hl8]),name='Biases')}
 
-    hl_9 = {'weights':tf.Variable(tf.random_normal([n_nodes_hl8, n_nodes_hl9])),
-            'biases':tf.Variable(tf.random_normal([n_nodes_hl9]))}
+    hl_9 = {'weights':tf.Variable(tf.random_normal([n_nodes_hl8, n_nodes_hl9]),name='Weights'),
+            'biases':tf.Variable(tf.random_normal([n_nodes_hl9]),name='Biases')}
 
-    hl_10 = {'weights':tf.Variable(tf.random_normal([n_nodes_hl9, n_nodes_hl10])),
-            'biases':tf.Variable(tf.random_normal([n_nodes_hl10]))}
+    hl_10 = {'weights':tf.Variable(tf.random_normal([n_nodes_hl9, n_nodes_hl10]),name='Weights'),
+            'biases':tf.Variable(tf.random_normal([n_nodes_hl10]),name='Biases')}
 
-    output_layer = {'weights':tf.Variable(tf.random_normal([n_nodes_hl10, n_classes])),
-            'biases':tf.Variable(tf.random_normal([n_classes]))}
+    output_layer = {'weights':tf.Variable(tf.random_normal([n_nodes_hl10, n_classes]),name='Weights-outputlayer'),
+            'biases':tf.Variable(tf.random_normal([n_classes]),name='Biases-outputlayer')}
 
     l1 = tf.add(tf.matmul(data, hl_1['weights']), hl_1['biases'])
     l1 = tf.nn.relu(l1)
@@ -149,33 +149,47 @@ def neuralNet(data):
 def train(x):
     prediction = neuralNet(x)
     #print prediction
-    cost = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=prediction,labels=y))
-    optimizer = tf.train.AdamOptimizer().minimize(cost) # learning rate = 0.001
+    with tf.name_scope('cost'):
+        cost = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=prediction,labels=y))
+    with tf.name_scope('train'):
+        optimizer = tf.train.AdamOptimizer().minimize(cost) # learning rate = 0.001
+
+    with tf.name_scope('accuracy'):
+        correct = tf.equal(tf.argmax(prediction,1),tf.argmax(y,1))
+        accuracy = tf.reduce_mean(tf.cast(correct,'float'))
+        tf.summary.scalar('cross_entropy',cost)
+        tf.summary.scalar('accuracy',accuracy)
 
     # cycles of feed forward and backprop
-    num_epochs = 15
+    num_epochs = 10
 
     with tf.Session() as sess:
         sess.run(tf.global_variables_initializer())
 
+        merged_summary = tf.summary.merge_all()
+        writer = tf.summary.FileWriter(os.getcwd()+'/tensorboard/baseDNN-25-5-10-500-10')
+        writer.add_graph(sess.graph)
+
         for epoch in range(num_epochs):
             epoch_loss = 0
-            for _ in range(int(real_X_9.shape[0])):#mnist.train.num_examples/batch_size)): # X.shape[0]
+            for i in range(int(real_X_9.shape[0])):#mnist.train.num_examples/batch_size)): # X.shape[0]
                 epoch_x,epoch_y = real_X_9,real_y_9 #mnist.train.next_batch(batch_size) # X,y
-                _,c = sess.run([optimizer,cost],feed_dict={x:epoch_x,y:epoch_y})
+                j,c = sess.run([optimizer,cost],feed_dict={x:epoch_x,y:epoch_y})
+                if i % 5 == 0:
+                    s = sess.run(merged_summary,feed_dict={x:epoch_x,y:epoch_y})
+                    writer.add_summary(s,i)
                 epoch_loss += c
-            print 'Epoch', epoch + 1, 'completed out of', num_epochs, '\nLoss:',epoch_loss,'\n'
+            print '\n','Epoch', epoch + 1, 'completed out of', num_epochs, '\nLoss:',epoch_loss
 
-        correct = tf.equal(tf.argmax(prediction,1),tf.argmax(y,1))
-        accuracy = tf.reduce_mean(tf.cast(correct,'float'))
+        print '\n','Accuracy', accuracy.eval(feed_dict={x:test_real_X, y:test_real_y}) #X, y #mnist.test.images, mnist.test.labels
+        '''
+        saver = tf.train.Saver()
+        saver.save(sess,os.getcwd()+'/models/baseDNN')
+        '''
 
-        print 'Accuracy', accuracy.eval(feed_dict={x:test_real_X, y:test_real_y}) #X, y #mnist.test.images, mnist.test.labels
-
-        writer = tf.summary.FileWriter('/tensorboard/baseDNN-500-20-10-500-15')
-        writer.add_graph(sess.graph)
         '''
         Run this:
-        tensorboard --logdir=tensorboard/baseRNN --debug
+        tensorboard --logdir=tensorboard/baseDNN-SPECIFICATIONS --debug
         '''
 
 train(x)
