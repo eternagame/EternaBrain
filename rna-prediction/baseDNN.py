@@ -32,15 +32,15 @@ for i in (real_X[432:]):
     energy.insert(len(energy),0.0)
 '''
 
-train = 500
-test = 5
+train = 1000
+test = 25
 
 # real_X_9 = np.array(real_X[0:train]).reshape([-1,340])
 # real_y_9 = np.array(real_y[0:train])
 # test_real_X = np.array(real_X[train:train+test]).reshape([-1,340])
 # test_real_y = np.array(real_y[train:train+test])
 
-real_X_9, test_real_X, real_y_9, test_real_y = np.array(train_test_split(real_X[0:500],real_y[0:500],test_size=0.01))
+real_X_9, test_real_X, real_y_9, test_real_y = np.array(train_test_split(real_X[0:train],real_y[0:train],test_size=0.05))
 real_X_9, test_real_X, real_y_9, test_real_y = np.array(real_X_9).reshape([-1,340]), np.array(test_real_X).reshape([-1,340]), np.array(real_y_9), np.array(test_real_y)
 
 # enc0 = np.array([[[1,2,3,4],[0,1,0,1],[-33,0,0,0],[1,1,1,1]],[[2,3,3,2],[0,0,0,0],[9,0,0,0],[0,0,0,1]],[[2,3,3,2],[0,0,0,0],[9,0,0,0],[0,0,0,1]],[[2,3,3,2],[0,0,0,0],[9,0,0,0],[0,0,0,1]],[[2,3,3,2],[0,0,0,0],[9,0,0,0],[0,0,0,1]],[[2,3,3,2],[0,0,0,0],[9,0,0,0],[0,0,0,1]],[[2,3,3,2],[0,0,0,0],[9,0,0,0],[0,0,0,1]],[[2,3,3,2],[0,0,0,0],[9,0,0,0],[0,0,0,1]],[[2,3,3,2],[0,0,0,0],[9,0,0,0],[0,0,0,1]]])
@@ -51,7 +51,7 @@ real_X_9, test_real_X, real_y_9, test_real_y = np.array(real_X_9).reshape([-1,34
 # test_ms0 = np.array([[4,20],[3,15]])
 # test_ms0 = np.array([[0,0,0,1],[1,0,0,0]]) # just base
 
-num_nodes = 200
+num_nodes = 500
 n_nodes_hl1 = num_nodes # hidden layer 1
 n_nodes_hl2 = num_nodes
 n_nodes_hl3 = num_nodes
@@ -66,9 +66,12 @@ n_nodes_hl10 = num_nodes
 n_classes = 4
 batch_size = 100 # load 100 features at a time
 
+TRAIN_KEEP_PROB = 0.25
+TEST_KEEP_PROB = 1.0
 
 x = tf.placeholder('float',[None,340]) # 16 with enc0
 y = tf.placeholder('float')
+keep_prob = tf.placeholder('float')
 
 # enc = enc0.reshape([-1,16])
 # ms = ms0#.reshape([-1,4])
@@ -142,7 +145,8 @@ def neuralNet(data):
     l10 = tf.add(tf.matmul(l9, hl_10['weights']), hl_10['biases'])
     l10 = tf.nn.relu(l10)
 
-    ol = tf.matmul(l10, output_layer['weights']) + output_layer['biases']
+    dropout = tf.nn.dropout(l10,keep_prob)
+    ol = tf.matmul(dropout, output_layer['weights']) + output_layer['biases']
 
     tf.summary.histogram('weights-hl_1',hl_1['weights'])
     tf.summary.histogram('biases-hl_1',hl_1['biases'])
@@ -195,7 +199,7 @@ def train(x):
         tf.summary.scalar('cross_entropy',cost)
 
     with tf.name_scope('train'):
-        optimizer = tf.train.AdamOptimizer().minimize(cost) # learning rate = 0.001
+        optimizer = tf.train.AdamOptimizer(0.00001).minimize(cost) # learning rate = 0.001
 
     with tf.name_scope('accuracy'):
         correct = tf.equal(tf.argmax(prediction,1),tf.argmax(y,1))
@@ -209,21 +213,23 @@ def train(x):
         sess.run(tf.global_variables_initializer())
 
         merged_summary = tf.summary.merge_all()
-        writer = tf.summary.FileWriter(os.getcwd()+'/tensorboard/baseDNN-500-5-10-200-10-dev')
+        writer = tf.summary.FileWriter(os.getcwd()+'/tensorboard/baseDNN-1000---10-200-10-dev')
         writer.add_graph(sess.graph)
 
         for epoch in range(num_epochs):
             epoch_loss = 0
+            j = 0
             for i in range(int(real_X_9.shape[0])):#mnist.train.num_examples/batch_size)): # X.shape[0]
                 epoch_x,epoch_y = real_X_9,real_y_9 #mnist.train.next_batch(batch_size) # X,y
-                j,c = sess.run([optimizer,cost],feed_dict={x:epoch_x,y:epoch_y})
+                j,c = sess.run([optimizer,cost],feed_dict={x:epoch_x,y:epoch_y,keep_prob:TRAIN_KEEP_PROB})
                 if i % 5 == 0:
-                    s = sess.run(merged_summary,feed_dict={x:epoch_x,y:epoch_y})
+                    s = sess.run(merged_summary,feed_dict={x:epoch_x,y:epoch_y,keep_prob:TRAIN_KEEP_PROB})
                     writer.add_summary(s,i)
                 epoch_loss += c
             print '\n','Epoch', epoch + 1, 'completed out of', num_epochs, '\nLoss:',epoch_loss
+            print 'Train Accuracy',j
 
-        print '\n','Accuracy', accuracy.eval(feed_dict={x:test_real_X, y:test_real_y}) #X, y #mnist.test.images, mnist.test.labels
+        print '\n','Accuracy', accuracy.eval(feed_dict={x:test_real_X, y:test_real_y, keep_prob:1.0}) #X, y #mnist.test.images, mnist.test.labels
         '''
         saver = tf.train.Saver()
         saver.save(sess,os.getcwd()+'/models/baseDNN')

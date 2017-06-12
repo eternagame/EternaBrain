@@ -44,6 +44,7 @@ test_real_y = np.array(real_y[train:train+test])
 # test_ms0 = np.array([[4,20],[3,15]])
 # test_ms0 = np.array([[0,0,0,1],[1,0,0,0]]) # just base
 
+num_nodes = 200
 n_nodes_hl1 = 700 # hidden layer 1
 n_nodes_hl2 = 700
 n_nodes_hl3 = 700
@@ -58,9 +59,12 @@ n_nodes_hl10 = 700
 n_classes = 121
 batch_size = 100 # load 100 features at a time
 
+TRAIN_KEEP_PROB = 0.25
+TEST_KEEP_PROB = 1.0
 
 x = tf.placeholder('float',[None,340]) # 16 with enc0
 y = tf.placeholder('float')
+keep_prob = tf.placeholder('float')
 
 enc = enc0.reshape([-1,16])
 ms = ms0#.reshape([-1,4])
@@ -71,38 +75,38 @@ test_ms = test_ms0
 #e1 = tf.reshape(enc0,[])
 
 def neuralNet(data):
-    hl_1 = {'weights':tf.Variable(tf.random_normal([340, n_nodes_hl1])),
-            'biases':tf.Variable(tf.random_normal([n_nodes_hl1]))}
+    hl_1 = {'weights':tf.Variable(tf.random_normal([340, n_nodes_hl1]),name='Weights'),
+            'biases':tf.Variable(tf.random_normal([n_nodes_hl1]),name='Biases')}
 
-    hl_2 = {'weights':tf.Variable(tf.random_normal([n_nodes_hl1, n_nodes_hl2])),
-            'biases':tf.Variable(tf.random_normal([n_nodes_hl2]))}
+    hl_2 = {'weights':tf.Variable(tf.random_normal([n_nodes_hl1, n_nodes_hl2]),name='Weights'),
+            'biases':tf.Variable(tf.random_normal([n_nodes_hl2]),name='Biases')}
 
-    hl_3 = {'weights':tf.Variable(tf.random_normal([n_nodes_hl2, n_nodes_hl3])),
-            'biases':tf.Variable(tf.random_normal([n_nodes_hl3]))}
+    hl_3 = {'weights':tf.Variable(tf.random_normal([n_nodes_hl2, n_nodes_hl3]),name='Weights'),
+            'biases':tf.Variable(tf.random_normal([n_nodes_hl3]),name='Biases')}
 
-    hl_4 = {'weights':tf.Variable(tf.random_normal([n_nodes_hl3, n_nodes_hl4])),
-            'biases':tf.Variable(tf.random_normal([n_nodes_hl4]))}
+    hl_4 = {'weights':tf.Variable(tf.random_normal([n_nodes_hl3, n_nodes_hl4]),name='Weights'),
+            'biases':tf.Variable(tf.random_normal([n_nodes_hl4]),name='Biases')}
 
-    hl_5 = {'weights':tf.Variable(tf.random_normal([n_nodes_hl4, n_nodes_hl5])),
-            'biases':tf.Variable(tf.random_normal([n_nodes_hl5]))}
+    hl_5 = {'weights':tf.Variable(tf.random_normal([n_nodes_hl4, n_nodes_hl5]),name='Weights'),
+            'biases':tf.Variable(tf.random_normal([n_nodes_hl5]),name='Biases')}
 
-    hl_6 = {'weights':tf.Variable(tf.random_normal([n_nodes_hl5, n_nodes_hl6])),
-            'biases':tf.Variable(tf.random_normal([n_nodes_hl6]))}
+    hl_6 = {'weights':tf.Variable(tf.random_normal([n_nodes_hl5, n_nodes_hl6]),name='Weights'),
+            'biases':tf.Variable(tf.random_normal([n_nodes_hl6]),name='Biases')}
 
-    hl_7 = {'weights':tf.Variable(tf.random_normal([n_nodes_hl6, n_nodes_hl7])),
-            'biases':tf.Variable(tf.random_normal([n_nodes_hl7]))}
+    hl_7 = {'weights':tf.Variable(tf.random_normal([n_nodes_hl6, n_nodes_hl7]),name='Weights'),
+            'biases':tf.Variable(tf.random_normal([n_nodes_hl7]),name='Biases')}
 
-    hl_8 = {'weights':tf.Variable(tf.random_normal([n_nodes_hl7, n_nodes_hl8])),
-            'biases':tf.Variable(tf.random_normal([n_nodes_hl8]))}
+    hl_8 = {'weights':tf.Variable(tf.random_normal([n_nodes_hl7, n_nodes_hl8]),name='Weights'),
+            'biases':tf.Variable(tf.random_normal([n_nodes_hl8]),name='Biases')}
 
-    hl_9 = {'weights':tf.Variable(tf.random_normal([n_nodes_hl8, n_nodes_hl9])),
-            'biases':tf.Variable(tf.random_normal([n_nodes_hl9]))}
+    hl_9 = {'weights':tf.Variable(tf.random_normal([n_nodes_hl8, n_nodes_hl9]),name='Weights'),
+            'biases':tf.Variable(tf.random_normal([n_nodes_hl9]),name='Biases')}
 
-    hl_10 = {'weights':tf.Variable(tf.random_normal([n_nodes_hl9, n_nodes_hl10])),
-            'biases':tf.Variable(tf.random_normal([n_nodes_hl10]))}
+    hl_10 = {'weights':tf.Variable(tf.random_normal([n_nodes_hl9, n_nodes_hl10]),name='Weights'),
+            'biases':tf.Variable(tf.random_normal([n_nodes_hl10]),name='Biases')}
 
-    output_layer = {'weights':tf.Variable(tf.random_normal([n_nodes_hl10, n_classes])),
-            'biases':tf.Variable(tf.random_normal([n_classes]))}
+    output_layer = {'weights':tf.Variable(tf.random_normal([n_nodes_hl10, n_classes]),name='Weights'),
+            'biases':tf.Variable(tf.random_normal([n_classes]),name='Biases')}
 
     l1 = tf.add(tf.matmul(data, hl_1['weights']), hl_1['biases'])
     l1 = tf.nn.relu(l1)
@@ -134,7 +138,48 @@ def neuralNet(data):
     l10 = tf.add(tf.matmul(l9, hl_10['weights']), hl_10['biases'])
     l10 = tf.nn.relu(l10)
 
-    ol = tf.matmul(l10, output_layer['weights']) + output_layer['biases']
+    dropout = tf.nn.dropout(l10,keep_prob)
+    ol = tf.matmul(dropout, output_layer['weights']) + output_layer['biases']
+
+    tf.summary.histogram('weights-hl_1',hl_1['weights'])
+    tf.summary.histogram('biases-hl_1',hl_1['biases'])
+    tf.summary.histogram('act-hl_1',l1)
+
+    tf.summary.histogram('weights-hl_2',hl_2['weights'])
+    tf.summary.histogram('biases-hl_2',hl_2['biases'])
+    tf.summary.histogram('act-hl_2',l2)
+
+    tf.summary.histogram('weights-hl_3',hl_3['weights'])
+    tf.summary.histogram('biases-hl_3',hl_3['biases'])
+    tf.summary.histogram('act-hl_3',l3)
+
+    tf.summary.histogram('weights-hl_4',hl_4['weights'])
+    tf.summary.histogram('biases-hl_4',hl_4['biases'])
+    tf.summary.histogram('act-hl_4',l4)
+
+    tf.summary.histogram('weights-hl_5',hl_5['weights'])
+    tf.summary.histogram('biases-hl_5',hl_5['biases'])
+    tf.summary.histogram('act-hl_5',l5)
+
+    tf.summary.histogram('weights-hl_6',hl_6['weights'])
+    tf.summary.histogram('biases-hl_6',hl_6['biases'])
+    tf.summary.histogram('act-hl_6',l6)
+
+    tf.summary.histogram('weights-hl_7',hl_7['weights'])
+    tf.summary.histogram('biases-hl_7',hl_7['biases'])
+    tf.summary.histogram('act-hl_7',l7)
+
+    tf.summary.histogram('weights-hl_8',hl_8['weights'])
+    tf.summary.histogram('biases-hl_8',hl_8['biases'])
+    tf.summary.histogram('act-hl_8',l8)
+
+    tf.summary.histogram('weights-hl_9',hl_9['weights'])
+    tf.summary.histogram('biases-hl_9',hl_9['biases'])
+    tf.summary.histogram('act-hl_9',l9)
+
+    tf.summary.histogram('weights-hl_10',hl_10['weights'])
+    tf.summary.histogram('biases-hl_10',hl_10['biases'])
+    tf.summary.histogram('act-hl_10',l10)
 
     return ol
 
@@ -142,8 +187,17 @@ def neuralNet(data):
 def train(x):
     prediction = neuralNet(x)
     #print prediction
-    cost = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=prediction,labels=y))
-    optimizer = tf.train.AdamOptimizer().minimize(cost) # learning rate = 0.001
+    with tf.name_scope('cross_entropy'):
+        cost = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=prediction,labels=y))
+        tf.summary.scalar('cross_entropy',cost)
+
+    with tf.name_scope('train'):
+        optimizer = tf.train.AdamOptimizer().minimize(cost) # learning rate = 0.001
+
+    with tf.name_scope('accuracy'):
+        correct = tf.equal(tf.argmax(prediction,1),tf.argmax(y,1))
+        accuracy = tf.reduce_mean(tf.cast(correct,'float'))
+        tf.summary.scalar('accuracy',accuracy)
 
     # cycles of feed forward and backprop
     num_epochs = 10
@@ -151,20 +205,24 @@ def train(x):
     with tf.Session() as sess:
         sess.run(tf.global_variables_initializer())
 
+        merged_summary = tf.summary.merge_all()
+        writer = tf.summary.FileWriter(os.getcwd()+'/tensorboard/locationDNN-1000---10-200-10-dev')
+        writer.add_graph(sess.graph)
+
         for epoch in range(num_epochs):
             epoch_loss = 0
-            for _ in range(int(real_X_9.shape[0])):#mnist.train.num_examples/batch_size)): # X.shape[0]
+            for i in range(int(real_X_9.shape[0])):#mnist.train.num_examples/batch_size)): # X.shape[0]
                 epoch_x,epoch_y = real_X_9,real_y_9 #mnist.train.next_batch(batch_size) # X,y
-                _,c = sess.run([optimizer,cost],feed_dict={x:epoch_x,y:epoch_y})
+                j,c = sess.run([optimizer,cost],feed_dict={x:epoch_x,y:epoch_y,keep_prob:TRAIN_KEEP_PROB})
                 epoch_loss += c
+                if i % 5 == 0:
+                    s = sess.run(merged_summary,feed_dict={x:epoch_x,y:epoch_y,keep_prob:TRAIN_KEEP_PROB})
+                    writer.add_summary(s,i)
             print 'Epoch', epoch + 1, 'completed out of', num_epochs, '\nLoss:',epoch_loss,'\n'
 
-        correct = tf.equal(tf.argmax(prediction,1),tf.argmax(y,1))
-        accuracy = tf.reduce_mean(tf.cast(correct,'float'))
+        print 'Accuracy', accuracy.eval(feed_dict={x:test_real_X, y:test_real_y, keep_prob:TEST_KEEP_PROB}) #X, y #mnist.test.images, mnist.test.labels
 
-        print 'Accuracy', accuracy.eval(feed_dict={x:test_real_X, y:test_real_y}) #X, y #mnist.test.images, mnist.test.labels
-
-        writer = tf.summary.FileWriter('/tensorboard/locationDNN-100-10-10-700-10')
+        writer = tf.summary.FileWriter(os.getcwd()+'/tensorboard/locationDNN-100-10-10-700-10')
         writer.add_graph(sess.graph)
         '''
         Run this:
