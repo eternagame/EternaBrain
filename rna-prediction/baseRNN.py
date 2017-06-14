@@ -21,10 +21,10 @@ import pickle
 real_X = pickle.load(open(os.getcwd()+'/pickles/X-6892348','rb'))
 real_y = pickle.load(open(os.getcwd()+'/pickles/y-6892348','rb'))
 
-real_X_9 = np.array(real_X[0:400]).reshape([-1,340])
-real_y_9 = np.array(real_y[0:400])
-test_real_X = np.array(real_X[400:440]).reshape([-1,340])
-test_real_y = np.array(real_y[400:440])
+real_X_9 = np.array(real_X[0:1500]).reshape([-1,340])
+real_y_9 = np.array(real_y[0:1500])
+test_real_X = np.array(real_X[1500:1600]).reshape([-1,340])
+test_real_y = np.array(real_y[1500:1600])
 
 #real_X_9, test_real_X, real_y_9, test_real_y = np.array(train_test_split(real_X[0:500],real_y[0:500],test_size=0.2))
 #real_X_9, test_real_X, real_y_9, test_real_y = np.array(real_X_9).reshape([-1,340]), np.array(test_real_X).reshape([-1,340]), np.array(real_y_9), np.array(test_real_y)
@@ -39,20 +39,21 @@ test_real_y = np.array(real_y[400:440])
 
 num_epochs = 10
 n_classes = 4
-batch_size = 400 # same as training size
+batch_size = 1500 # same as training size
 chunk_size = 4
 n_chunks = 85
 rnn_size = 128
+TRAIN_KEEP_PROB = 0.5
 
 x = tf.placeholder('float',[None,n_chunks,chunk_size]) # 16 with enc0
 y = tf.placeholder('float')
+keep_prob = tf.placeholder('float')
 
 # enc = enc0.reshape([-1,16])
 # ms = ms0#.reshape([-1,4])
 #
 # test_enc = test_enc0.reshape([-1,16])
 # test_ms = test_ms0
-
 #e1 = tf.reshape(enc0,[])
 
 def recurrentNeuralNet(x):
@@ -64,6 +65,9 @@ def recurrentNeuralNet(x):
     x = tf.split(x, n_chunks, 0)
 
     lstm_cell = rnn.BasicLSTMCell(rnn_size)
+
+    lstm_cell = rnn.DropoutWrapper(lstm_cell, output_keep_prob=keep_prob)
+
     outputs, states = rnn.static_rnn(lstm_cell, x, dtype=tf.float32)
 
     ol = tf.matmul(outputs[-1], layer['weights']) + layer['biases']
@@ -87,17 +91,17 @@ def train(x):
             for _ in range(int(real_X_9.shape[0])):#mnist.train.num_examples/batch_size)): # X.shape[0]
                 epoch_x,epoch_y = real_X_9,real_y_9 #mnist.train.next_batch(batch_size) # X,y
                 epoch_x = epoch_x.reshape((batch_size, n_chunks, chunk_size))
-                _,c = sess.run([optimizer,cost],feed_dict={x:epoch_x,y:epoch_y})
+                _,c = sess.run([optimizer,cost],feed_dict={x:epoch_x,y:epoch_y, keep_prob: TRAIN_KEEP_PROB})
                 epoch_loss += c
             print 'Epoch', epoch + 1, 'completed out of', num_epochs, '\nLoss:',epoch_loss,'\n'
 
         correct = tf.equal(tf.argmax(prediction,1),tf.argmax(y,1))
         accuracy = tf.reduce_mean(tf.cast(correct,'float'))
 
-        print 'Accuracy', accuracy.eval(feed_dict={x:test_real_X.reshape((-1, n_chunks, chunk_size)), y:test_real_y}) #X, y #mnist.test.images, mnist.test.labels
+        print 'Accuracy', accuracy.eval(feed_dict={x:test_real_X.reshape((-1, n_chunks, chunk_size)), y:test_real_y, keep_prob: 1.0}) #X, y #mnist.test.images, mnist.test.labels
 
         # data for tensorboard
-        writer = tf.summary.FileWriter('/tensorboard/baseRNN-400-40-128-10')
+        writer = tf.summary.FileWriter(os.getcwd()+'/tensorboard/baseRNN-1500-100-128-10')
         writer.add_graph(sess.graph)
         '''
         Run this:
