@@ -88,8 +88,9 @@ def train(x):
 
         for epoch in range(num_epochs):
             epoch_loss = 0
-            for _ in range(int(real_X_9.shape[0])):#mnist.train.num_examples/batch_size)): # X.shape[0]
-                epoch_x,epoch_y = real_X_9,real_y_9 #mnist.train.next_batch(batch_size) # X,y
+            for _ in range(int(real_X_9.shape[0])/batch_size):#mnist.train.num_examples/batch_size)): # X.shape[0]
+                randidx = np.random.choice(real_X_9.shape[0], batch_size, replace=False)
+                epoch_x,epoch_y = real_X_9[randidx,:],real_y_9[randidx,:] #mnist.train.next_batch(batch_size) # X,y
                 epoch_x = epoch_x.reshape((batch_size, n_chunks, chunk_size))
                 _,c = sess.run([optimizer,cost],feed_dict={x:epoch_x,y:epoch_y, keep_prob: TRAIN_KEEP_PROB})
                 epoch_loss += c
