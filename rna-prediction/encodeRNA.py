@@ -17,6 +17,54 @@ import numpy as np
 def longest(a):
     return max(len(a), * map(longest, a)) if isinstance(a, list) and a else 0
 
+def base_sequence_at_current_time_test(ms,struc):
+    #Z = []
+    Z = []
+    # for i in ms:
+    #     Z = []
+    #     for j in range(0,len(i)):
+    #         temp = copy.deepcopy(struc[ms.index(i)]) # copy.deepcopy()
+    #         print 'deep copy',temp
+    #         Z.append(temp)
+    #     print 'copied thing',Z
+    #     Z1.append(Z)
+    # print "Z1",Z1
+
+    for ctr in range(len(struc)):
+        Z1 = []
+        temp = copy.deepcopy(struc[ctr])
+        Z1.append(temp)
+        #print 'Initial result_list', Z1
+
+        j = 0
+        for i in (ms[ctr]):
+        #Z = []
+        #for j in range(len(i)):
+            try:
+                if i[0] == 'paste' or i[0] == 'reset':
+                    temp = i[1]
+                    Z1.append(temp)
+                else:
+                    #print 'Z1[j]=',Z1[j]
+                    temp = copy.deepcopy(Z1[j]) # copy.deepcopy()VR
+                    #print 'temp=',temp
+                    base = i[0]
+                    loc = i[1]-1
+                    #loc = ms[Z1.index(i)][j][1] - 1
+                    #print 'location=',loc
+                    #print 'base=',base
+                    temp[loc] = base
+                    #print 'temp after changing=',temp
+                    Z1.append(temp)
+                    #print 'end',Z1
+            except IndexError:
+                continue
+            j = j + 1
+        Z.append(Z1)
+
+    #print 'Leaving function'
+    return Z
+
 def base_sequence_at_current_time(ms,struc):
     #Z = []
     Z = []
@@ -121,8 +169,9 @@ def encode_movesets(moveset):
         for i in k:
             for j in i:
                 if 'type' in j:
-                    player.append(1)
-                    player.append(12345)
+                    continue
+                    # player.append(1)
+                    # player.append(12345)
                 elif j['base'] == 'A':
                     player.append(1)
                     player.append(j['pos'])
@@ -138,12 +187,14 @@ def encode_movesets(moveset):
                 elif j['type'] == 'paste' or j['type'] == 'reset':
                     continue
         ms.append(player)
+    '''
     lens = [len(j) for j in ms]
     max_lens = max(lens)
     #ms2 = []
+
     for l in ms:
         l.extend([None]*(max_lens-len(l)))
-
+    '''
 
     return ms
 
@@ -156,7 +207,7 @@ def encode_movesets_style(moveset):
         for i in k:
             for j in i:
                 if 'type' in j:
-                    player.append([1,1]) # FIX THIS URGENT
+                    player.append([1,1])
                 elif j['base'] == 'A':
                     player.append([1,j['pos']])
                 elif j['base'] == 'U':
@@ -165,9 +216,119 @@ def encode_movesets_style(moveset):
                     player.append([3,j['pos']])
                 elif j['base'] == 'C':
                     player.append([4,j['pos']])
-                elif j['type'] == 'paste' or j['type'] == 'reset':
-                    player.append([1,1]) #continue #FIX
+                elif j['type'] == 'paste' or j['type' == 'reset']:
+                    player.append([1,1])
+
         ms.append(player)
+    lens = [len(j) for j in ms]
+    max_lens = max(lens)
+    #ms2 = []
+    '''
+    for l in ms:
+        l.extend([None]*(max_lens-len(l)))
+    '''
+
+    return ms
+
+def encode_movesets_style_2(moveset):
+    ms = []
+    #lens = [len(x) for j in x for x in moveset]
+    #max_lens = max(lens)
+    for k in moveset:
+        player = []
+        for i in k:
+            for j in i:
+                if 'type' in j:
+                    if j['type'] == 'paste': #player.append([1,1]) # FIX THIS URGENT
+                        seqlist = []
+                        for a in j['sequence']: #player.append([1,1]) #continue #FIX
+                            if a == 'A':
+                                seqlist.append(1)
+                            if a == 'U':
+                                seqlist.append(2)
+                            if a == 'G':
+                                seqlist.append(3)
+                            if a == 'C':
+                                seqlist.append(4)
+                        player.append(['paste',seqlist])
+                    elif j['type'] == 'reset':
+                        seqlist = []
+                        for a in j['sequence']: #player.append([1,1]) #continue #FIX
+                            if a == 'A':
+                                seqlist.append(1)
+                            if a == 'U':
+                                seqlist.append(2)
+                            if a == 'G':
+                                seqlist.append(3)
+                            if a == 'C':
+                                seqlist.append(4)
+                        player.append(['reset',seqlist])
+                elif j['base'] == 'A':
+                    player.append([1,j['pos']])
+                elif j['base'] == 'U':
+                    player.append([2,j['pos']])
+                elif j['base'] == 'G':
+                    player.append([3,j['pos']])
+                elif j['base'] == 'C':
+                    player.append([4,j['pos']])
+                '''
+                elif j['type'] == 'paste':
+                    seqlist = []
+                    for a in j['sequence']: #player.append([1,1]) #continue #FIX
+                        if a == 'A':
+                            seqlist.append([1])
+                        if a == 'U':
+                            seqlist.append([2])
+                        if a == 'G':
+                            seqlist.append([3])
+                        if a == 'C':
+                            seqlist.append([4])
+                    player.append(['paste',seqlist])
+                elif j['type'] == 'reset':
+                    seqlist = []
+                    for a in j['sequence']: #player.append([1,1]) #continue #FIX
+                        if a == 'A':
+                            seqlist.append([1])
+                        if a == 'U':
+                            seqlist.append([2])
+                        if a == 'G':
+                            seqlist.append([3])
+                        if a == 'C':
+                            seqlist.append([4])
+                    player.append(['reset',seqlist])
+                '''
+        ms.append(player)
+    lens = [len(j) for j in ms]
+    max_lens = max(lens)
+    #ms2 = []
+    '''
+    for l in ms:
+        l.extend([None]*(max_lens-len(l)))
+    '''
+
+    return ms
+
+def encode_bases(moveset):
+    ms = []
+    #lens = [len(x) for j in x for x in moveset]
+    #max_lens = max(lens)
+    for k in moveset:
+        player = []
+        for i in k:
+            for j in i:
+                if 'type' in j:
+                    ms.append([1,1,1,1])#continue #player.append([0,0]) # FIX THIS URGENT
+                elif j['base'] == 'A':
+                    ms.append([1,0,0,0])
+                elif j['base'] == 'U':
+                    ms.append([0,1,0,0])
+                elif j['base'] == 'G':
+                    ms.append([0,0,1,0])
+                elif j['base'] == 'C':
+                    ms.append([0,0,0,1])
+                elif j['type'] == 'paste' or j['type'] == 'reset':
+                    ms.append([1,1,1,1])
+        #ms.append(player)
     lens = [len(j) for j in ms]
     max_lens = max(lens)
     #ms2 = []
@@ -196,37 +357,6 @@ def encode_movesets_style_dev(moveset):
                     ms.append([3,j['pos']])
                 elif j['base'] == 'C':
                     ms.append([4,j['pos']])
-                elif j['type'] == 'paste' or j['type'] == 'reset':
-                    continue
-        #ms.append(player)
-    lens = [len(j) for j in ms]
-    max_lens = max(lens)
-    #ms2 = []
-    '''
-    for l in ms:
-        l.extend([None]*(max_lens-len(l)))
-    '''
-
-    return ms
-
-def encode_bases(moveset):
-    ms = []
-    #lens = [len(x) for j in x for x in moveset]
-    #max_lens = max(lens)
-    for k in moveset:
-        player = []
-        for i in k:
-            for j in i:
-                if 'type' in j:
-                    continue #player.append([0,0]) # FIX THIS URGENT
-                elif j['base'] == 'A':
-                    ms.append([1,0,0,0])
-                elif j['base'] == 'U':
-                    ms.append([0,1,0,0])
-                elif j['base'] == 'G':
-                    ms.append([0,0,1,0])
-                elif j['base'] == 'C':
-                    ms.append([0,0,0,1])
                 elif j['type'] == 'paste' or j['type'] == 'reset':
                     continue
         #ms.append(player)
