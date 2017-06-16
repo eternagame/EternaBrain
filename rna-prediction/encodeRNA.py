@@ -316,20 +316,23 @@ def encode_bases(moveset):
     #max_lens = max(lens)
     for k in moveset:
         player = []
-        for i in k:
-            for j in i:
-                if 'type' in j:
-                    ms.append([1,1,1,1])#continue #player.append([0,0]) # FIX THIS URGENT
-                elif j['base'] == 'A':
-                    ms.append([1,0,0,0])
-                elif j['base'] == 'U':
-                    ms.append([0,1,0,0])
-                elif j['base'] == 'G':
-                    ms.append([0,0,1,0])
-                elif j['base'] == 'C':
-                    ms.append([0,0,0,1])
-                elif j['type'] == 'paste' or j['type'] == 'reset':
-                    ms.append([1,1,1,1])
+        if not k:
+            ms.append([1,1,1,1])
+        else:
+            for i in k:
+                for j in i:
+                    if 'type' in j:
+                        ms.append([1,1,1,1])#continue #player.append([0,0]) # FIX THIS URGENT
+                    elif j['base'] == 'A':
+                        ms.append([1,0,0,0])
+                    elif j['base'] == 'U':
+                        ms.append([0,1,0,0])
+                    elif j['base'] == 'G':
+                        ms.append([0,0,1,0])
+                    elif j['base'] == 'C':
+                        ms.append([0,0,0,1])
+                    elif j['type'] == 'paste' or j['type'] == 'reset':
+                        ms.append([1,1,1,1])
         #ms.append(player)
     lens = [len(j) for j in ms]
     max_lens = max(lens)
