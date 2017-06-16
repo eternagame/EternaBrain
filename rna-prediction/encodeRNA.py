@@ -149,8 +149,10 @@ def structure_and_energy_at_current_time(base_seq,pid):
             for k in struc:
                 if k == '.':
                     enc_struc.append(0)
-                elif k == '(' or k == ')':
+                elif k == '(':
                     enc_struc.append(1)
+                elif k == ')':
+                    enc_struc.append(2)
             target = read_structure(pid)
             num_bases = len(target)
             e2 = [energy]
