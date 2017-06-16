@@ -14,8 +14,8 @@ from getData import getStructure
 from readData import read_structure
 import numpy as np
 
-def longest(a):
-    return max(len(a), * map(longest, a)) if isinstance(a, list) and a else 0
+# def longest(a):
+#     return max(len(a), * map(longest, a)) if isinstance(a, list) and a else 0
 
 def base_sequence_at_current_time_test(ms,struc):
     #Z = []
@@ -62,7 +62,7 @@ def base_sequence_at_current_time_test(ms,struc):
             j = j + 1
         Z.append(Z1)
 
-    #print 'Leaving function'
+    #print 'Leaving function're
     return Z
 
 def base_sequence_at_current_time(ms,struc):
@@ -85,15 +85,15 @@ def base_sequence_at_current_time(ms,struc):
         #print 'Initial result_list', Z1
 
         j = 0
-        for i in (ms[ctr]):
+        for i in range(0,len(ms[ctr])-1):
         #Z = []
         #for j in range(len(i)):
             try:
                 #print 'Z1[j]=',Z1[j]
                 temp = copy.deepcopy(Z1[j]) # copy.deepcopy()VR
                 #print 'temp=',temp
-                base = i[0]
-                loc = i[1]-1
+                base = ms[ctr][i][0]
+                loc = ms[ctr][i][1]-1
                 #loc = ms[Z1.index(i)][j][1] - 1
                 #print 'location=',loc
                 #print 'base=',base
