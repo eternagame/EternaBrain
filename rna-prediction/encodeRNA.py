@@ -37,19 +37,21 @@ def base_sequence_at_current_time_test(ms,struc):
         #print 'Initial result_list', Z1
 
         j = 0
-        for i in (ms[ctr]):
+        for i in range(0,len(ms[ctr])-1):
         #Z = []
         #for j in range(len(i)):
             try:
-                if i[0] == 'paste' or i[0] == 'reset':
-                    temp = i[1]
+                if ms[ctr][i][0] == 'paste' or ms[ctr][i][0] == 'reset':
+                    temp = copy.deepcopy(Z1[j])
+                    pasted = copy.deepcopy(ms[ctr][i][1])
+                    temp[:len(pasted)] = pasted
                     Z1.append(temp)
                 else:
                     #print 'Z1[j]=',Z1[j]
                     temp = copy.deepcopy(Z1[j]) # copy.deepcopy()VR
                     #print 'temp=',temp
-                    base = i[0]
-                    loc = i[1]-1
+                    base = ms[ctr][i][0]
+                    loc = ms[ctr][i][1]-1
                     #loc = ms[Z1.index(i)][j][1] - 1
                     #print 'location=',loc
                     #print 'base=',base
@@ -273,32 +275,6 @@ def encode_movesets_style_2(moveset):
                     player.append([3,j['pos']])
                 elif j['base'] == 'C':
                     player.append([4,j['pos']])
-                '''
-                elif j['type'] == 'paste':
-                    seqlist = []
-                    for a in j['sequence']: #player.append([1,1]) #continue #FIX
-                        if a == 'A':
-                            seqlist.append([1])
-                        if a == 'U':
-                            seqlist.append([2])
-                        if a == 'G':
-                            seqlist.append([3])
-                        if a == 'C':
-                            seqlist.append([4])
-                    player.append(['paste',seqlist])
-                elif j['type'] == 'reset':
-                    seqlist = []
-                    for a in j['sequence']: #player.append([1,1]) #continue #FIX
-                        if a == 'A':
-                            seqlist.append([1])
-                        if a == 'U':
-                            seqlist.append([2])
-                        if a == 'G':
-                            seqlist.append([3])
-                        if a == 'C':
-                            seqlist.append([4])
-                    player.append(['reset',seqlist])
-                '''
         ms.append(player)
     lens = [len(j) for j in ms]
     max_lens = max(lens)
