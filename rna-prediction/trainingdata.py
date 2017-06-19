@@ -15,15 +15,17 @@ import ast
 import copy
 import pickle
 
+pid = 6892348
+
 filepath = os.getcwd() + '/movesets/move-set-11-14-2016.txt'
 
-data2, users = read_movesets_pid(filepath,6892348)
+data2, users = read_movesets_pid(filepath,pid)
 data = data2
 encoded = (encode_movesets_style(data))
 encoded_base = encode_bases(data)
 
 moveset_dataFrame = pd.read_csv(filepath, sep=" ", header="infer", delimiter='\t')
-puzzles_pid = (moveset_dataFrame.loc[moveset_dataFrame['pid'] == 6892348])
+puzzles_pid = (moveset_dataFrame.loc[moveset_dataFrame['pid'] == pid])
 structure_file = os.getcwd() + '/movesets/puzzle-structure-data.txt'
 #print puzzles_pid
 
@@ -166,17 +168,16 @@ X,y = [],[]
 # print bases,'\n'
 # print ecd
 
-#print len(encoded_loc)
 #pickle.dump(encoded_loc,open(os.getcwd()+'/pickles/y-6892348-loc','wb'))
 #np.save(open(os.getcwd()+'/pickles/y-6892348-loc-npy','wb'),encoded_loc)
 
 bases = base_sequence_at_current_time(encoded,encoded_bf)
 
-X = (structure_and_energy_at_current_time(bases,6892348))
+X = (structure_and_energy_at_current_time(bases,pid))
 y = encoded_base
 
-pickle.dump(X, open(os.getcwd()+'/pickles/X-6892348-dev','wb'))
-pickle.dump(y, open(os.getcwd()+'/pickles/y-6892348-dev','wb'))
+pickle.dump(X, open(os.getcwd()+'/pickles/X-'+str(pid),'wb'))
+pickle.dump(y, open(os.getcwd()+'/pickles/y-'+str(pid),'wb'))
 
 #print X,y
 

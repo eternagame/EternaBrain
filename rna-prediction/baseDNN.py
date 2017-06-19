@@ -15,21 +15,24 @@ import pickle
 # ms0 = np.array([[[2,1],[4,3]],[[1,6],[2,9]]])
 # enc = np.array([[[1,2,3,4],[0,1,0,1],[1,1,1,1],[-3,0,0,0]],[[4,3,2,1],[1,0,1,0],[0,0,0,0],[9,0,0,0]]])
 # out = np.array([[4,2],[3,3]])
+features6892348 = pickle.load(open(os.getcwd()+'/pickles/X-6892348-dev','rb'))
+labels6892348 = pickle.load(open(os.getcwd()+'/pickles/y-6892348-dev','rb'))
+features6892346 = pickle.load(open(os.getcwd()+'/pickles/X-6892346','rb'))
+labels6892346 = pickle.load(open(os.getcwd()+'/pickles/y-6892346','rb'))
 
-real_X = pickle.load(open(os.getcwd()+'/pickles/X-6892348','rb'))
-real_y = pickle.load(open(os.getcwd()+'/pickles/y-6892348','rb'))
+real_X = features6892346+features6892348
+real_y = labels6892346+labels6892348
 
-TRAIN_KEEP_PROB = 0.25
+TRAIN_KEEP_PROB = 1.0
 TEST_KEEP_PROB = 1.0
 learning_rate = 0.0001
-tb_path = '/tensorboard/baseDNN-4000-10-10-50-5'
+#tb_path = '/tensorboard/baseDNN-500-10-10-50-100'
 
-train = 1000
-test = 100
-num_nodes = 50
+train = 56000
+test = 200
+num_nodes = 500
 
 testtest = np.array(real_X[train:train+test]).reshape([-1,340])
-
 
 real_X_9 = np.array(real_X[0:train]).reshape([-1,340])
 real_y_9 = np.array(real_y[0:train])
@@ -199,30 +202,33 @@ def train(x):
         tf.summary.scalar('accuracy',accuracy)
 
     # cycles of feed forward and backprop
-    num_epochs = 10000
+    num_epochs = 30
 
     with tf.Session() as sess:
         sess.run(tf.global_variables_initializer())
 
         merged_summary = tf.summary.merge_all()
-        writer = tf.summary.FileWriter(os.getcwd()+tb_path)
-        writer.add_graph(sess.graph)
+        #writer = tf.summary.FileWriter(os.getcwd()+tb_path)
+        #writer.add_graph(sess.graph)
 
         for epoch in range(num_epochs):
             epoch_loss = 0
-            j = 0
             for i in range(int(real_X_9.shape[0])/batch_size):#mnist.train.num_examples/batch_size)): # X.shape[0]
                 randidx = np.random.choice(real_X_9.shape[0], batch_size, replace=False)
                 epoch_x,epoch_y = real_X_9[randidx,:],real_y_9[randidx,:] #mnist.train.next_batch(batch_size) # X,y
                 j,c = sess.run([optimizer,cost],feed_dict={x:epoch_x,y:epoch_y,keep_prob:TRAIN_KEEP_PROB})
-                if i % 5 == 0:
-                    s = sess.run(merged_summary,feed_dict={x:epoch_x,y:epoch_y,keep_prob:TRAIN_KEEP_PROB})
-                    writer.add_summary(s,i)
+                if i == 0:
+                    [ta] = sess.run([accuracy],feed_dict={x:epoch_x,y:epoch_y,keep_prob:TRAIN_KEEP_PROB})
+                    print 'Train Accuracy', ta
+                # if i % 5 == 0:
+                #     s = sess.run(merged_summary,feed_dict={x:epoch_x,y:epoch_y,keep_prob:TRAIN_KEEP_PROB})
+                #     writer.add_summary(s,i)
+
                 epoch_loss += c
             print '\n','Epoch', epoch + 1, 'completed out of', num_epochs, '\nLoss:',epoch_loss
-            print 'Train Accuracy',j
 
-        print '\n','Train Accuracy', accuracy.eval(feed_dict={x:real_X_9, y:real_y_9, keep_prob:1.0})
+
+        print '\n','Train Accuracy', accuracy.eval(feed_dict={x:real_X_9, y:real_y_9, keep_prob:TRAIN_KEEP_PROB})
         print '\n','Test Accuracy', accuracy.eval(feed_dict={x:test_real_X, y:test_real_y, keep_prob:1.0}) #X, y #mnist.test.images, mnist.test.labels
 
         #print 'Prediction',sess.run(prediction, feed_dict={x:testtest, keep_prob:1})
