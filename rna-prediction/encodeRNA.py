@@ -10,14 +10,14 @@ encode RNA strucutre and encode movesets
 '''
 
 import copy
-from getData import getStructure
+from getData import getStructure, getTargetEnergy
 from readData import read_structure
 import numpy as np
 
 # def longest(a):
 #     return max(len(a), * map(longest, a)) if isinstance(a, list) and a else 0
 
-def base_sequence_at_current_time_test(ms,struc):
+def base_sequence_at_current_time_pr(ms,struc):
     #Z = []
     Z = []
     # for i in ms:
@@ -156,10 +156,8 @@ def structure_and_energy_at_current_time(base_seq,pid):
                 elif k == ')':
                     enc_struc.append(2)
             target = read_structure(pid)
-            num_bases = len(target)
-            e2 = [energy]
-            e3 = e2+([0.0]*(num_bases-1))
-            attrs = [j,enc_struc,target,energy]
+            #target_energy = getTargetEnergy(j,target)
+            attrs = [j,enc_struc,target,energy]#,target_energy]
             Z2.append(attrs)
 
     return Z2
@@ -234,7 +232,7 @@ def encode_movesets_style(moveset):
 
     return ms
 
-def encode_movesets_style_2(moveset):
+def encode_movesets_style_pr(moveset):
     ms = []
     #lens = [len(x) for j in x for x in moveset]
     #max_lens = max(lens)
@@ -286,40 +284,6 @@ def encode_movesets_style_2(moveset):
 
     return ms
 
-def encode_bases(moveset):
-    ms = []
-    #lens = [len(x) for j in x for x in moveset]
-    #max_lens = max(lens)
-    for k in moveset:
-        player = []
-        if not k:
-            ms.append([1,1,1,1])
-        else:
-            for i in k:
-                for j in i:
-                    if 'type' in j:
-                        ms.append([1,1,1,1])#continue #player.append([0,0]) # FIX THIS URGENT
-                    elif j['base'] == 'A':
-                        ms.append([1,0,0,0])
-                    elif j['base'] == 'U':
-                        ms.append([0,1,0,0])
-                    elif j['base'] == 'G':
-                        ms.append([0,0,1,0])
-                    elif j['base'] == 'C':
-                        ms.append([0,0,0,1])
-                    elif j['type'] == 'paste' or j['type'] == 'reset':
-                        ms.append([1,1,1,1])
-        #ms.append(player)
-    lens = [len(j) for j in ms]
-    max_lens = max(lens)
-    #ms2 = []
-    '''
-    for l in ms:
-        l.extend([None]*(max_lens-len(l)))
-    '''
-
-    return ms
-
 def encode_movesets_style_dev(moveset):
     ms = []
     #lens = [len(x) for j in x for x in moveset]
@@ -351,25 +315,68 @@ def encode_movesets_style_dev(moveset):
 
     return ms
 
-def encode_location(moveset):
+def encode_bases(moveset):
     ms = []
     #lens = [len(x) for j in x for x in moveset]
     #max_lens = max(lens)
     for k in moveset:
         player = []
-        for i in k:
-            for j in i:
-                if 'type' in j:
-                    continue #player.append([0,0]) # FIX THIS URGENT
+        if not k:
+            ms.append([1,1,1,1])
+        else:
+            for i in k:
+                for j in i:
+                    if 'type' in j:
+                        ms.append([1,1,1,1])#continue #player.append([0,0])
+                    elif j['base'] == 'A':
+                        ms.append([1,0,0,0])
+                    elif j['base'] == 'U':
+                        ms.append([0,1,0,0])
+                    elif j['base'] == 'G':
+                        ms.append([0,0,1,0])
+                    elif j['base'] == 'C':
+                        ms.append([0,0,0,1])
+                    elif j['type'] == 'paste' or j['type'] == 'reset':
+                        ms.append([1,1,1,1])
+        #ms.append(player)
+    lens = [len(j) for j in ms]
+    max_lens = max(lens)
+    #ms2 = []
+    '''
+    for l in ms:
+        l.extend([None]*(max_lens-len(l)))
+    '''
 
-                # elif j['type'] == 'paste' or j['type'] == 'reset':
-                #     continue
-                else:
-                    loc = j['pos'] - 1
-                    num_bases = len(moveset) # this is the number of classes for tf DNN/RNN
-                    loc_list = [0] * num_bases
-                    loc_list[loc] = 1
-                    ms.append(loc_list)
+    return ms
+
+def encode_location(moveset,puzzle_length):
+    ms = []
+    #lens = [len(x) for j in x for x in moveset]
+    #max_lens = max(lens)
+    for k in moveset:
+        player = []
+        if not k:
+            num_bases = puzzle_length
+            loc_list = [1] * num_bases
+            ms.append(loc_list)
+        else:
+            for i in k:
+                for j in i:
+                    if 'type' in j:
+                        num_bases = puzzle_length
+                        loc_list = [1] * num_bases
+                        ms.append(loc_list)
+                    # elif j['type'] == 'paste' or j['type'] == 'reset':
+                    #     num_bases = puzzle_length
+                    #     loc_list = [1] * num_bases
+                    #     ms.append(loc_list)
+                    else:
+                        loc = int(j['pos']) - 1
+                        num_bases = puzzle_length # this is the number of classes for tf DNN/RNN
+                        loc_list = [0] * (num_bases - 1)
+                        #loc_list[loc] = 1
+                        loc_list.insert(loc,1)
+                        ms.append(loc_list)
         #ms.append(player)
     lens = [len(j) for j in ms]
     max_lens = max(lens)

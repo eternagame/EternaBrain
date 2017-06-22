@@ -30,8 +30,10 @@ def read_structure(pid):
     for k in str_struc:
         if k == '.':
             enc_struc.append(0)
-        elif k == '(' or k == ')':
+        elif k == '(':
             enc_struc.append(1)
+        elif k == ')':
+            enc_struc.append(2)
 
     return enc_struc
 
