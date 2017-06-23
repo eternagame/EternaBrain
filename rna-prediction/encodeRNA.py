@@ -37,7 +37,7 @@ def base_sequence_at_current_time_pr(ms,struc):
         #print 'Initial result_list', Z1
 
         j = 0
-        for i in range(0,len(ms[ctr])-1):
+        for i in range(len(ms[ctr])-1): # 0,len(ms[ctr])-1
         #Z = []
         #for j in range(len(i)):
             try:
@@ -156,8 +156,8 @@ def structure_and_energy_at_current_time(base_seq,pid):
                 elif k == ')':
                     enc_struc.append(2)
             target = read_structure(pid)
-            #target_energy = getTargetEnergy(j,target)
-            attrs = [j,enc_struc,target,energy]#,target_energy]
+            target_energy = getTargetEnergy(j,target)
+            attrs = [j,enc_struc,target,energy,target_energy]
             Z2.append(attrs)
 
     return Z2
@@ -273,6 +273,18 @@ def encode_movesets_style_pr(moveset):
                     player.append([3,j['pos']])
                 elif j['base'] == 'C':
                     player.append([4,j['pos']])
+                elif j['type'] == 'paste' or j['type'] == 'reset':
+                    seqlist = []
+                    for a in j['sequence']: #player.append([1,1]) #continue #FIX
+                        if a == 'A':
+                            seqlist.append(1)
+                        if a == 'U':
+                            seqlist.append(2)
+                        if a == 'G':
+                            seqlist.append(3)
+                        if a == 'C':
+                            seqlist.append(4)
+                    player.append(['paste',seqlist])
         ms.append(player)
     lens = [len(j) for j in ms]
     max_lens = max(lens)

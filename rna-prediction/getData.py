@@ -9,6 +9,7 @@ Created on Thu Jan 05 18:30:26 2017
 #from selenium.webdriver.common.keys import Keys
 #import time
 import RNA
+import itertools
 
 def getData_pid(pid,pidList,movesets,structure): # returns moveset and puzzzle structure together
   i1 = pidList.index(pid)
@@ -38,6 +39,33 @@ def getStructure(sequence):
     return struc,e
 
 
+def getTargetEnergy(sequence,structure):
+    base_seq = []
+    for i in sequence:
+        if i == 1:
+            base_seq.append('A')
+        elif i == 2:
+            base_seq.append('U')
+        elif i == 3:
+            base_seq.append('G')
+        elif i == 4:
+            base_seq.append('C')
+    base_seq = ''.join(base_seq)
+
+    struc = []
+    for j in structure:
+        if j == 0:
+            struc.append('.')
+        elif j == 1:
+            struc.append('(')
+        elif j == 2:
+            struc.append(')')
+    struc = ''.join(struc)
+
+    target_energy = RNA.energy_of_structure(base_seq,struc,0)
+    e = [target_energy]+((len(base_seq)-1)*[0.0])
+
+    return e
 
 '''
 def getStructure_0(sequence): # gets structure using Vienna algorithm # DEPRECATED
