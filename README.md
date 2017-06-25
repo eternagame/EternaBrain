@@ -3,7 +3,10 @@ Using Eterna data to understand and predict how players solve RNA folding puzzle
 EternaBrain uses unsupervised machine learning to group Eterna players based on their style of solving RNA folding puzzles, and uses supervised machine learning with neural networks to predict how players will solve RNA folding puzzles.
 
 ## Key Puzzles
-6892343, 6892344, 6892345, 6892346, 6892347, 6892348, 7254756, 7254757, 7254758, 7254759, 7254760, 7254761
+### Single-state puzzles
+6502994 - 6503000
+### Multi-state puzzles
+6892343 - 6892348, 7254756 - 7254761
 
 ## Key Players
 8627, 55836, 231387, 42833
