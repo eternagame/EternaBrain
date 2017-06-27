@@ -150,11 +150,11 @@ def structure_and_energy_at_current_time(base_seq,pid):
             enc_struc = []
             for k in struc:
                 if k == '.':
-                    enc_struc.append(0)
-                elif k == '(':
                     enc_struc.append(1)
-                elif k == ')':
+                elif k == '(':
                     enc_struc.append(2)
+                elif k == ')':
+                    enc_struc.append(3)
             target = read_structure(pid)
             target_energy = getTargetEnergy(j,target)
             attrs = [j,enc_struc,target,energy,target_energy]

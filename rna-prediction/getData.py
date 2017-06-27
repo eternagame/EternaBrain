@@ -54,11 +54,11 @@ def getTargetEnergy(sequence,structure):
 
     struc = []
     for j in structure:
-        if j == 0:
+        if j == 1:
             struc.append('.')
-        elif j == 1:
-            struc.append('(')
         elif j == 2:
+            struc.append('(')
+        elif j == 3:
             struc.append(')')
     struc = ''.join(struc)
 
