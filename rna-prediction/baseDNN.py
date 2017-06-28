@@ -17,14 +17,28 @@ from sklearn.cross_validation import train_test_split
 # enc = np.array([[[1,2,3,4],[0,1,0,1],[1,1,1,1],[-3,0,0,0]],[[4,3,2,1],[1,0,1,0],[0,0,0,0],[9,0,0,0]]])
 # out = np.array([[4,2],[3,3]])
 
-features6502997 = pickle.load(open(os.getcwd()+'/pickles/X-6502997','rb'))
-labels6502997 = pickle.load(open(os.getcwd()+'/pickles/y-6502997','rb'))
-features6502998 = pickle.load(open(os.getcwd()+'/pickles/X-6502998','rb'))
-labels6502998 = pickle.load(open(os.getcwd()+'/pickles/y-6502998','rb'))
+features6502997 = pickle.load(open(os.getcwd()+'/pickles/X-6502997-dev','rb'))
+labels6502997 = pickle.load(open(os.getcwd()+'/pickles/y-6502997-dev','rb'))
+features6502995 = pickle.load(open(os.getcwd()+'/pickles/X-6502995-dev','rb'))
+labels6502995 = pickle.load(open(os.getcwd()+'/pickles/y-6502995-dev','rb'))
 
-real_X = features6502997 + features6502998
-real_y = labels6502997 + labels6502998
+real_X = features6502997 + features6502995
+real_y = labels6502997 + labels6502995
+max_lens = []
+pids = [features6502997,features6502995]
+for puzzle in pids:
+    max_lens.append(len(puzzle[0][0]))
 
+indxs = []
+for i in max_lens:
+     if i < max(max_lens):
+         indxs.append(max_lens.index(i))
+
+for i in indxs:
+     if pids[i]:
+         for j in pids[i]:
+             for k in j:
+                 k.extend([0]*(max(max_lens) - len(k)))
 
 TRAIN_KEEP_PROB = 1.0
 TEST_KEEP_PROB = 1.0
@@ -35,7 +49,7 @@ ne = 400
 train = 100000
 test = 20
 num_nodes = 250
-len_puzzle = 80
+len_puzzle = max(max_lens)
 
 TF_SHAPE = 5 * len_puzzle
 
