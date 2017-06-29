@@ -11,7 +11,7 @@ encode RNA strucutre and encode movesets
 
 import copy
 from getData import getStructure, getTargetEnergy
-from readData import read_structure
+from readData import read_structure, read_locks
 import numpy as np
 
 # def longest(a):
@@ -157,7 +157,8 @@ def structure_and_energy_at_current_time(base_seq,pid):
                     enc_struc.append(3)
             target = read_structure(pid)
             target_energy = getTargetEnergy(j,target)
-            attrs = [j,enc_struc,target,energy,target_energy]
+            locks = read_locks(pid)
+            attrs = [j,enc_struc,target,energy,target_energy,locks]
             Z2.append(attrs)
 
     return Z2

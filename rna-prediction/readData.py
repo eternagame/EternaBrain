@@ -8,6 +8,20 @@ import ast
 import pandas as pd
 import os
 
+def read_locks(pid):
+    puzzle_structure = pd.read_csv(os.getcwd()+'/movesets/puzzle-structure-data.txt', sep=" ", header='infer', delimiter='\t')
+    puzzles_pid = puzzle_structure.loc[puzzle_structure['pid'] == pid]
+
+    str_locks = ''.join(list(puzzles_pid['locks']))
+    enc_locks = []
+    for k in str_locks:
+        if k == 'o':
+            enc_locks.append(1)
+        elif k == 'x':
+            enc_locks.append(2)
+
+    return enc_locks
+
 def read_movesets_pid(moveset_file,pid): # get data from puzzle ID
   moveset_dataFrame = pd.read_csv(moveset_file, sep=" ", header="infer", delimiter='\t')
   puzzles_pid = moveset_dataFrame.loc[moveset_dataFrame['pid'] == pid]

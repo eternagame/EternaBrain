@@ -51,7 +51,7 @@ test = 20
 num_nodes = 250
 len_puzzle = max(max_lens)
 
-TF_SHAPE = 5 * len_puzzle
+TF_SHAPE = 6 * len_puzzle
 
 ta_list = []
 

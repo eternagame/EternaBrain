@@ -8,21 +8,24 @@ Created on Sun Apr  9 13:42:03 2017
 import os
 from readData import read_movesets_pid, read_structure
 from getData import getStructure
-from encodeRNA import encode_movesets, encode_movesets_style, base_sequence_at_current_time, structure_and_energy_at_current_time, encode_bases, encode_location
+from encodeRNA import encode_movesets_style, base_sequence_at_current_time, structure_and_energy_at_current_time
+from encodeRNA import encode_bases, base_sequence_at_current_time_pr, encode_movesets_style_pr, encode_location
 import numpy as np
 import pandas as pd
 import ast
 import copy
 import pickle
 
-pid = 6892348
+pid = 6502997
+len_puzzle = 80
 
-filepath = os.getcwd() + '/movesets/move-set-11-14-2016.txt'
+filepath = os.getcwd() + '/movesets/moveset6-22a.txt'
 
 data2, users = read_movesets_pid(filepath,pid)
 data = data2
-encoded = (encode_movesets_style(data))
+encoded = (encode_movesets_style_pr(data))
 encoded_base = encode_bases(data)
+encoded_loc = encode_location(data,len_puzzle)
 
 moveset_dataFrame = pd.read_csv(filepath, sep=" ", header="infer", delimiter='\t')
 puzzles_pid = (moveset_dataFrame.loc[moveset_dataFrame['pid'] == pid])
@@ -168,16 +171,18 @@ X,y = [],[]
 # print bases,'\n'
 # print ecd
 
-#pickle.dump(encoded_loc,open(os.getcwd()+'/pickles/y-6892348-loc','wb'))
-#np.save(open(os.getcwd()+'/pickles/y-6892348-loc-npy','wb'),encoded_loc)
 
-bases = base_sequence_at_current_time(encoded,encoded_bf)
+
+bases = base_sequence_at_current_time_pr(encoded,encoded_bf)
 
 X = (structure_and_energy_at_current_time(bases,pid))
 y = encoded_base
 
-pickle.dump(X, open(os.getcwd()+'/pickles/X-'+str(pid),'wb'))
-pickle.dump(y, open(os.getcwd()+'/pickles/y-'+str(pid),'wb'))
+
+pickle.dump(X, open(os.getcwd()+'/pickles/X-'+str(pid)+'-dev','wb'))
+pickle.dump(y, open(os.getcwd()+'/pickles/y-'+str(pid)+'-dev','wb'))
+pickle.dump(encoded_loc,open(os.getcwd()+'/pickles/y-'+str(pid)+'-loc-dev','wb'))
+#np.save(open(os.getcwd()+'/pickles/y-6892348-loc-npy','wb'),encoded_loc)
 
 #print X,y
 
