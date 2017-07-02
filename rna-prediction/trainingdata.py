@@ -179,9 +179,9 @@ X = (structure_and_energy_at_current_time(bases,pid))
 y = encoded_base
 
 
-pickle.dump(X, open(os.getcwd()+'/pickles/X-'+str(pid)+'-dev','wb'))
-pickle.dump(y, open(os.getcwd()+'/pickles/y-'+str(pid)+'-dev','wb'))
-pickle.dump(encoded_loc,open(os.getcwd()+'/pickles/y-'+str(pid)+'-loc-dev','wb'))
+pickle.dump(X, open(os.getcwd()+'/pickles/X-'+str(pid),'wb'))
+pickle.dump(y, open(os.getcwd()+'/pickles/y-'+str(pid),'wb'))
+pickle.dump(encoded_loc,open(os.getcwd()+'/pickles/y-'+str(pid)+'-loc','wb'))
 #np.save(open(os.getcwd()+'/pickles/y-6892348-loc-npy','wb'),encoded_loc)
 
 #print X,y

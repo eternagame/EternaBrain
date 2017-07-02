@@ -21,11 +21,15 @@ features6502997 = pickle.load(open(os.getcwd()+'/pickles/X-6502997-dev','rb'))
 labels6502997 = pickle.load(open(os.getcwd()+'/pickles/y-6502997-dev','rb'))
 features6502995 = pickle.load(open(os.getcwd()+'/pickles/X-6502995-dev','rb'))
 labels6502995 = pickle.load(open(os.getcwd()+'/pickles/y-6502995-dev','rb'))
+features6502990 = pickle.load(open(os.getcwd()+'/pickles/X-6502990-dev','rb'))
+labels6502990 = pickle.load(open(os.getcwd()+'/pickles/y-6502990-dev','rb'))
+features6502996 = pickle.load(open(os.getcwd()+'/pickles/X-6502996-dev','rb'))
+labels6502996 = pickle.load(open(os.getcwd()+'/pickles/y-6502996-dev','rb'))
 
-real_X = features6502997 + features6502995
-real_y = labels6502997 + labels6502995
+real_X = features6502997 + features6502995 + features6502990 + features6502996
+real_y = labels6502997 + labels6502995 + labels6502990 + labels6502996
 max_lens = []
-pids = [features6502997,features6502995]
+pids = [features6502997,features6502995,features6502990,features6502996]
 for puzzle in pids:
     max_lens.append(len(puzzle[0][0]))
 
@@ -43,10 +47,10 @@ for i in indxs:
 TRAIN_KEEP_PROB = 1.0
 TEST_KEEP_PROB = 1.0
 learning_rate = 0.0001
-ne = 400
+ne = 700
 #tb_path = '/tensorboard/baseDNN-500-10-10-50-100'
 
-train = 100000
+train = 500000
 test = 20
 num_nodes = 250
 len_puzzle = max(max_lens)
@@ -87,9 +91,9 @@ n_nodes_hl10 = num_nodes
 n_classes = 4
 batch_size = 100 # load 100 features at a time
 
-x = tf.placeholder('float',[None,TF_SHAPE]) # 216 with enc0
-y = tf.placeholder('float')
-keep_prob = tf.placeholder('float')
+x = tf.placeholder('float',[None,TF_SHAPE],name="x_placeholder") # 216 with enc0
+y = tf.placeholder('float',name='y_placeholder')
+keep_prob = tf.placeholder('float',name='keep_prob_placeholder')
 
 # enc = enc0.reshape([-1,16])
 # ms = ms0#.reshape([-1,4])
@@ -100,20 +104,20 @@ keep_prob = tf.placeholder('float')
 #e1 = tf.reshape(enc0,[])
 
 def neuralNet(data):
-    hl_1 = {'weights':tf.Variable(tf.random_normal([TF_SHAPE, n_nodes_hl1]),name='Weights'),
-            'biases':tf.Variable(tf.random_normal([n_nodes_hl1]),name='Biases')}
+    hl_1 = {'weights':tf.Variable(tf.random_normal([TF_SHAPE, n_nodes_hl1]),name='Weights1'),
+            'biases':tf.Variable(tf.random_normal([n_nodes_hl1]),name='Biases1')}
 
-    hl_2 = {'weights':tf.Variable(tf.random_normal([n_nodes_hl1, n_nodes_hl2]),name='Weights'),
-            'biases':tf.Variable(tf.random_normal([n_nodes_hl2]),name='Biases')}
+    hl_2 = {'weights':tf.Variable(tf.random_normal([n_nodes_hl1, n_nodes_hl2]),name='Weights2'),
+            'biases':tf.Variable(tf.random_normal([n_nodes_hl2]),name='Biases2')}
 
-    hl_3 = {'weights':tf.Variable(tf.random_normal([n_nodes_hl2, n_nodes_hl3]),name='Weights'),
-            'biases':tf.Variable(tf.random_normal([n_nodes_hl3]),name='Biases')}
+    hl_3 = {'weights':tf.Variable(tf.random_normal([n_nodes_hl2, n_nodes_hl3]),name='Weights3'),
+            'biases':tf.Variable(tf.random_normal([n_nodes_hl3]),name='Biases3')}
 
-    hl_4 = {'weights':tf.Variable(tf.random_normal([n_nodes_hl3, n_nodes_hl4]),name='Weights'),
-            'biases':tf.Variable(tf.random_normal([n_nodes_hl4]),name='Biases')}
+    hl_4 = {'weights':tf.Variable(tf.random_normal([n_nodes_hl3, n_nodes_hl4]),name='Weights4'),
+            'biases':tf.Variable(tf.random_normal([n_nodes_hl4]),name='Biases4')}
 
-    hl_5 = {'weights':tf.Variable(tf.random_normal([n_nodes_hl4, n_nodes_hl5]),name='Weights'),
-            'biases':tf.Variable(tf.random_normal([n_nodes_hl5]),name='Biases')}
+    hl_5 = {'weights':tf.Variable(tf.random_normal([n_nodes_hl4, n_nodes_hl5]),name='Weights5'),
+            'biases':tf.Variable(tf.random_normal([n_nodes_hl5]),name='Biases5')}
 
     # hl_6 = {'weights':tf.Variable(tf.random_normal([n_nodes_hl5, n_nodes_hl6]),name='Weights'),
     #         'biases':tf.Variable(tf.random_normal([n_nodes_hl6]),name='Biases')}
@@ -226,6 +230,7 @@ def train(x):
 
     # cycles of feed forward and backprop
     num_epochs = ne
+    saver = tf.train.Saver()
 
     with tf.Session() as sess:
         sess.run(tf.global_variables_initializer())
@@ -251,9 +256,13 @@ def train(x):
                 epoch_loss += c
             print '\n','Epoch', epoch + 1, 'completed out of', num_epochs, '\nLoss:',epoch_loss
 
+            save_path = saver.save(sess, os.getcwd()+'/savedmodels/baseDNN.ckpt')
+
 
         print '\n','Train Accuracy', accuracy.eval(feed_dict={x:real_X_9, y:real_y_9, keep_prob:TRAIN_KEEP_PROB})
         print '\n','Test Accuracy', accuracy.eval(feed_dict={x:test_real_X, y:test_real_y, keep_prob:1.0}) #X, y #mnist.test.images, mnist.test.labels
+
+        #saver.save(sess,'baseDNN',global_step=1000)
 
         #print 'Prediction',sess.run(prediction, feed_dict={x:testtest, keep_prob:1})
         #print 'Prediction',sess.run(tf.argmax(prediction,1), feed_dict={x:testtest, keep_prob:1})
