@@ -138,19 +138,19 @@ def neuralNet(data):
             'biases':tf.Variable(tf.random_normal([n_classes]),name='Biases-outputlayer')}
 
     l1 = tf.add(tf.matmul(data, hl_1['weights']), hl_1['biases'])
-    l1 = tf.nn.sigmoid(l1)
+    l1 = tf.nn.sigmoid(l1, name='op1')
 
     l2 = tf.add(tf.matmul(l1, hl_2['weights']), hl_2['biases'])
-    l2 = tf.nn.sigmoid(l2)
+    l2 = tf.nn.sigmoid(l2, name='op2')
 
     l3 = tf.add(tf.matmul(l2, hl_3['weights']), hl_3['biases'])
-    l3 = tf.nn.sigmoid(l3)
+    l3 = tf.nn.sigmoid(l3, name='op3')
 
     l4 = tf.add(tf.matmul(l3, hl_4['weights']), hl_4['biases'])
-    l4 = tf.nn.sigmoid(l4)
+    l4 = tf.nn.sigmoid(l4, name='op4')
 
     l5 = tf.add(tf.matmul(l4, hl_5['weights']), hl_5['biases'])
-    l5 = tf.nn.sigmoid(l5)
+    l5 = tf.nn.sigmoid(l5, name='op5')
 
     # l6 = tf.add(tf.matmul(l5, hl_6['weights']), hl_6['biases'])
     # l6 = tf.nn.relu(l6)
@@ -167,8 +167,8 @@ def neuralNet(data):
     # l10 = tf.add(tf.matmul(l9, hl_10['weights']), hl_10['biases'])
     # l10 = tf.nn.relu(l10)
 
-    dropout = tf.nn.dropout(l5,keep_prob)
-    ol = tf.matmul(dropout, output_layer['weights']) + output_layer['biases']
+    dropout = tf.nn.dropout(l5,keep_prob, name='op6')
+    ol = tf.add(tf.matmul(dropout, output_layer['weights']), output_layer['biases'], name='op7')
 
     tf.summary.histogram('weights-hl_1',hl_1['weights'])
     tf.summary.histogram('biases-hl_1',hl_1['biases'])
@@ -230,11 +230,10 @@ def train(x):
 
     # cycles of feed forward and backprop
     num_epochs = ne
-    saver = tf.train.Saver()
 
     with tf.Session() as sess:
         sess.run(tf.global_variables_initializer())
-
+        saver = tf.train.Saver()
         merged_summary = tf.summary.merge_all()
         #writer = tf.summary.FileWriter(os.getcwd()+tb_path)
         #writer.add_graph(sess.graph)
@@ -256,8 +255,8 @@ def train(x):
                 epoch_loss += c
             print '\n','Epoch', epoch + 1, 'completed out of', num_epochs, '\nLoss:',epoch_loss
 
-            save_path = saver.save(sess, os.getcwd()+'/savedmodels/baseDNN.ckpt')
-
+        saver.save(sess, os.getcwd()+'/models/baseDNN3')
+        saver.export_meta_graph(os.getcwd()+'/models/baseDNN3.meta')
 
         print '\n','Train Accuracy', accuracy.eval(feed_dict={x:real_X_9, y:real_y_9, keep_prob:TRAIN_KEEP_PROB})
         print '\n','Test Accuracy', accuracy.eval(feed_dict={x:test_real_X, y:test_real_y, keep_prob:1.0}) #X, y #mnist.test.images, mnist.test.labels
