@@ -3,7 +3,6 @@ import os
 import tensorflow as tf
 import pickle
 from sklearn.cross_validation import train_test_split
-#from matplotlib import pyplot as plt
 
 # enc0 = np.array([[[[1,2,3,4],[0,1,0,1],[-33,0,0,0]],[[1,2,3,4],[0,1,1,0],[-23,0,0,0]]],[[[3,3,3,3],[0,0,0,0],[2,0,0,0]],[[1,1,1,0],[1,0,1,0],[-23,0,0,0]]]])
 # ms0 = np.array([[[2,1],[4,3]],[[1,6],[2,9]]])
@@ -293,7 +292,6 @@ def train(x):
 
     sess2 = tf.Session()
     with sess2.as_default():
-
     sess2.close()
     '''
 train(x)
