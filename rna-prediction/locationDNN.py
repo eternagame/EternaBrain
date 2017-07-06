@@ -11,19 +11,50 @@ from sklearn.cross_validation import train_test_split
 
 features6502997 = pickle.load(open(os.getcwd()+'/pickles/X-6502997-dev','rb'))
 labels6502997 = pickle.load(open(os.getcwd()+'/pickles/y-6502997-loc-dev','rb'))
+
 features6502995 = pickle.load(open(os.getcwd()+'/pickles/X-6502995-dev','rb'))
 labels6502995 = pickle.load(open(os.getcwd()+'/pickles/y-6502995-loc-dev','rb'))
+
 features6502990 = pickle.load(open(os.getcwd()+'/pickles/X-6502990-dev','rb'))
 labels6502990 = pickle.load(open(os.getcwd()+'/pickles/y-6502990-loc-dev','rb'))
+
 features6502996 = pickle.load(open(os.getcwd()+'/pickles/X-6502996-dev','rb'))
 labels6502996 = pickle.load(open(os.getcwd()+'/pickles/y-6502996-loc-dev','rb'))
 
-real_X = features6502997 + features6502995 + features6502990 + features6502996
-real_y = labels6502997 + labels6502995 + labels6502990 + labels6502996
+features6502963 = pickle.load(open(os.getcwd()+'/pickles/X-6502963','rb'))
+labels6502963 = pickle.load(open(os.getcwd()+'/pickles/y-6502963-loc','rb'))
+
+features6502964 = pickle.load(open(os.getcwd()+'/pickles/X-6502964','rb'))
+labels6502964 = pickle.load(open(os.getcwd()+'/pickles/y-6502964-loc','rb'))
+
+features6502966 = pickle.load(open(os.getcwd()+'/pickles/X-6502966','rb'))
+labels6502966 = pickle.load(open(os.getcwd()+'/pickles/y-6502966-loc','rb'))
+
+features6502967 = pickle.load(open(os.getcwd()+'/pickles/X-6502967','rb'))
+labels6502967 = pickle.load(open(os.getcwd()+'/pickles/y-6502967-loc','rb'))
+
+features6502968 = pickle.load(open(os.getcwd()+'/pickles/X-6502968','rb'))
+labels6502968 = pickle.load(open(os.getcwd()+'/pickles/y-6502968-loc','rb'))
+
+features6502969 = pickle.load(open(os.getcwd()+'/pickles/X-6502969','rb'))
+labels6502969 = pickle.load(open(os.getcwd()+'/pickles/y-6502969-loc','rb'))
+
+features6502970 = pickle.load(open(os.getcwd()+'/pickles/X-6502970','rb'))
+labels6502970 = pickle.load(open(os.getcwd()+'/pickles/y-6502970-loc','rb'))
+
+features6502976 = pickle.load(open(os.getcwd()+'/pickles/X-6502976','rb'))
+labels6502976 = pickle.load(open(os.getcwd()+'/pickles/y-6502976-loc','rb'))
+
+real_X = features6502997 + features6502995 + features6502990 + features6502996 + features6502963+features6502964 \
+         + features6502966 + features6502967 + features6502968 + features6502969 + features6502970 + features6502976
+real_y = labels6502997 + labels6502995 + labels6502990 + labels6502996 + labels6502963 + labels6502964 \
+         + labels6502966 + labels6502967 + labels6502968 + labels6502969 + labels6502970 + labels6502976
 max_lens = []
 max_labels = []
-pids = [features6502997,features6502995,features6502990,features6502996]
-locations = [labels6502997,labels6502995,labels6502990,labels6502996]
+pids = [features6502997,features6502995,features6502990,features6502996,features6502963,features6502964, \
+        features6502966,features6502967,features6502968,features6502969,features6502970,features6502976]
+locations = [labels6502997,labels6502995,labels6502990,labels6502996,labels6502963,labels6502964, \
+                labels6502966,labels6502967,labels6502968,labels6502969,labels6502970,labels6502976]
 for puzzle,loc in zip(pids,locations):
     max_lens.append(len(puzzle[0][0]))
     max_labels.append(len(loc[0]))
@@ -259,8 +290,8 @@ def train(x):
                 epoch_loss += c
             print '\n','Epoch', epoch + 1, 'completed out of', num_epochs, '\nLoss:',epoch_loss
 
-        saver.save(sess, os.getcwd()+'/models/locationDNN')
-        saver.export_meta_graph(os.getcwd()+'/models/locationDNN.meta')
+        saver.save(sess, os.getcwd()+'/models/locationDNN2')
+        saver.export_meta_graph(os.getcwd()+'/models/locationDNN2.meta')
 
         print '\n','Train Accuracy', accuracy.eval(feed_dict={x:real_X_9, y:real_y_9, keep_prob:TRAIN_KEEP_PROB})
         print '\n','Test Accuracy', accuracy.eval(feed_dict={x:test_real_X, y:test_real_y, keep_prob:1.0}) #X, y #mnist.test.images, mnist.test.labels
