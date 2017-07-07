@@ -19,41 +19,77 @@ from sklearn.cross_validation import train_test_split
 
 features6502997 = pickle.load(open(os.getcwd()+'/pickles/X-6502997-dev','rb'))
 labels6502997 = pickle.load(open(os.getcwd()+'/pickles/y-6502997-dev','rb'))
+labels6502997loc = pickle.load(open(os.getcwd()+'/pickles/y-6502997-loc-dev','rb'))
+for i in range(len(features6502997)):
+    features6502997[i].append(labels6502997loc[i])
 
 features6502995 = pickle.load(open(os.getcwd()+'/pickles/X-6502995-dev','rb'))
 labels6502995 = pickle.load(open(os.getcwd()+'/pickles/y-6502995-dev','rb'))
+labels6502995loc = pickle.load(open(os.getcwd()+'/pickles/y-6502995-loc-dev','rb'))
+for i in range(len(features6502995)):
+    features6502995[i].append(labels6502995loc[i])
 
 features6502990 = pickle.load(open(os.getcwd()+'/pickles/X-6502990-dev','rb'))
 labels6502990 = pickle.load(open(os.getcwd()+'/pickles/y-6502990-dev','rb'))
+labels6502990loc = pickle.load(open(os.getcwd()+'/pickles/y-6502990-loc-dev','rb'))
+for i in range(len(features6502990)):
+    features6502990[i].append(labels6502990loc[i])
 
 features6502996 = pickle.load(open(os.getcwd()+'/pickles/X-6502996-dev','rb'))
 labels6502996 = pickle.load(open(os.getcwd()+'/pickles/y-6502996-dev','rb'))
+labels6502996loc = pickle.load(open(os.getcwd()+'/pickles/y-6502996-loc-dev','rb'))
+for i in range(len(features6502996)):
+    features6502996[i].append(labels6502996loc[i])
 
 features6502963 = pickle.load(open(os.getcwd()+'/pickles/X-6502963','rb'))
 labels6502963 = pickle.load(open(os.getcwd()+'/pickles/y-6502963','rb'))
+labels6502963loc = pickle.load(open(os.getcwd()+'/pickles/y-6502963-loc','rb'))
+for i in range(len(features6502963)):
+    features6502963[i].append(labels6502963loc[i])
 
 features6502964 = pickle.load(open(os.getcwd()+'/pickles/X-6502964','rb'))
 labels6502964 = pickle.load(open(os.getcwd()+'/pickles/y-6502964','rb'))
+labels6502964loc = pickle.load(open(os.getcwd()+'/pickles/y-6502964-loc','rb'))
+for i in range(len(features6502964)):
+    features6502964[i].append(labels6502964loc[i])
 
 features6502966 = pickle.load(open(os.getcwd()+'/pickles/X-6502966','rb'))
 labels6502966 = pickle.load(open(os.getcwd()+'/pickles/y-6502966','rb'))
+labels6502966loc = pickle.load(open(os.getcwd()+'/pickles/y-6502966-loc','rb'))
+for i in range(len(features6502966)):
+    features6502966[i].append(labels6502966loc[i])
 
 features6502967 = pickle.load(open(os.getcwd()+'/pickles/X-6502967','rb'))
 labels6502967 = pickle.load(open(os.getcwd()+'/pickles/y-6502967','rb'))
+labels6502967loc = pickle.load(open(os.getcwd()+'/pickles/y-6502967-loc','rb'))
+for i in range(len(features6502967)):
+    features6502967[i].append(labels6502967loc[i])
 
 features6502968 = pickle.load(open(os.getcwd()+'/pickles/X-6502968','rb'))
 labels6502968 = pickle.load(open(os.getcwd()+'/pickles/y-6502968','rb'))
+labels6502968loc = pickle.load(open(os.getcwd()+'/pickles/y-6502968-loc','rb'))
+for i in range(len(features6502968)):
+    features6502968[i].append(labels6502968loc[i])
 
 features6502969 = pickle.load(open(os.getcwd()+'/pickles/X-6502969','rb'))
 labels6502969 = pickle.load(open(os.getcwd()+'/pickles/y-6502969','rb'))
+labels6502969loc = pickle.load(open(os.getcwd()+'/pickles/y-6502969-loc','rb'))
+for i in range(len(features6502969)):
+    features6502969[i].append(labels6502969loc[i])
 
 features6502970 = pickle.load(open(os.getcwd()+'/pickles/X-6502970','rb'))
 labels6502970 = pickle.load(open(os.getcwd()+'/pickles/y-6502970','rb'))
+labels6502970loc = pickle.load(open(os.getcwd()+'/pickles/y-6502970-loc','rb'))
+for i in range(len(features6502970)):
+    features6502970[i].append(labels6502970loc[i])
 
 features6502976 = pickle.load(open(os.getcwd()+'/pickles/X-6502976','rb'))
 labels6502976 = pickle.load(open(os.getcwd()+'/pickles/y-6502976','rb'))
+labels6502976loc = pickle.load(open(os.getcwd()+'/pickles/y-6502976-loc','rb'))
+for i in range(len(features6502976)):
+    features6502976[i].append(labels6502976loc[i])
 
-real_X = features6502997 + features6502995 + features6502990 + features6502996 + features6502963+features6502964 \
+real_X = features6502997 + features6502995 + features6502990 + features6502996 + features6502963 + features6502964 \
          + features6502966 + features6502967 + features6502968 + features6502969 + features6502970 + features6502976
 real_y = labels6502997 + labels6502995 + labels6502990 + labels6502996 + labels6502963 + labels6502964 \
          + labels6502966 + labels6502967 + labels6502968 + labels6502969 + labels6502970 + labels6502976
@@ -77,15 +113,15 @@ for i in indxs:
 TRAIN_KEEP_PROB = 1.0
 TEST_KEEP_PROB = 1.0
 learning_rate = 0.0001
-ne = 700
+ne = 500
 #tb_path = '/tensorboard/baseDNN-500-10-10-50-100'
 
-train = 500000
+train = 1800000
 test = 20
 num_nodes = 250
 len_puzzle = max(max_lens)
 
-TF_SHAPE = 6 * len_puzzle
+TF_SHAPE = 7 * len_puzzle
 
 ta_list = []
 

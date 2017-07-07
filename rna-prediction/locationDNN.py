@@ -82,10 +82,10 @@ for i in indxs_locations:
 TRAIN_KEEP_PROB = 1.0
 TEST_KEEP_PROB = 1.0
 learning_rate = 0.0001
-ne = 700
+ne = 500
 #tb_path = '/tensorboard/baseDNN-500-10-10-50-100'
 
-train = 500000
+train = 1800000
 test = 20
 num_nodes = 250
 len_puzzle = max(max_lens)
