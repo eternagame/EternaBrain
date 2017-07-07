@@ -8,8 +8,19 @@ import ast
 import pandas as pd
 import os
 
+def experience(puzzle,threshold):
+    experience_file = pd.read_csv(os.getcwd()+'/movesets/prior-experience-labs.txt', sep=' ', header='infer', delimiter=',')
+
+    puzzles_pid = experience_file.loc[experience_file['pid'] == puzzle]
+    spec = puzzles_pid.loc[puzzles_pid['prior_puzzle'] > threshold]
+    user_list = list(spec['uid'])
+    user_list = list(set(user_list))
+
+    return user_list
+
+
 def read_locks(pid):
-    puzzle_structure = pd.read_csv(os.getcwd()+'/movesets/puzzle-structure-data.txt', sep=" ", header='infer', delimiter='\t')
+    puzzle_structure = pd.read_csv(os.getcwd()+'/movesets/puzzle-structure-data.txt', sep=" ", header='infer', delimiter=',')
     puzzles_pid = puzzle_structure.loc[puzzle_structure['pid'] == pid]
 
     str_locks = ''.join(list(puzzles_pid['locks']))
