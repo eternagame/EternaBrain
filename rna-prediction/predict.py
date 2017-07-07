@@ -3,15 +3,17 @@ import os
 import numpy as np
 import RNA
 import copy
+from numpy.random import choice
 
-base_seq = [1,1,1,1,2,1,1,1,3,3,1,3,2] + ([0]*95)
+base_seq = [1,1,1,1,1,1,1,1,1,1,1,1,1] + ([0]*95)
 current_struc = [1,1,1,1,1,1,1,1,1,1,1,1,1] + ([0]*95)
-target_struc = [2,1,1,2,2,1,1,1,3,3,1,1,3] + ([0]*95)
+target_struc = [2,2,2,2,1,1,1,1,1,3,3,3,3] + ([0]*95)
 current_energy = [0.0] + ([0]*107)
-target_energy = [7.9] + ([0]*107)
-locks = [1,1,1,1,1,2,2,2,1,1,1,1,1] + ([0]*95)
+target_energy = [0.0] + ([0]*107)
+locks = [2,2,1,1,2,2,2,2,2,1,1,1,1] + ([0]*95)
 
 TF_SHAPE = 648
+len_puzzle = 13
 
 inputs2 = np.array([base_seq,current_struc,target_struc,current_energy,target_energy,locks])
 inputs = inputs2.reshape([-1,TF_SHAPE])
@@ -41,17 +43,36 @@ keep_prob2 = location_graph.get_tensor_by_name('keep_prob_placeholder:0')
 location_weights = location_graph.get_tensor_by_name('op7:0')
 
 location_feed_dict = {x2:inputs,keep_prob2:1.0}
-
+movesets = []
+iteration = 0
 while(True):
     if np.all(inputs2[1] == inputs2[2]):
         print("Puzzle Solved")
         break
     else:
-        base_change = np.argmax((sess1.run(base_weights,base_feed_dict))[0])
-        location_change = np.argmax((sess2.run(location_weights,location_feed_dict))[0])
+        location_array = ((sess2.run(location_weights,location_feed_dict))[0])
+
+        base_array = ((sess1.run(base_weights,base_feed_dict))[0])
+        base_array = base_array - min(base_array)
+        print base_array + 1635
+        print base_array
+        total = sum(base_array)
+        base_array = base_array/total
+        print base_array
+        print sum(base_array)
+        base_change = (choice([1,2,3,4],1,p=base_array,replace=False))[0]
+
+        location_array = location_array[:len_puzzle] - min(location_array[:len_puzzle])
+        total_l = sum(location_array)
+        location_array = location_array/total_l
+        location_change = (choice(list(range(1,len(location_array)+1)),1,p=location_array,replace=False))[0]
+
         inputs2 = inputs.reshape([6,TF_SHAPE/6])
         temp = copy.deepcopy(inputs2[0])
         temp[location_change] = base_change
+        move = [base_change,location_change]
+        movesets.append(move)
+        print move
         str_seq = []
         for i in temp:
             if i == 1:
@@ -82,7 +103,6 @@ while(True):
                 enc_struc.append(2)
             elif i == ')':
                 enc_struc.append(3)
-        print enc_struc
         inputs2[0] = temp
         inputs2[1][:len(enc_struc)] = enc_struc
         inputs2[3][0] = current_e
@@ -90,3 +110,5 @@ while(True):
         inputs = inputs2.reshape([-1,TF_SHAPE])
         base_feed_dict={x:inputs,keep_prob:1.0}
         location_feed_dict = {x2:inputs,keep_prob2:1.0}
+        iteration += 1
+        print iteration

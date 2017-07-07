@@ -29,5 +29,5 @@ feed_dict={x:inputs,keep_prob:1.0}
 op7 = graph.get_tensor_by_name('op7:0')
 
 print sess.run((op7),feed_dict)
-print np.argmax((sess.run(op7,feed_dict))[0]) + 1
+print np.argmax((sess.run(op7,feed_dict))[0])
 print sess.run(tf.argmax(op7),feed_dict)
