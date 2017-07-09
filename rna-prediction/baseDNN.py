@@ -89,6 +89,8 @@ labels6502976loc = pickle.load(open(os.getcwd()+'/pickles/y-6502976-loc','rb'))
 for i in range(len(features6502976)):
     features6502976[i].append(labels6502976loc[i])
 
+print "Unpickled"
+
 real_X = features6502997 + features6502995 + features6502990 + features6502996 + features6502963 + features6502964 \
          + features6502966 + features6502967 + features6502968 + features6502969 + features6502970 + features6502976
 real_y = labels6502997 + labels6502995 + labels6502990 + labels6502996 + labels6502963 + labels6502964 \
@@ -100,9 +102,9 @@ for puzzle in pids:
     max_lens.append(len(puzzle[0][0]))
 
 indxs = []
-for i in max_lens:
-     if i < max(max_lens):
-         indxs.append(max_lens.index(i))
+for i in range(len(max_lens)):
+     if max_lens[i] < max(max_lens):
+         indxs.append(i)
 
 for i in indxs:
      if pids[i]:
@@ -131,6 +133,8 @@ real_X_9 = np.array(real_X[0:train]).reshape([-1,TF_SHAPE])
 real_y_9 = np.array(real_y[0:train])
 test_real_X = np.array(real_X[train:train+test]).reshape([-1,TF_SHAPE])
 test_real_y = np.array(real_y[train:train+test])
+
+print "Data prepped"
 
 # real_X_9, test_real_X, real_y_9, test_real_y = np.array(train_test_split(real_X[0:train],real_y[0:train],test_size=0.01))
 # real_X_9, test_real_X, real_y_9, test_real_y = np.array(real_X_9).reshape([-1,TF_SHAPE]), np.array(test_real_X).reshape([-1,TF_SHAPE]), np.array(real_y_9), np.array(test_real_y)
@@ -278,7 +282,7 @@ def neuralNet(data):
 
     return ol
 
-
+print "Training"
 def train(x):
     prediction = neuralNet(x)
     #print prediction
@@ -303,7 +307,6 @@ def train(x):
         merged_summary = tf.summary.merge_all()
         #writer = tf.summary.FileWriter(os.getcwd()+tb_path)
         #writer.add_graph(sess.graph)
-
         for epoch in range(num_epochs):
             epoch_loss = 0
             for i in range(int(real_X_9.shape[0])/batch_size):#mnist.train.num_examples/batch_size)): # X.shape[0]

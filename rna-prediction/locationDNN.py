@@ -45,6 +45,8 @@ labels6502970 = pickle.load(open(os.getcwd()+'/pickles/y-6502970-loc','rb'))
 features6502976 = pickle.load(open(os.getcwd()+'/pickles/X-6502976','rb'))
 labels6502976 = pickle.load(open(os.getcwd()+'/pickles/y-6502976-loc','rb'))
 
+print "Unpickled"
+
 real_X = features6502997 + features6502995 + features6502990 + features6502996 + features6502963+features6502964 \
          + features6502966 + features6502967 + features6502968 + features6502969 + features6502970 + features6502976
 real_y = labels6502997 + labels6502995 + labels6502990 + labels6502996 + labels6502963 + labels6502964 \
@@ -61,11 +63,25 @@ for puzzle,loc in zip(pids,locations):
 
 indxs = []
 indxs_locations = []
-for i,j in zip(max_lens, max_labels):
-    if i < max(max_lens):
-        indxs.append(max_lens.index(i))
-    if j < max(max_labels):
-        indxs_locations.append(max_labels.index(i))
+# for i,j in zip(max_lens, max_labels):
+#     if i < max(max_lens):
+#         indxs.append(max_lens.index(i))
+#     if j < max(max_labels):
+#         indxs_locations.append(max_labels.index(i))
+
+# for i in range(len(max_labels)):
+#     if max_lens[i] < max(max_lens):
+#         indxs.append(i)
+#     elif max_labels[i] < max(max_labels):
+#         indxs_locations.append(i)
+
+for i in range(len(max_lens)):
+    if max_lens[i] < max(max_lens):
+        indxs.append(i)
+
+for i in range(len(max_labels)):
+    if max_labels[i] < max(max_labels):
+        indxs_locations.append(i)
 
 for i in indxs:
      if pids[i]:
@@ -100,6 +116,8 @@ real_X_9 = np.array(real_X[0:train]).reshape([-1,TF_SHAPE])
 real_y_9 = np.array(real_y[0:train])
 test_real_X = np.array(real_X[train:train+test]).reshape([-1,TF_SHAPE])
 test_real_y = np.array(real_y[train:train+test])
+
+print "Data prepped"
 
 # real_X_9, test_real_X, real_y_9, test_real_y = np.array(train_test_split(real_X[0:train],real_y[0:train],test_size=0.01))
 # real_X_9, test_real_X, real_y_9, test_real_y = np.array(real_X_9).reshape([-1,TF_SHAPE]), np.array(test_real_X).reshape([-1,TF_SHAPE]), np.array(real_y_9), np.array(test_real_y)
@@ -247,6 +265,7 @@ def neuralNet(data):
 
     return ol
 
+print "Training"
 
 def train(x):
     prediction = neuralNet(x)

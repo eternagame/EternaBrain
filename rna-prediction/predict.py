@@ -68,6 +68,8 @@ while(True):
         location_change = (choice(list(range(1,len(location_array)+1)),1,p=location_array,replace=False))[0]
 
         inputs2 = inputs.reshape([6,TF_SHAPE/6])
+
+        
         temp = copy.deepcopy(inputs2[0])
         temp[location_change] = base_change
         move = [base_change,location_change]
