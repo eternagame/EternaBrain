@@ -8,19 +8,57 @@ import ast
 import pandas as pd
 import os
 
-def experience(puzzle,threshold):
+def read_movesets_uid_pid(uid,pid,df='list'): # get data from user ID
+  moveset_dataFrame = pd.read_csv(os.getcwd()+'/movesets/moveset6-22a.txt', sep=" ", header="infer", delimiter='\t')
+  puzzles1 = moveset_dataFrame.loc[moveset_dataFrame['uid'] == uid]
+  puzzles2 = puzzles1.loc[puzzles1['pid'] == pid]
+  if df == "list":
+    return list(puzzles2['move_set'])
+  elif df == "df":
+    return puzzles2
+  '''
+  plist = list(puzzles2)
+  plist_dict = []
+  for i in plist:
+    s1 = (ast.literal_eval(i))
+    s2 = s1['moves']
+    plist_dict.append(s2)
+
+  return plist_dict
+  '''
+
+def experience(puzzles,threshold):
     experience_file = pd.read_csv(os.getcwd()+'/movesets/prior-experience-labs.txt', sep=' ', header='infer', delimiter=',')
-
-    puzzles_pid = experience_file.loc[experience_file['pid'] == puzzle]
-    spec = puzzles_pid.loc[puzzles_pid['prior_puzzle'] > threshold]
-    user_list = list(spec['uid'])
+    moveset_file = pd.read_csv(os.getcwd()+'/movesets/moveset6-22a.txt', sep=' ', header='infer', delimiter='\t')
+    # puzzles_pid = experience_file.loc[experience_file['pid'] == puzzles]
+    # spec = puzzles_pid.loc[puzzles_pid['prior_puzzle'] > threshold]
+    # user_list = list(spec['uid'])
+    # user_list = list(set(user_list))
+    #
+    # return user_list
+    user_list = []
+    for puzzle in puzzles:
+        puzzles_pid = experience_file.loc[experience_file['pid'] == puzzle]
+        spec = puzzles_pid.loc[puzzles_pid['prior_puzzle'] > threshold]
+        puzzle_players = list(spec['uid'])
+        puzzle_players = list(set(puzzle_players))
+        user_list.extend(puzzle_players)
+    print user_list
     user_list = list(set(user_list))
+    final_dict = []
+    for puzzle in (puzzles):
+        for user in user_list:
+            n = read_movesets_uid_pid(user,puzzle)
+            for i in n:
+                s1 = ast.literal_eval(i)
+                s2 = s1['moves']
+                final_dict.append(s2)
 
-    return user_list
+    return final_dict,user_list
 
 
 def read_locks(pid):
-    puzzle_structure = pd.read_csv(os.getcwd()+'/movesets/puzzle-structure-data.txt', sep=" ", header='infer', delimiter=',')
+    puzzle_structure = pd.read_csv(os.getcwd()+'/movesets/puzzle-structure-data.txt', sep=" ", header='infer', delimiter='\t')
     puzzles_pid = puzzle_structure.loc[puzzle_structure['pid'] == pid]
 
     str_locks = ''.join(list(puzzles_pid['locks']))
@@ -75,25 +113,6 @@ def read_movesets_uid(moveset_file,uid): # get data from user ID
     plist_dict.append(s2)
 
   return plist_dict, pidList
-
-def read_movesets_uid_pid(moveset_file,uid,pid,df='list'): # get data from user ID
-  moveset_dataFrame = pd.read_csv(moveset_file, sep=" ", header="infer", delimiter='\t')
-  puzzles1 = moveset_dataFrame.loc[moveset_dataFrame['uid'] == uid]
-  puzzles2 = puzzles1.loc[puzzles1['pid'] == pid]
-  if df == "list":
-    return list(puzzles2['move_set'])
-  elif df == "df":
-    return puzzles2
-  '''
-  plist = list(puzzles2)
-  plist_dict = []
-  for i in plist:
-    s1 = (ast.literal_eval(i))
-    s2 = s1['moves']
-    plist_dict.append(s2)
-
-  return plist_dict
-  '''
 
 
 def read_movesets_all(moveset_file): # get data from puzzle ID
