@@ -316,6 +316,9 @@ def train(x):
                 if i == 0:
                     [ta] = sess.run([accuracy],feed_dict={x:epoch_x,y:epoch_y,keep_prob:TRAIN_KEEP_PROB})
                     print 'Train Accuracy', ta
+                if epoch % 50 == 0:
+                    saver.save(sess,os.getcwd()+'/models/baseDNN5.ckpt')
+                    print 'Checkpoint saved'
                     # ta_list.append(ta)
                 # if i % 5 == 0:
                 #     s = sess.run(merged_summary,feed_dict={x:epoch_x,y:epoch_y,keep_prob:TRAIN_KEEP_PROB})

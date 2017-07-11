@@ -288,9 +288,9 @@ print "Training"
 def train(x):
     tower_grads = []
     opt = tf.train.AdamOptimizer(learning_rate)
-    with tf.variable_scope(tf.get_variable_scope()) as scope:
-        for i in xrange(2):
-            with tf.device('/gpu:%d' % i):
+    for i in xrange(4):
+        with tf.device('/gpu:%d' % i):
+            with tf.variable_scope('NN',reuse=i>0):
                 prediction = neuralNet(x)
                 #with tf.name_scope('cross_entropy'):
                 cost = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=prediction,labels=y))
@@ -301,10 +301,11 @@ def train(x):
 
                 #with tf.name_scope('accuracy'):
 
-                scope.reuse_variables()
                 grads = opt.compute_gradients(cost)
                 tower_grads.append(grads)
                 print grads
+                #scope.reuse_variables()
+
         grads = average_gradients(tower_grads)
         apply_gradient_op = opt.apply_gradients(grads)
         train_op = tf.group(apply_gradient_op)
@@ -332,8 +333,9 @@ def train(x):
                 if i == 0:
                     [ta] = sess.run([accuracy],feed_dict={x:epoch_x,y:epoch_y,keep_prob:TRAIN_KEEP_PROB})
                     print 'Train Accuracy', ta
-                if epoch % 10 == 0:
+                if epoch % 50 == 0 and i == 0:
                     saver.save(sess,os.getcwd()+'/models/baseDNN5.ckpt')
+                    print 'Checkpoint saved'
                     # ta_list.append(ta)
                 # if i % 5 == 0:
                 #     s = sess.run(merged_summary,feed_dict={x:epoch_x,y:epoch_y,keep_prob:TRAIN_KEEP_PROB})

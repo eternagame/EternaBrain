@@ -287,8 +287,8 @@ def encode_movesets_style_pr(moveset):
                             seqlist.append(4)
                     player.append(['paste',seqlist])
         ms.append(player)
-    lens = [len(j) for j in ms]
-    max_lens = max(lens)
+    #lens = [len(j) for j in ms]
+    #max_lens = max(lens)
     #ms2 = []
     '''
     for l in ms:
@@ -352,8 +352,8 @@ def encode_bases(moveset):
                     elif j['type'] == 'paste' or j['type'] == 'reset':
                         ms.append([1,1,1,1])
         #ms.append(player)
-    lens = [len(j) for j in ms]
-    max_lens = max(lens)
+    #lens = [len(j) for j in ms]
+    #max_lens = max(lens)
     #ms2 = []
     '''
     for l in ms:
@@ -391,8 +391,8 @@ def encode_location(moveset,puzzle_length):
                         loc_list.insert(loc,1)
                         ms.append(loc_list)
         #ms.append(player)
-    lens = [len(j) for j in ms]
-    max_lens = max(lens)
+    # lens = [len(j) for j in ms]
+    # max_lens = max(lens)
     #ms2 = []
     '''
     for l in ms:

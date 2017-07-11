@@ -171,8 +171,6 @@ X,y = [],[]
 # print bases,'\n'
 # print ecd
 
-
-
 bases = base_sequence_at_current_time_pr(encoded,encoded_bf)
 
 X = (structure_and_energy_at_current_time(bases,pid))
