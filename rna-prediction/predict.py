@@ -13,15 +13,17 @@ target_energy = [0.0] + ([0]*107)
 locks = [2,2,1,1,2,2,2,2,2,1,1,1,1] + ([0]*95)
 
 TF_SHAPE = 648
+BASE_SHAPE = 756
 len_puzzle = 13
+len_longest = 108
 
 inputs2 = np.array([base_seq,current_struc,target_struc,current_energy,target_energy,locks])
 inputs = inputs2.reshape([-1,TF_SHAPE])
 
 with tf.Graph().as_default() as base_graph:
-  saver1 = tf.train.import_meta_graph(os.getcwd()+'/models/baseDNN3.meta')
+    saver1 = tf.train.import_meta_graph(os.getcwd()+'/models/base/baseDNN3.meta')
 sess1 = tf.Session(graph=base_graph)
-saver1.restore(sess1,os.getcwd()+'/models/baseDNN3')
+saver1.restore(sess1,os.getcwd()+'/models/base/baseDNN3')
 
 x = base_graph.get_tensor_by_name('x_placeholder:0')
 y = base_graph.get_tensor_by_name('y_placeholder:0')
@@ -32,9 +34,9 @@ base_weights = base_graph.get_tensor_by_name('op7:0')
 base_feed_dict={x:inputs,keep_prob:1.0}
 
 with tf.Graph().as_default() as location_graph:
-  saver2 = tf.train.import_meta_graph(os.getcwd()+'/models/locationDNN.meta')
+    saver2 = tf.train.import_meta_graph(os.getcwd()+'/models/location/locationDNN.meta')
 sess2 = tf.Session(graph=location_graph)
-saver2.restore(sess2,os.getcwd()+'/models/locationDNN')
+saver2.restore(sess2,os.getcwd()+'/models/location/locationDNN')
 
 x2 = location_graph.get_tensor_by_name('x_placeholder:0')
 y2 = location_graph.get_tensor_by_name('y_placeholder:0')
@@ -52,9 +54,18 @@ while(True):
     else:
         location_array = ((sess2.run(location_weights,location_feed_dict))[0])
 
+        location_array = location_array[:len_puzzle] - min(location_array[:len_puzzle])
+        total_l = sum(location_array)
+        location_array = location_array/total_l
+        location_change = (choice(list(range(1,len(location_array)+1)),1,p=location_array,replace=False))[0]
+        la = [0.0] * len_longest
+        la[location_change] = 1.0
+        inputs = inputs.append(la)
+        base_feed_dict = {x:inputs,keep_prob:1.0}
+
         base_array = ((sess1.run(base_weights,base_feed_dict))[0])
         base_array = base_array - min(base_array)
-        print base_array + 1635
+        #print base_array + 1635
         print base_array
         total = sum(base_array)
         base_array = base_array/total
@@ -62,14 +73,8 @@ while(True):
         print sum(base_array)
         base_change = (choice([1,2,3,4],1,p=base_array,replace=False))[0]
 
-        location_array = location_array[:len_puzzle] - min(location_array[:len_puzzle])
-        total_l = sum(location_array)
-        location_array = location_array/total_l
-        location_change = (choice(list(range(1,len(location_array)+1)),1,p=location_array,replace=False))[0]
+        inputs2 = inputs.reshape([7,BASE_SHAPE/7])
 
-        inputs2 = inputs.reshape([6,TF_SHAPE/6])
-
-        
         temp = copy.deepcopy(inputs2[0])
         temp[location_change] = base_change
         move = [base_change,location_change]
@@ -109,7 +114,8 @@ while(True):
         inputs2[1][:len(enc_struc)] = enc_struc
         inputs2[3][0] = current_e
         inputs2[4][0] = target_e
-        inputs = inputs2.reshape([-1,TF_SHAPE])
+        inputs_loc = inputs2[0:6]
+        inputs = inputs_loc.reshape([-1,TF_SHAPE])
         base_feed_dict={x:inputs,keep_prob:1.0}
         location_feed_dict = {x2:inputs,keep_prob2:1.0}
         iteration += 1
