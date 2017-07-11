@@ -1,17 +1,8 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Fri Mar 31 21:49:27 2017
-
-@author: rohankoodli
-"""
-
 import numpy as np
 import os
 import tensorflow as tf
 import pickle
-from sklearn.cross_validation import train_test_split
 from tf_funcs import average_gradients
-#from matplotlib import pyplot as plt
 
 # enc0 = np.array([[[[1,2,3,4],[0,1,0,1],[-33,0,0,0]],[[1,2,3,4],[0,1,1,0],[-23,0,0,0]]],[[[3,3,3,3],[0,0,0,0],[2,0,0,0]],[[1,1,1,0],[1,0,1,0],[-23,0,0,0]]]])
 # ms0 = np.array([[[2,1],[4,3]],[[1,6],[2,9]]])
@@ -19,99 +10,90 @@ from tf_funcs import average_gradients
 # out = np.array([[4,2],[3,3]])
 
 features6502997 = pickle.load(open(os.getcwd()+'/pickles/X-6502997-dev','rb'))
-labels6502997 = pickle.load(open(os.getcwd()+'/pickles/y-6502997-dev','rb'))
-labels6502997loc = pickle.load(open(os.getcwd()+'/pickles/y-6502997-loc-dev','rb'))
-for i in range(len(features6502997)):
-    features6502997[i].append(labels6502997loc[i])
+labels6502997 = pickle.load(open(os.getcwd()+'/pickles/y-6502997-loc-dev','rb'))
 
 features6502995 = pickle.load(open(os.getcwd()+'/pickles/X-6502995-dev','rb'))
-labels6502995 = pickle.load(open(os.getcwd()+'/pickles/y-6502995-dev','rb'))
-labels6502995loc = pickle.load(open(os.getcwd()+'/pickles/y-6502995-loc-dev','rb'))
-for i in range(len(features6502995)):
-    features6502995[i].append(labels6502995loc[i])
+labels6502995 = pickle.load(open(os.getcwd()+'/pickles/y-6502995-loc-dev','rb'))
 
 features6502990 = pickle.load(open(os.getcwd()+'/pickles/X-6502990-dev','rb'))
-labels6502990 = pickle.load(open(os.getcwd()+'/pickles/y-6502990-dev','rb'))
-labels6502990loc = pickle.load(open(os.getcwd()+'/pickles/y-6502990-loc-dev','rb'))
-for i in range(len(features6502990)):
-    features6502990[i].append(labels6502990loc[i])
+labels6502990 = pickle.load(open(os.getcwd()+'/pickles/y-6502990-loc-dev','rb'))
 
 features6502996 = pickle.load(open(os.getcwd()+'/pickles/X-6502996-dev','rb'))
-labels6502996 = pickle.load(open(os.getcwd()+'/pickles/y-6502996-dev','rb'))
-labels6502996loc = pickle.load(open(os.getcwd()+'/pickles/y-6502996-loc-dev','rb'))
-for i in range(len(features6502996)):
-    features6502996[i].append(labels6502996loc[i])
+labels6502996 = pickle.load(open(os.getcwd()+'/pickles/y-6502996-loc-dev','rb'))
 
 features6502963 = pickle.load(open(os.getcwd()+'/pickles/X-6502963','rb'))
-labels6502963 = pickle.load(open(os.getcwd()+'/pickles/y-6502963','rb'))
-labels6502963loc = pickle.load(open(os.getcwd()+'/pickles/y-6502963-loc','rb'))
-for i in range(len(features6502963)):
-    features6502963[i].append(labels6502963loc[i])
+labels6502963 = pickle.load(open(os.getcwd()+'/pickles/y-6502963-loc','rb'))
 
 features6502964 = pickle.load(open(os.getcwd()+'/pickles/X-6502964','rb'))
-labels6502964 = pickle.load(open(os.getcwd()+'/pickles/y-6502964','rb'))
-labels6502964loc = pickle.load(open(os.getcwd()+'/pickles/y-6502964-loc','rb'))
-for i in range(len(features6502964)):
-    features6502964[i].append(labels6502964loc[i])
+labels6502964 = pickle.load(open(os.getcwd()+'/pickles/y-6502964-loc','rb'))
 
 features6502966 = pickle.load(open(os.getcwd()+'/pickles/X-6502966','rb'))
-labels6502966 = pickle.load(open(os.getcwd()+'/pickles/y-6502966','rb'))
-labels6502966loc = pickle.load(open(os.getcwd()+'/pickles/y-6502966-loc','rb'))
-for i in range(len(features6502966)):
-    features6502966[i].append(labels6502966loc[i])
+labels6502966 = pickle.load(open(os.getcwd()+'/pickles/y-6502966-loc','rb'))
 
 features6502967 = pickle.load(open(os.getcwd()+'/pickles/X-6502967','rb'))
-labels6502967 = pickle.load(open(os.getcwd()+'/pickles/y-6502967','rb'))
-labels6502967loc = pickle.load(open(os.getcwd()+'/pickles/y-6502967-loc','rb'))
-for i in range(len(features6502967)):
-    features6502967[i].append(labels6502967loc[i])
+labels6502967 = pickle.load(open(os.getcwd()+'/pickles/y-6502967-loc','rb'))
 
 features6502968 = pickle.load(open(os.getcwd()+'/pickles/X-6502968','rb'))
-labels6502968 = pickle.load(open(os.getcwd()+'/pickles/y-6502968','rb'))
-labels6502968loc = pickle.load(open(os.getcwd()+'/pickles/y-6502968-loc','rb'))
-for i in range(len(features6502968)):
-    features6502968[i].append(labels6502968loc[i])
+labels6502968 = pickle.load(open(os.getcwd()+'/pickles/y-6502968-loc','rb'))
 
 features6502969 = pickle.load(open(os.getcwd()+'/pickles/X-6502969','rb'))
-labels6502969 = pickle.load(open(os.getcwd()+'/pickles/y-6502969','rb'))
-labels6502969loc = pickle.load(open(os.getcwd()+'/pickles/y-6502969-loc','rb'))
-for i in range(len(features6502969)):
-    features6502969[i].append(labels6502969loc[i])
+labels6502969 = pickle.load(open(os.getcwd()+'/pickles/y-6502969-loc','rb'))
 
 features6502970 = pickle.load(open(os.getcwd()+'/pickles/X-6502970','rb'))
-labels6502970 = pickle.load(open(os.getcwd()+'/pickles/y-6502970','rb'))
-labels6502970loc = pickle.load(open(os.getcwd()+'/pickles/y-6502970-loc','rb'))
-for i in range(len(features6502970)):
-    features6502970[i].append(labels6502970loc[i])
+labels6502970 = pickle.load(open(os.getcwd()+'/pickles/y-6502970-loc','rb'))
 
 features6502976 = pickle.load(open(os.getcwd()+'/pickles/X-6502976','rb'))
-labels6502976 = pickle.load(open(os.getcwd()+'/pickles/y-6502976','rb'))
-labels6502976loc = pickle.load(open(os.getcwd()+'/pickles/y-6502976-loc','rb'))
-for i in range(len(features6502976)):
-    features6502976[i].append(labels6502976loc[i])
+labels6502976 = pickle.load(open(os.getcwd()+'/pickles/y-6502976-loc','rb'))
 
 print "Unpickled"
 
-real_X = features6502997 + features6502995 + features6502990 + features6502996 + features6502963 + features6502964 \
+real_X = features6502997 + features6502995 + features6502990 + features6502996 + features6502963+features6502964 \
          + features6502966 + features6502967 + features6502968 + features6502969 + features6502970 + features6502976
 real_y = labels6502997 + labels6502995 + labels6502990 + labels6502996 + labels6502963 + labels6502964 \
          + labels6502966 + labels6502967 + labels6502968 + labels6502969 + labels6502970 + labels6502976
 max_lens = []
+max_labels = []
 pids = [features6502997,features6502995,features6502990,features6502996,features6502963,features6502964, \
         features6502966,features6502967,features6502968,features6502969,features6502970,features6502976]
-for puzzle in pids:
+locations = [labels6502997,labels6502995,labels6502990,labels6502996,labels6502963,labels6502964, \
+                labels6502966,labels6502967,labels6502968,labels6502969,labels6502970,labels6502976]
+for puzzle,loc in zip(pids,locations):
     max_lens.append(len(puzzle[0][0]))
+    max_labels.append(len(loc[0]))
 
 indxs = []
+indxs_locations = []
+# for i,j in zip(max_lens, max_labels):
+#     if i < max(max_lens):
+#         indxs.append(max_lens.index(i))
+#     if j < max(max_labels):
+#         indxs_locations.append(max_labels.index(i))
+
+# for i in range(len(max_labels)):
+#     if max_lens[i] < max(max_lens):
+#         indxs.append(i)
+#     elif max_labels[i] < max(max_labels):
+#         indxs_locations.append(i)
+
 for i in range(len(max_lens)):
-     if max_lens[i] < max(max_lens):
-         indxs.append(i)
+    if max_lens[i] < max(max_lens):
+        indxs.append(i)
+
+for i in range(len(max_labels)):
+    if max_labels[i] < max(max_labels):
+        indxs_locations.append(i)
 
 for i in indxs:
      if pids[i]:
          for j in pids[i]:
              for k in j:
                  k.extend([0]*(max(max_lens) - len(k)))
+
+for i in indxs_locations:
+    if locations[i]:
+        for j in locations[i]:
+            j.extend([0]*(max(max_labels) - len(j)))
+
 
 TRAIN_KEEP_PROB = 1.0
 TEST_KEEP_PROB = 1.0
@@ -124,7 +106,9 @@ test = 20
 num_nodes = 250
 len_puzzle = max(max_lens)
 
-TF_SHAPE = 7 * len_puzzle
+TF_SHAPE = 6 * len_puzzle
+
+ta_list = []
 
 #testtest = np.array(real_X[train:train+test]).reshape([-1,TF_SHAPE])
 
@@ -157,12 +141,12 @@ n_nodes_hl8 = num_nodes
 n_nodes_hl9 = num_nodes
 n_nodes_hl10 = num_nodes
 
-n_classes = 4
-batch_size = 100 # load 100 features at a time
+n_classes = max(max_labels)
+batch_size = 128 # load 100 features at a time
 
 x = tf.placeholder('float',[None,TF_SHAPE],name="x_placeholder") # 216 with enc0
 y = tf.placeholder('float',name='y_placeholder')
-keep_prob = tf.placeholder('float',name='keep_prob_placeholder')
+keep_prob = tf.placeholder('float',name="keep_prob_placeholder")
 
 # enc = enc0.reshape([-1,16])
 # ms = ms0#.reshape([-1,4])
@@ -171,6 +155,7 @@ keep_prob = tf.placeholder('float',name='keep_prob_placeholder')
 # test_ms = test_ms0
 
 #e1 = tf.reshape(enc0,[])
+
 def neuralNet(data):
     hl_1 = {'weights':tf.get_variable('Weights1',[TF_SHAPE,n_nodes_hl1],initializer=tf.random_normal_initializer()),
             'biases':tf.get_variable('Biases1',[n_nodes_hl1],initializer=tf.random_normal_initializer())}
@@ -283,6 +268,7 @@ def neuralNet(data):
     return ol
 
 print "Training"
+
 def train(x):
     tower_grads = []
     opt = tf.train.AdamOptimizer(learning_rate)
@@ -317,16 +303,14 @@ def train(x):
 
     with tf.Session(config=tf.ConfigProto(allow_soft_placement=True, log_device_placement=False)) as sess:
         saver = tf.train.Saver()
+
         # UNCOMMENT THIS WHEN RESTARTING FROM Checkpoint
-        #saver.restore(sess, tf.train.latest_checkpoint(os.getcwd()+'/models/base/.'))
+        #saver.restore(sess, tf.train.latest_checkpoint(os.getcwd()+'/models/location/.'))
 
         sess.run(tf.global_variables_initializer())
         merged_summary = tf.summary.merge_all()
         #writer = tf.summary.FileWriter(os.getcwd()+tb_path)
         #writer.add_graph(sess.graph)
-        #
-        #graph = tf.get_default_graph()
-        #op7 = graph.get_tensor_by_name('op7:0')
 
         for epoch in range(num_epochs):
             epoch_loss = 0
@@ -338,7 +322,7 @@ def train(x):
                     [ta] = sess.run([accuracy],feed_dict={x:epoch_x,y:epoch_y,keep_prob:TRAIN_KEEP_PROB})
                     print 'Train Accuracy', ta
                 if epoch % 50 == 0 and i == 0:
-                    saver.save(sess,os.getcwd()+'/models/base/baseDNN5.ckpt')
+                    saver.save(sess,os.getcwd()+'/models/location/locationDNN2.ckpt')
                     print 'Checkpoint saved'
                     # ta_list.append(ta)
                 # if i % 5 == 0:
@@ -348,13 +332,11 @@ def train(x):
                 epoch_loss += c
             print '\n','Epoch', epoch + 1, 'completed out of', num_epochs, '\nLoss:',epoch_loss
 
-        saver.save(sess, os.getcwd()+'/models/base/baseDNN5')
-        saver.export_meta_graph(os.getcwd()+'/models/base/baseDNN5.meta')
+        saver.save(sess, os.getcwd()+'/models/location/locationDNN2')
+        saver.export_meta_graph(os.getcwd()+'/models/location/locationDNN2.meta')
 
         print '\n','Train Accuracy', accuracy.eval(feed_dict={x:real_X_9, y:real_y_9, keep_prob:TRAIN_KEEP_PROB})
         print '\n','Test Accuracy', accuracy.eval(feed_dict={x:test_real_X, y:test_real_y, keep_prob:1.0}) #X, y #mnist.test.images, mnist.test.labels
-
-        #saver.save(sess,'baseDNN',global_step=1000)
 
         #print 'Prediction',sess.run(prediction, feed_dict={x:testtest, keep_prob:1})
         #print 'Prediction',sess.run(tf.argmax(prediction,1), feed_dict={x:testtest, keep_prob:1})
@@ -369,7 +351,7 @@ def train(x):
 
         '''
         saver = tf.train.Saver()
-        saver.save(sess,os.getcwd()+'/models/base/baseDNN')
+        saver.save(sess,os.getcwd()+'/models/location/baseDNN')
         '''
 
         '''
@@ -383,7 +365,6 @@ def train(x):
 
     sess2 = tf.Session()
     with sess2.as_default():
-
     sess2.close()
     '''
 train(x)
