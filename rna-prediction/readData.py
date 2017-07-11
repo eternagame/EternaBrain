@@ -37,24 +37,44 @@ def experience(puzzles,threshold):
     #
     # return user_list
     user_list = []
+    lens = []
     for puzzle in puzzles:
         puzzles_pid = experience_file.loc[experience_file['pid'] == puzzle]
         spec = puzzles_pid.loc[puzzles_pid['prior_puzzle'] > threshold]
+        puzzle_nums = len(list(spec['pid']))
         puzzle_players = list(spec['uid'])
         puzzle_players = list(set(puzzle_players))
         user_list.extend(puzzle_players)
-    print user_list
+        lens.append(puzzle_nums)
+    #print user_list
     user_list = list(set(user_list))
     final_dict = []
+    bf_list = []
     for puzzle in (puzzles):
         for user in user_list:
             n = read_movesets_uid_pid(user,puzzle)
             for i in n:
                 s1 = ast.literal_eval(i)
                 s2 = s1['moves']
+                s3 = s1['begin_from']
                 final_dict.append(s2)
+                bf_list.append(s3)
 
-    return final_dict,user_list
+    encoded_bf = []
+    for start in bf_list:
+       enc = []
+       for i in start:
+           if i == 'A':
+               enc.append(1)
+           elif i == 'U':
+               enc.append(2)
+           elif i == 'G':
+               enc.append(3)
+           elif i == 'C':
+               enc.append(4)
+       encoded_bf.append(enc)
+
+    return final_dict,user_list,encoded_bf,lens
 
 
 def read_locks(pid):
