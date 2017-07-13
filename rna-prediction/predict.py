@@ -5,44 +5,57 @@ import RNA
 import copy
 from numpy.random import choice
 
-base_seq = [1,1,1,1,1,1,1,1,1,1,1,1,1] + ([0]*95)
-current_struc = [1,1,1,1,1,1,1,1,1,1,1,1,1] + ([0]*95)
-target_struc = [2,2,2,2,1,1,1,1,1,3,3,3,3] + ([0]*95)
-current_energy = [0.0] + ([0]*107)
-target_energy = [0.0] + ([0]*107)
-locks = [2,2,1,1,2,2,2,2,2,1,1,1,1] + ([0]*95)
-
 TF_SHAPE = 648
 BASE_SHAPE = 756
-len_puzzle = 13
+len_puzzle = 31
 len_longest = 108
+
+def encode_struc(dots):
+    s = []
+    for i in dots:
+        if i == '.':
+            s.append(1)
+        elif i == '(':
+            s.append(2)
+        elif i == ')':
+            s.append(3)
+    return s
+
+base_seq = [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,4,1,1,1,1,1,1,1] + ([0]*(len_longest - len_puzzle))
+current_struc = [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1] + ([0]*(len_longest - len_puzzle))
+target_struc = encode_struc('.(((((((((((...)))))....)))))).') + ([0]*(len_longest - len_puzzle))
+current_energy = [0.0] + ([0]*107)
+target_energy = [4.5] + ([0]*107)
+locks = [2,1,1,1,1,1,1,1,1,1,1,1,2,2,2,1,1,1,1,1,2,2,2,2,1,1,1,1,1,1,2] + ([0]*(len_longest - len_puzzle))
 
 inputs2 = np.array([base_seq,current_struc,target_struc,current_energy,target_energy,locks])
 inputs = inputs2.reshape([-1,TF_SHAPE])
 
 with tf.Graph().as_default() as base_graph:
-    saver1 = tf.train.import_meta_graph(os.getcwd()+'/models/base/baseDNN3.meta')
-sess1 = tf.Session(graph=base_graph)
-saver1.restore(sess1,os.getcwd()+'/models/base/baseDNN3')
+    saver1 = tf.train.import_meta_graph(os.getcwd()+'/models/base/baseDNN5.ckpt.meta')
+sess1 = tf.Session(graph=base_graph,config=tf.ConfigProto(allow_soft_placement=True,log_device_placement=True))
+saver1.restore(sess1,os.getcwd()+'/models/base/baseDNN5.ckpt')
 
 x = base_graph.get_tensor_by_name('x_placeholder:0')
 y = base_graph.get_tensor_by_name('y_placeholder:0')
 keep_prob = base_graph.get_tensor_by_name('keep_prob_placeholder:0')
 
-base_weights = base_graph.get_tensor_by_name('op7:0')
+base_weights = base_graph.get_tensor_by_name('NN/op7:0')
 
 base_feed_dict={x:inputs,keep_prob:1.0}
 
 with tf.Graph().as_default() as location_graph:
-    saver2 = tf.train.import_meta_graph(os.getcwd()+'/models/location/locationDNN.meta')
-sess2 = tf.Session(graph=location_graph)
-saver2.restore(sess2,os.getcwd()+'/models/location/locationDNN')
+    saver2 = tf.train.import_meta_graph(os.getcwd()+'/models/location/locationDNN2.ckpt.meta')
+sess2 = tf.Session(graph=location_graph,config=tf.ConfigProto(allow_soft_placement=True,log_device_placement=True))
+saver2.restore(sess2,os.getcwd()+'/models/location/locationDNN2.ckpt')
 
 x2 = location_graph.get_tensor_by_name('x_placeholder:0')
 y2 = location_graph.get_tensor_by_name('y_placeholder:0')
 keep_prob2 = location_graph.get_tensor_by_name('keep_prob_placeholder:0')
 
-location_weights = location_graph.get_tensor_by_name('op7:0')
+location_weights = location_graph.get_tensor_by_name('NN/op7:0')
+
+print 'models loaded'
 
 location_feed_dict = {x2:inputs,keep_prob2:1.0}
 movesets = []
@@ -54,13 +67,15 @@ while(True):
     else:
         location_array = ((sess2.run(location_weights,location_feed_dict))[0])
 
+        inputs2 = inputs.reshape([6,TF_SHAPE/6])
         location_array = location_array[:len_puzzle] - min(location_array[:len_puzzle])
         total_l = sum(location_array)
         location_array = location_array/total_l
         location_change = (choice(list(range(1,len(location_array)+1)),1,p=location_array,replace=False))[0]
         la = [0.0] * len_longest
         la[location_change] = 1.0
-        inputs = inputs.append(la)
+        inputs2 = np.append(inputs2, la)
+        inputs = inputs2.reshape([-1,BASE_SHAPE])
         base_feed_dict = {x:inputs,keep_prob:1.0}
 
         base_array = ((sess1.run(base_weights,base_feed_dict))[0])
