@@ -7,6 +7,20 @@ Created on Tue Dec 27 12:57:43 2016
 import ast
 import pandas as pd
 import os
+import numpy as np
+
+def experience(threshold):
+    full_problems = pd.read_csv(os.getcwd()+'/movesets/full-problems-nov2016.txt', sep=" ", header="infer", delimiter='\t')
+    user_df = full_problems[['uid']]
+    users = np.array(user_df,dtype=int) # list of users
+    experienced_players = []
+    unique, counts = np.unique(users, return_counts=True) # unique and counts are same length
+
+    for i in range(len(unique)):
+        if counts[i] >= threshold:
+            experienced_players.append(unique[i])
+
+    return experienced_players
 
 def read_movesets_uid_pid(uid,pid,df='list'): # get data from user ID
   moveset_dataFrame = pd.read_csv(os.getcwd()+'/movesets/moveset6-22a.txt', sep=" ", header="infer", delimiter='\t')
@@ -27,7 +41,7 @@ def read_movesets_uid_pid(uid,pid,df='list'): # get data from user ID
   return plist_dict
   '''
 
-def experience(puzzles,threshold):
+def experience_labs(puzzle,threshold):
     experience_file = pd.read_csv(os.getcwd()+'/movesets/prior-experience-labs.txt', sep=' ', header='infer', delimiter=',')
     moveset_file = pd.read_csv(os.getcwd()+'/movesets/moveset6-22a.txt', sep=' ', header='infer', delimiter='\t')
     # puzzles_pid = experience_file.loc[experience_file['pid'] == puzzles]
@@ -38,27 +52,27 @@ def experience(puzzles,threshold):
     # return user_list
     user_list = []
     lens = []
-    for puzzle in puzzles:
-        puzzles_pid = experience_file.loc[experience_file['pid'] == puzzle]
-        spec = puzzles_pid.loc[puzzles_pid['prior_puzzle'] > threshold]
-        puzzle_nums = len(list(spec['pid']))
-        puzzle_players = list(spec['uid'])
-        puzzle_players = list(set(puzzle_players))
-        user_list.extend(puzzle_players)
-        lens.append(puzzle_nums)
+    #for puzzle in puzzles:
+    puzzles_pid = experience_file.loc[experience_file['pid'] == puzzle]
+    spec = puzzles_pid.loc[puzzles_pid['prior_puzzle'] > threshold]
+    puzzle_nums = len(list(spec['pid']))
+    puzzle_players = list(spec['uid'])
+    puzzle_players = list(set(puzzle_players))
+    user_list.extend(puzzle_players)
+    lens.append(puzzle_nums)
     #print user_list
     user_list = list(set(user_list))
     final_dict = []
     bf_list = []
-    for puzzle in (puzzles):
-        for user in user_list:
-            n = read_movesets_uid_pid(user,puzzle)
-            for i in n:
-                s1 = ast.literal_eval(i)
-                s2 = s1['moves']
-                s3 = s1['begin_from']
-                final_dict.append(s2)
-                bf_list.append(s3)
+    #for puzzle in (puzzles):
+    for user in user_list:
+        n = read_movesets_uid_pid(user,puzzle)
+        for i in n:
+            s1 = ast.literal_eval(i)
+            s2 = s1['moves']
+            s3 = s1['begin_from']
+            final_dict.append(s2)
+            bf_list.append(s3)
 
     encoded_bf = []
     for start in bf_list:
