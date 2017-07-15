@@ -163,6 +163,28 @@ def structure_and_energy_at_current_time(base_seq,pid):
 
     return Z2
 
+def structure_and_energy_at_current_time_with_location(base_seq,pid,moveset,longest):
+    Z2 = []
+    for i in base_seq:
+        for j in i:
+            struc,energy = (getStructure(j))
+            enc_struc = []
+            for k in struc:
+                if k == '.':
+                    enc_struc.append(1)
+                elif k == '(':
+                    enc_struc.append(2)
+                elif k == ')':
+                    enc_struc.append(3)
+            target = read_structure(pid)
+            target_energy = getTargetEnergy(j,target)
+            locks = read_locks(pid)
+            location = encode_location(moveset,longest)
+            attrs = [j,enc_struc,target,energy,target_energy,locks,location]
+            Z2.append(attrs)
+
+    return Z2
+
 def encode_movesets(moveset):
     ms = []
     #lens = [len(x) for j in x for x in moveset]

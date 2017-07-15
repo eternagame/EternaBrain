@@ -3,6 +3,7 @@ import os
 from readData import experience_labs, experience, read_movesets_uid_pid
 from encodeRNA import base_sequence_at_current_time_pr, structure_and_energy_at_current_time
 from encodeRNA import encode_bases,encode_location,encode_movesets_style_pr
+from encodeRNA import structure_and_energy_at_current_time_with_location
 #import pandas as pd
 import ast
 import concurrent.futures
@@ -111,10 +112,12 @@ def read(pid):
     bases = base_sequence_at_current_time_pr(encoded,encoded_bf)
     print 'encoded base seqs'
     #bases = base_sequence_at_current_time_pr(encoded[1006],encoded_bf[1006])
-    X = np.array(structure_and_energy_at_current_time(bases,pid,final_dict,len_longest))
+    X = np.array(structure_and_energy_at_current_time(bases,pid))
+    X2 = np.array(structure_and_energy_at_current_time_with_location(bases,pid,final_dict,len_longest))
     print 'encoded strucs energy and locks'
     print len(X)
-    np.save(open(os.getcwd()+'/npsaves/X-exp-'+str(pid),'wb'),X)
+    np.save(open(os.getcwd()+'/npsaves/X-exp-base-'+str(pid),'wb'),X2)
+    np.save(open(os.getcwd()+'/npsaves/X-exp-loc-'+str(pid),'wb'),X)
     np.save(open(os.getcwd()+'/npsaves/y-exp-base-'+str(pid),'wb'),encoded_base)
     np.save(open(os.getcwd()+'/npsaves/y-exp-loc-'+str(pid),'wb'),encoded_loc)
 
