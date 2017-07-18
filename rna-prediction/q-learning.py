@@ -5,6 +5,7 @@ from multiprocessing import Pool, Process
 from contextlib import closing
 import concurrent.futures
 import RNA
+from eterna_score import eternabot_score
 
 def hot_one_state(seq,index,base):
     #array = np.zeros(NUM_STATES)
@@ -12,34 +13,34 @@ def hot_one_state(seq,index,base):
     copied_seq[index] = base
     return copied_seq
 
-def convert(base_seq):
-    str_struc = []
-    for i in base_seq:
-        if i == 1:
-            str_struc.append('A')
-        elif i == 2:
-            str_struc.append('U')
-        elif i == 3:
-            str_struc.append('G')
-        elif i == 4:
-            str_struc.append('C')
-    struc = ''.join(str_struc)
-    s,_ = RNA.fold(struc)
-    return_struc = []
-    for i in s:
-        if i == '.':
-            return_struc.append(1)
-        elif i == '(':
-            return_struc.append(2)
-        elif i == ')':
-            return_struc.append(3)
-
-    return np.array(return_struc)
+# def convert(base_seq):
+#     str_struc = []
+#     for i in base_seq:
+#         if i == [1,0,0,0]:
+#             str_struc.append('A')
+#         elif i == [0,1,0,0]:
+#             str_struc.append('U')
+#         elif i == [0,0,1,0]:
+#             str_struc.append('G')
+#         elif i == [0,0,0,1]:
+#             str_struc.append('C')
+#     struc = ''.join(str_struc)
+#     s,_ = RNA.fold(struc)
+#     return_struc = []
+#     for i in s:
+#         if i == '.':
+#             return_struc.append(1)
+#         elif i == '(':
+#             return_struc.append(2)
+#         elif i == ')':
+#             return_struc.append(3)
+#
+#     return np.array(return_struc)
 
 len_longest = 108
 
 base_seq = [1,1,1,1,1,1,1,1,1,1,1,1,1]
-current = convert(base_seq)
+#current = convert(base_seq)
 target_struc = np.array([2,2,2,1,1,1,3,3,3])
 len_puzzle = len(target_struc)
 len_puzzle_float = len(target_struc) * 1.0
@@ -61,16 +62,22 @@ train_operation = tf.train.AdamOptimizer(0.1).minimize(loss)
 
 session.run(tf.global_variables_initializer())
 
-for i in range(260):
+for i in range(3):
     state_batch = []
     rewards_batch = []
+    rand_seq = []
+    for i in range(len_puzzle):
+        seq = np.zeros(4)
+        seq[0] = 1
+        np.random.shuffle(seq)
+        rand_seq.append(seq)
+    rand_seq_flat = np.array(rand_seq).reshape([-1,4*len_puzzle])
+    base_reward = eternabot_score(rand_seq)['finalscore'] / 100.0
 
-    seq = np.random.randint(1,5,size=(len_puzzle))
-    sec_struc = convert(seq)
     # create a batch of states
     for state_index in range(len_puzzle):
-        state_batch.append(seq)
-        base_reward = (np.sum(sec_struc == target_struc))/len_puzzle_float
+
+        state_batch.append(rand_seq_flat)
         #print seq
         #print sec_struc
 
@@ -79,10 +86,10 @@ for i in range(260):
         # minus2_action_index = (state_index - 2) % NUM_STATES
         # plus2_action_index = (state_index + 2) % NUM_STATES
 
-        A = 1
-        U = 2
-        G = 3
-        C = 4
+        A = np.array([1.,0.,0.,0.])
+        U = np.array([0.,1.,0.,0.])
+        G = np.array([0.,0.,1.,0.])
+        C = np.array([0.,0.,0.,1.])
 
         # minus_action_state_reward = session.run(output, feed_dict={state: [hot_one_state(state_index,1)]})[0]
         # plus_action_state_reward = session.run(output, feed_dict={state: [hot_one_state(state_index,2)]})[0]
@@ -93,24 +100,26 @@ for i in range(260):
         # g_action_state_reward = session.run(output, feed_dict={state: [hot_one_state(seq,state_index,G)]})[0]
         # c_action_state_reward = session.run(output, feed_dict={state: [hot_one_state(seq,state_index,C)]})[0]
 
-        a_change = hot_one_state(seq,state_index,A)
-        u_change = hot_one_state(seq,state_index,U)
-        g_change = hot_one_state(seq,state_index,G)
-        c_change = hot_one_state(seq,state_index,C)
+        a_change = hot_one_state(rand_seq,state_index,A)
+        u_change = hot_one_state(rand_seq,state_index,U)
+        g_change = hot_one_state(rand_seq,state_index,G)
+        c_change = hot_one_state(rand_seq,state_index,C)
 
-        a_struc = convert(a_change)
-        u_struc = convert(u_change)
-        g_struc = convert(g_change)
-        c_struc = convert(c_change)
+        a_reward = eternabot_score(a_change)['finalscore'] / 100.0
 
-        if a_struc.all() == sec_struc.all() or u_struc.all() == sec_struc.all() \
-                or g_struc.all() == sec_struc.all() or c_struc.all() == sec_struc.all():
-            a_reward,u_reward,g_reward,c_reward = 0,0,0,0
-        else:
-            a_reward = (np.sum(a_struc == target_struc))/len_puzzle_float
-            u_reward = (np.sum(u_struc == target_struc))/len_puzzle_float
-            g_reward = (np.sum(g_struc == target_struc))/len_puzzle_float
-            c_reward = (np.sum(c_struc == target_struc))/len_puzzle_float
+        # a_struc = convert(a_change)
+        # u_struc = convert(u_change)
+        # g_struc = convert(g_change)
+        # c_struc = convert(c_change)
+
+        # if a_struc.all() == sec_struc.all() or u_struc.all() == sec_struc.all() \
+        #         or g_struc.all() == sec_struc.all() or c_struc.all() == sec_struc.all():
+        #     a_reward,u_reward,g_reward,c_reward = 0,0,0,0
+        # else:
+        #     a_reward = (np.sum(a_struc == target_struc))/len_puzzle_float
+        #     u_reward = (np.sum(u_struc == target_struc))/len_puzzle_float
+        #     g_reward = (np.sum(g_struc == target_struc))/len_puzzle_float
+        #     c_reward = (np.sum(c_struc == target_struc))/len_puzzle_float
         #print a_change,u_change,g_change,c_change
 
         # these action rewards are the results of the Q function for this state and the actions minus or plus
@@ -123,6 +132,11 @@ for i in range(260):
                           base_reward + GAMMA * u_reward,
                           base_reward + GAMMA * g_reward,
                           base_reward + GAMMA * c_reward]
+
+        # action_rewards = [a_reward,
+        #                   u_reward,
+        #                   g_reward,
+        #                   c_reward]
         #print action_rewards
         rewards_batch.append(action_rewards)
 
