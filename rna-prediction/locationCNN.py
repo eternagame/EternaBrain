@@ -108,12 +108,9 @@ pids = []
 
 for pid in content:
     feats = pickle.load(open(os.getcwd()+'/pickles/X-exp-loc-'+str(pid),'rb'))
-    ybase = pickle.load(open(os.getcwd()+'/pickles/y-exp-base-'+str(pid),'rb'))
     yloc = pickle.load(open(os.getcwd()+'/pickles/y-exp-loc-'+str(pid),'rb'))
-    for i in range(len(feats)):
-        feats[i].append(yloc[i])
     real_X.extend(feats)
-    real_y.extend(ybase)
+    real_y.extend(yloc)
     pids.append(feats)
 
 print "Unpickled"
@@ -157,7 +154,7 @@ test = 50
 num_nodes = 250
 len_puzzle = abs_max
 
-TF_SHAPE = 7 * len_puzzle
+TF_SHAPE = 6 * len_puzzle
 
 #testtest = np.array(real_X[train:train+test]).reshape([-1,TF_SHAPE])
 
@@ -190,7 +187,7 @@ n_nodes_hl8 = num_nodes
 n_nodes_hl9 = num_nodes
 n_nodes_hl10 = num_nodes
 
-n_classes = 4
+n_classes = 350
 batch_size = 100 # load 100 features at a time
 
 x = tf.placeholder('float',[None,TF_SHAPE],name="x_placeholder") # 216 with enc0
@@ -212,11 +209,11 @@ def maxpool2d(x):
     return tf.nn.max_pool(x, ksize=[1,2,2,1], strides=[1,2,2,1], padding="SAME")
 
 def convNeuralNet(x):
-    weights = {'w_conv1':tf.get_variable('w_conv1',[7,7,1,32],initializer=tf.random_normal_initializer()),
-               'w_conv2':tf.get_variable('w_conv2',[7,7,32,64],initializer=tf.random_normal_initializer()),
-               'w_conv3':tf.get_variable('w_conv3',[7,7,64,128],initializer=tf.random_normal_initializer()),
-               'w_conv4':tf.get_variable('w_conv4',[7,7,128,256],initializer=tf.random_normal_initializer()),
-               'w_conv5':tf.get_variable('w_conv5',[7,7,256,512],initializer=tf.random_normal_initializer()),
+    weights = {'w_conv1':tf.get_variable('w_conv1',[6,6,1,32],initializer=tf.random_normal_initializer()),
+               'w_conv2':tf.get_variable('w_conv2',[6,6,32,64],initializer=tf.random_normal_initializer()),
+               'w_conv3':tf.get_variable('w_conv3',[6,6,64,128],initializer=tf.random_normal_initializer()),
+               'w_conv4':tf.get_variable('w_conv4',[6,6,128,256],initializer=tf.random_normal_initializer()),
+               'w_conv5':tf.get_variable('w_conv5',[6,6,256,512],initializer=tf.random_normal_initializer()),
             #    'w_conv6':tf.get_variable('w_conv6',[5,5,512,1024],initializer=tf.random_normal_initializer()),
             #    'w_conv7':tf.get_variable('w_conv7',[5,5,1024,2048],initializer=tf.random_normal_initializer()),
             #    'w_conv8':tf.get_variable('w_conv8',[5,5,2048,4096],initializer=tf.random_normal_initializer()),
@@ -242,7 +239,7 @@ def convNeuralNet(x):
               'b_fc3':tf.get_variable('b_fc3',[4096],initializer=tf.random_normal_initializer()),
               'out':tf.get_variable('b_out',[n_classes],initializer=tf.random_normal_initializer())}
 
-    x = tf.reshape(x,shape=[-1,7,len_puzzle,1])
+    x = tf.reshape(x,shape=[-1,6,len_puzzle,1])
 
     conv1 = conv2d(x, weights['w_conv1'])
     conv1 = maxpool2d(conv1)
@@ -307,7 +304,7 @@ def convNeuralNet(x):
     # tf.summary.histogram('weights-hl_5',hl_5['weights'])
     # tf.summary.histogram('biases-hl_5',hl_5['biases'])
     # tf.summary.histogram('act-hl_5',l5)
-
+    #
     # tf.summary.histogram('weights-hl_6',hl_6['weights'])
     # tf.summary.histogram('biases-hl_6',hl_6['biases'])
     # tf.summary.histogram('act-hl_6',l6)
@@ -364,7 +361,7 @@ def train(x):
                     [ta] = sess.run([accuracy],feed_dict={x:epoch_x,y:epoch_y,keep_prob:TRAIN_KEEP_PROB})
                     print 'Train Accuracy', ta
                 if epoch % 50 == 0 and i == 0:
-                    saver.save(sess,os.getcwd()+'/models/baseCNN1.ckpt')
+                    saver.save(sess,os.getcwd()+'/models/locationCNN1.ckpt')
                     print 'Checkpoint saved'
                     # ta_list.append(ta)
                 # if i % 5 == 0:
@@ -374,9 +371,9 @@ def train(x):
                 epoch_loss += c
             print '\n','Epoch', epoch + 1, 'completed out of', num_epochs, '\nLoss:',epoch_loss
 
-        saver.save(sess, os.getcwd()+'/models/baseCNN1')
-        saver.export_meta_graph(os.getcwd()+'/models/baseCNN1.meta')
-        print 'Model saved'
+        saver.save(sess, os.getcwd()+'/models/locationCNN1')
+        saver.export_meta_graph(os.getcwd()+'/models/locationCNN1.meta')
+        print "Model saved"
 
         print '\n','Train Accuracy', accuracy.eval(feed_dict={x:real_X_9, y:real_y_9, keep_prob:TRAIN_KEEP_PROB})
         print '\n','Test Accuracy', accuracy.eval(feed_dict={x:test_real_X, y:test_real_y, keep_prob:1.0}) #X, y #mnist.test.images, mnist.test.labels
