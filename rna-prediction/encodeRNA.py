@@ -156,8 +156,11 @@ def structure_and_energy_at_current_time(base_seq,pid):
                 elif k == ')':
                     enc_struc.append(3)
             target = read_structure(pid)
+            len_puzzle = len(target)
             target_energy = getTargetEnergy(j,target)
             locks = read_locks(pid)
+            if locks == "None":
+                locks = [1]*len_puzzle
             attrs = [j,enc_struc,target,energy,target_energy,locks]
             Z2.append(attrs)
 
@@ -177,8 +180,11 @@ def structure_and_energy_at_current_time_with_location(base_seq,pid,moveset,long
                 elif k == ')':
                     enc_struc.append(3)
             target = read_structure(pid)
+            len_puzzle = len(target)
             target_energy = getTargetEnergy(j,target)
             locks = read_locks(pid)
+            if locks == "None":
+                locks = [1]*len_puzzle
             location = encode_location(moveset,longest)
             attrs = [j,enc_struc,target,energy,target_energy,locks,location]
             Z2.append(attrs)
