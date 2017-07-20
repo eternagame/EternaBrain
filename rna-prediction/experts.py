@@ -128,7 +128,7 @@ def read(pid,uidList):
     print 'encoded base seqs'
     #bases = base_sequence_at_current_time_pr(encoded[1006],encoded_bf[1006])
     X = (structure_and_energy_at_current_time(bases,pid))
-    X2 = (structure_and_energy_at_current_time_with_location(bases,pid,final_dict,len_longest))
+    #X2 = (structure_and_energy_at_current_time_with_location(bases,pid,final_dict,len_longest))
     print 'encoded strucs energy and locks'
     print len(X)
     # np.save(open(os.getcwd()+'/npsaves/X-exp-base-eli.npy','wb'),X2)
@@ -136,7 +136,7 @@ def read(pid,uidList):
     # np.save(open(os.getcwd()+'/npsaves/y-exp-base-eli.npy','wb'),encoded_base)
     # np.save(open(os.getcwd()+'/npsaves/y-exp-loc-eli.npy','wb'),encoded_loc)
 
-    pickle.dump(X2,open(os.getcwd()+'/pickles/X-exp-base-'+str(pid),'wb'))
+    #pickle.dump(X2,open(os.getcwd()+'/pickles/X-exp-base-'+str(pid),'wb'))
     pickle.dump(X, open(os.getcwd()+'/pickles/X-exp-loc-'+str(pid),'wb'))
     pickle.dump(encoded_base,open(os.getcwd()+'/pickles/y-exp-base-'+str(pid),'wb'))
     pickle.dump(encoded_loc,open(os.getcwd()+'/pickles/y-exp-loc-'+str(pid),'wb'))
@@ -144,7 +144,7 @@ def read(pid,uidList):
 def run(_):
     return prep()
 
-for i in content[30:78]:
+for i in content[78:]:
     read(i,uidList)
 # with concurrent.futures.ProcessPoolExecutor() as executor:
 #     #x = [6502996,6502990]
