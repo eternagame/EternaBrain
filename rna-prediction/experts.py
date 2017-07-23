@@ -18,7 +18,7 @@ content = [int(x) for x in content]
 progression = [6502966,6502968,6502973,6502976,6502984,6502985,6502993, \
                 6502994,6502995,6502996,6502997,6502998,6502999,6503000] # 6502957
 content.extend(progression)
-uidList = experience(3000)
+uidList = experience(1000)
 #print content
 len_longest = 350
 
@@ -137,14 +137,14 @@ def read(pid,uidList):
     # np.save(open(os.getcwd()+'/npsaves/y-exp-loc-eli.npy','wb'),encoded_loc)
 
     #pickle.dump(X2,open(os.getcwd()+'/pickles/X-exp-base-'+str(pid),'wb'))
-    pickle.dump(X, open(os.getcwd()+'/pickles/X-exp-loc-'+str(pid),'wb'))
-    pickle.dump(encoded_base,open(os.getcwd()+'/pickles/y-exp-base-'+str(pid),'wb'))
-    pickle.dump(encoded_loc,open(os.getcwd()+'/pickles/y-exp-loc-'+str(pid),'wb'))
+    pickle.dump(X, open(os.getcwd()+'/pickles/X2-exp-loc-'+str(pid),'wb'))
+    pickle.dump(encoded_base,open(os.getcwd()+'/pickles/y2-exp-base-'+str(pid),'wb'))
+    pickle.dump(encoded_loc,open(os.getcwd()+'/pickles/y2-exp-loc-'+str(pid),'wb'))
 
 def run(_):
     return prep()
 
-for i in content[78:]:
+for i in content[:50]:
     read(i,uidList)
 # with concurrent.futures.ProcessPoolExecutor() as executor:
 #     #x = [6502996,6502990]
