@@ -11,7 +11,7 @@ from tf_funcs import average_gradients
 
 features6502997 = pickle.load(open(os.getcwd()+'/pickles/X-6502997-dev','rb'))
 labels6502997 = pickle.load(open(os.getcwd()+'/pickles/y-6502997-loc-dev','rb'))
-
+print 'unpickled 1'
 features6502995 = pickle.load(open(os.getcwd()+'/pickles/X-6502995-dev','rb'))
 labels6502995 = pickle.load(open(os.getcwd()+'/pickles/y-6502995-loc-dev','rb'))
 
@@ -45,7 +45,7 @@ labels6502970 = pickle.load(open(os.getcwd()+'/pickles/y-6502970-loc','rb'))
 features6502976 = pickle.load(open(os.getcwd()+'/pickles/X-6502976','rb'))
 labels6502976 = pickle.load(open(os.getcwd()+'/pickles/y-6502976-loc','rb'))
 
-print "Unpickled"
+print "Unpickled 2"
 
 real_X = features6502997 + features6502995 + features6502990 + features6502996 + features6502963+features6502964 \
          + features6502966 + features6502967 + features6502968 + features6502969 + features6502970 + features6502976
@@ -98,7 +98,7 @@ for i in indxs_locations:
 TRAIN_KEEP_PROB = 1.0
 TEST_KEEP_PROB = 1.0
 learning_rate = 0.0001
-ne = 500
+ne = 300
 #tb_path = '/tensorboard/baseDNN-500-10-10-50-100'
 
 train = 1800000
@@ -272,7 +272,7 @@ print "Training"
 def train(x):
     tower_grads = []
     opt = tf.train.AdamOptimizer(learning_rate)
-    for i in xrange(4):
+    for i in xrange(8):
         with tf.device('/gpu:%d' % i):
             with tf.variable_scope('NN',reuse=i>0):
                 prediction = neuralNet(x)
@@ -301,7 +301,7 @@ def train(x):
     tf.summary.scalar('accuracy',accuracy)
     num_epochs = ne
 
-    with tf.Session(config=tf.ConfigProto(allow_soft_placement=True, log_device_placement=False)) as sess:
+    with tf.Session(config=tf.ConfigProto(allow_soft_placement=True, log_device_placement=True)) as sess:
         saver = tf.train.Saver()
 
         # UNCOMMENT THIS WHEN RESTARTING FROM Checkpoint
@@ -322,7 +322,7 @@ def train(x):
                     [ta] = sess.run([accuracy],feed_dict={x:epoch_x,y:epoch_y,keep_prob:TRAIN_KEEP_PROB})
                     print 'Train Accuracy', ta
                 if epoch % 50 == 0 and i == 0:
-                    saver.save(sess,os.getcwd()+'/models/location/locationDNN2.ckpt')
+                    saver.save(sess,os.getcwd()+'/models/location/locationDNN4.ckpt')
                     print 'Checkpoint saved'
                     # ta_list.append(ta)
                 # if i % 5 == 0:
@@ -332,8 +332,8 @@ def train(x):
                 epoch_loss += c
             print '\n','Epoch', epoch + 1, 'completed out of', num_epochs, '\nLoss:',epoch_loss
 
-        saver.save(sess, os.getcwd()+'/models/location/locationDNN2')
-        saver.export_meta_graph(os.getcwd()+'/models/location/locationDNN2.meta')
+        saver.save(sess, os.getcwd()+'/models/location/locationDNN4')
+        saver.export_meta_graph(os.getcwd()+'/models/location/locationDNN4.meta')
 
         print '\n','Train Accuracy', accuracy.eval(feed_dict={x:real_X_9, y:real_y_9, keep_prob:TRAIN_KEEP_PROB})
         print '\n','Test Accuracy', accuracy.eval(feed_dict={x:test_real_X, y:test_real_y, keep_prob:1.0}) #X, y #mnist.test.images, mnist.test.labels

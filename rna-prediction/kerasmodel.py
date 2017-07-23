@@ -13,7 +13,7 @@ learning_rate = 0.00001
 #tb_path = '/tensorboard/baseDNN-500-10-10-50-100'
 
 train = 5000
-test = 1
+test = 10
 num_nodes = 250
 len_puzzle = 38
 
@@ -33,10 +33,10 @@ test_y = np.array(real_y[train:train+test])
 model = Sequential()
 
 model.add(Dense(units=50, input_dim=152))
-model.add(Activation('relu'))
+model.add(Activation('sigmoid'))
 
 model.add(Dense(units=10))
-model.add(Activation('softmax'))
+model.add(Activation('sigmoid'))
 
 # model.add(Dense(units=50))
 # model.add(Activation('relu'))
@@ -65,9 +65,9 @@ model.add(Activation('softmax'))
 model.add(Dropout(TRAIN_KEEP_PROB))
 
 model.add(Dense(units=4))
-model.add(Activation('relu'))
+model.add(Activation('sigmoid'))
 
-adam = keras.optimizers.Adam(lr=learning_rate, clipnorm=1)
+adam = keras.optimizers.Adam(lr=learning_rate)
 
 model.compile(loss=keras.losses.categorical_crossentropy,
               optimizer=adam,

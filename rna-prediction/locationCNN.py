@@ -29,17 +29,24 @@ content.extend(progression)
 content.remove(6502966)
 content.remove(6502976)
 content.remove(6502984)
+content.remove(4960718)
+content.remove(3468526)
+content.remove(3468547)
+#content.remove(3522605)
 
 real_X = []
 real_y = []
 pids = []
 
 for pid in content:
-    feats = pickle.load(open(os.getcwd()+'/pickles/X-exp-loc-'+str(pid),'rb'))
-    yloc = pickle.load(open(os.getcwd()+'/pickles/y-exp-loc-'+str(pid),'rb'))
-    real_X.extend(feats)
-    real_y.extend(yloc)
-    pids.append(feats)
+    try:
+        feats = pickle.load(open(os.getcwd()+'/pickles/X2-exp-loc-'+str(pid),'rb'))
+        yloc = pickle.load(open(os.getcwd()+'/pickles/y2-exp-loc-'+str(pid),'rb'))
+        real_X.extend(feats)
+        real_y.extend(yloc)
+        pids.append(feats)
+    except IOError:
+        continue
 
 print "Unpickled"
 
@@ -306,7 +313,7 @@ def train(x):
                     [ta] = sess.run([accuracy],feed_dict={x:epoch_x,y:epoch_y,keep_prob:TRAIN_KEEP_PROB})
                     print 'Train Accuracy', ta
                 if epoch % 50 == 0 and i == 0:
-                    saver.save(sess,os.getcwd()+'/models/location/locationCNN4.ckpt')
+                    saver.save(sess,os.getcwd()+'/models/location/locationCNN5.ckpt')
                     print 'Checkpoint saved'
                     # ta_list.append(ta)
                 # if i % 5 == 0:
@@ -316,8 +323,8 @@ def train(x):
                 epoch_loss += c
             print '\n','Epoch', epoch + 1, 'completed out of', num_epochs, '\nLoss:',epoch_loss
 
-        saver.save(sess, os.getcwd()+'/models/location/locationCNN4')
-        saver.export_meta_graph(os.getcwd()+'/models/location/locationCNN4.meta')
+        saver.save(sess, os.getcwd()+'/models/location/locationCNN5')
+        saver.export_meta_graph(os.getcwd()+'/models/location/locationCNN5.meta')
         print "Model saved"
 
         print '\n','Train Accuracy', accuracy.eval(feed_dict={x:real_X_9, y:real_y_9, keep_prob:TRAIN_KEEP_PROB})
