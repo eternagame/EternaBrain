@@ -11,7 +11,7 @@ encode RNA strucutre and encode movesets
 
 import copy
 from getData import getStructure, getTargetEnergy
-from readData import read_structure, read_locks
+from readData import read_structure, read_locks, read_structure_raw, format_pairmap
 import numpy as np
 
 # def longest(a):
@@ -147,6 +147,9 @@ def structure_and_energy_at_current_time(base_seq,pid):
     for i in base_seq:
         for j in i:
             struc,energy = (getStructure(j))
+            current_pairmap = format_pairmap(struc)
+            raw_struc = read_structure_raw(pid)
+            target_pairmap = format_pairmap(raw_struc)
             enc_struc = []
             for k in struc:
                 if k == '.':
@@ -161,7 +164,8 @@ def structure_and_energy_at_current_time(base_seq,pid):
             locks = read_locks(pid)
             if locks == "None":
                 locks = [1]*len_puzzle
-            attrs = [j,enc_struc,target,energy,target_energy,locks]
+            #attrs = [j,enc_struc,target,energy,target_energy,locks]
+            attrs = [j,current_pairmap,target_pairmap,energy,target_energy,locks]
             Z2.append(attrs)
 
     return Z2

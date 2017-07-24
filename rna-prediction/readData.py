@@ -8,6 +8,7 @@ import ast
 import pandas as pd
 import os
 import numpy as np
+from eterna_utils import get_pairmap_from_secstruct
 
 def experience(threshold):
     full_problems = pd.read_csv(os.getcwd()+'/movesets/full-problems-nov2016.txt', sep=" ", header="infer", delimiter='\t')
@@ -137,6 +138,25 @@ def read_structure(pid):
             enc_struc.append(3)
 
     return enc_struc
+
+def format_pairmap(struc):
+    pm = get_pairmap_from_secstruct(struc)
+    new = []
+    for i in pm:
+        if i == -1:
+            new.append(i)
+        else:
+            i += 1
+            new.append(i)
+
+    return pm
+
+def read_structure_raw(pid):
+    puzzle_structure = pd.read_csv(os.getcwd()+'/movesets/puzzle-structure-data.txt', sep=" ", header='infer', delimiter='\t')
+    puzzles_pid = puzzle_structure.loc[puzzle_structure['pid'] == pid]
+
+    struc = ''.join(list(puzzles_pid['structure']))
+    return struc
 
 
 def read_movesets_uid(moveset_file,uid): # get data from user ID
