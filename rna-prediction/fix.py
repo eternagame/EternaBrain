@@ -117,7 +117,7 @@ def all_same(items):
 len_longest = 108
 
 #current = convert(base_seq)
-dot_bracket = '((((((.((((((....)))))).(((....))).(((....))).((((((....)))))).(((....))).((((((....)))))).(((....))).(((....))).((((((....)))))).(((....))).((((((....)))))).(((....))).(((....))).((((((....)))))).(((....))).((((((....)))))).(((....))).(((....))).((((((....)))))).(((....))).((((((....)))))).(((....))).(((....))).((((((....)))))).))))))'
+dot_bracket = '.....((((((((..((((....))))..)))).((((..(...)..)))).((((..(..(((.....)))..)..))))))))....................'
 target_struc = encode_struc(dot_bracket)
 pm = get_pairmap_from_secstruct(dot_bracket)
 #cdb = '.((((....))))'
@@ -126,11 +126,11 @@ pm = get_pairmap_from_secstruct(dot_bracket)
 len_puzzle = len(target_struc)
 len_puzzle_float = len(target_struc) * 1.0
 # GAACGCACCUGCCUGUUUGGGGAGUAUGAA   GAACGCACCUGCCUGUUUGGGUAGCAUGAA   GAACGCACCUGCCUGUCUGGGUAGCAUGAA  GAACUCACCUGCCUGUCUUGGUAGCAUCAA
-seq = 'GCAUAAAUCCAAAGUCACGACGGACGAGCACAAACCAAGGCCGGAAGAAAGACAAAGGGUCAAAAAACGGAAACAAACGACGCAGACAGAAAAAAAAA'
+seq = 'ACACGGGGAAACCAUACAGAGUGGAGCACAGGACCCCAACCACUGCCAACCCCAAGCUAACCUAAGAAAGGGAGAAGAUAAGCAAAAGACACGAAACAAAUAAAU'
 current_seq = convert_to_list(seq)
 cdb,_ = RNA.fold(seq)
 current_pm = get_pairmap_from_secstruct(cdb)
-for i in range(4):
+for i in range(10):
     for location in range(len_puzzle):
         if dot_bracket == cdb:
             print current_seq

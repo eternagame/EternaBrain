@@ -7,9 +7,9 @@ from numpy.random import choice
 from difflib import SequenceMatcher
 from readData import format_pairmap
 
-dot_bracket = '.....((((((((((((....))))((((....))))))))((((((((....))))((((....))))))))))))....................'
-TF_SHAPE = 6 * 350
-BASE_SHAPE = 7 * 350
+dot_bracket = '....((((..(((((..((((..((((.....))))((((((...))).)))))))((((((.((.((.(((((....)).)))))))(((((.((.((.((....))))))((((.(((....)).)).)))..)).)))))).))))))))(((.(((.(((.((((....))))))))))((((((((...))).)).))).)))))))'
+TF_SHAPE = 8 * 350
+BASE_SHAPE = 9 * 350
 len_puzzle = len(dot_bracket)
 len_longest = 350
 
@@ -60,17 +60,19 @@ current_struc = (encode_struc(RNA.fold(bs)[0])) + ([0]*(len_longest - len_puzzle
 target_struc = encode_struc(dot_bracket) + ([0]*(len_longest - len_puzzle))
 current_energy = [0.0] + ([0]*(len_longest - 1))
 target_energy = [0.0] + ([0]*(len_longest - 1))
+current_pm = format_pairmap(bs) + ([0]*(len_longest - len_puzzle))
+target_pm = format_pairmap(dot_bracket) + ([0]*(len_longest - len_puzzle))
 locks = ([1]*len_puzzle) + ([0]*(len_longest - len_puzzle))
 
 print len(base_seq),len(current_struc),len(dot_bracket),len(target_struc),len(current_energy),len(target_energy),len(locks)
 
-inputs2 = np.array([base_seq,current_struc,target_struc,current_energy,target_energy,locks])
+inputs2 = np.array([base_seq,current_struc,target_struc,current_energy,target_energy,current_pm,target_pm,locks])
 inputs = inputs2.reshape([-1,TF_SHAPE])
 
 with tf.Graph().as_default() as base_graph:
-    saver1 = tf.train.import_meta_graph(os.getcwd()+'/models/base/baseCNN7.meta')
+    saver1 = tf.train.import_meta_graph(os.getcwd()+'/models/base/baseCNN10.meta')
 sess1 = tf.Session(graph=base_graph) # config=tf.ConfigProto(allow_soft_placement=True,log_device_placement=True)
-saver1.restore(sess1,os.getcwd()+'/models/base/baseCNN7')
+saver1.restore(sess1,os.getcwd()+'/models/base/baseCNN10')
 
 x = base_graph.get_tensor_by_name('x_placeholder:0')
 y = base_graph.get_tensor_by_name('y_placeholder:0')
@@ -81,9 +83,9 @@ base_weights = base_graph.get_tensor_by_name('op7:0')
 base_feed_dict={x:inputs,keep_prob:1.0}
 
 with tf.Graph().as_default() as location_graph:
-    saver2 = tf.train.import_meta_graph(os.getcwd()+'/models/location/locationCNN7.meta')
+    saver2 = tf.train.import_meta_graph(os.getcwd()+'/models/location/locationCNN10.meta')
 sess2 = tf.Session(graph=location_graph) # config=tf.ConfigProto(allow_soft_placement=True,log_device_placement=True)
-saver2.restore(sess2,os.getcwd()+'/models/location/locationCNN7')
+saver2.restore(sess2,os.getcwd()+'/models/location/locationCNN10')
 
 x2 = location_graph.get_tensor_by_name('x_placeholder:0')
 y2 = location_graph.get_tensor_by_name('y_placeholder:0')
@@ -103,7 +105,7 @@ for i in range(1000):
     else:
         location_array = ((sess2.run(location_weights,location_feed_dict))[0])
 
-        inputs2 = inputs.reshape([6,TF_SHAPE/6])
+        inputs2 = inputs.reshape([8,TF_SHAPE/8])
         location_array = location_array[:len_puzzle] - min(location_array[:len_puzzle])
         total_l = sum(location_array)
         location_array = location_array/total_l
@@ -128,7 +130,7 @@ for i in range(1000):
         # NOT STOCHASTICALLY
         #base_change = np.argmax(base_array) + 1
 
-        inputs2 = inputs.reshape([7,BASE_SHAPE/7])
+        inputs2 = inputs.reshape([9,BASE_SHAPE/9])
 
         # if inputs2[0][location_change] == base_change:
         #     second = second_largest(base_array)
@@ -153,6 +155,7 @@ for i in range(1000):
                 continue
         str_seq = ''.join(str_seq)
         str_struc,current_e = RNA.fold(str_seq)
+        current_pm = format_pairmap(str_struc)
         print str_struc
         #print len(str_struc)
         print similar(str_struc,dot_bracket)
@@ -182,7 +185,8 @@ for i in range(1000):
         inputs2[1][:len(enc_struc)] = (enc_struc)
         inputs2[3][0] = current_e
         inputs2[4][0] = target_e
-        inputs_loc = inputs2[0:6]
+        inputs2[5][:len(enc_struc)] = current_pm
+        inputs_loc = inputs2[0:8]
         inputs = inputs_loc.reshape([-1,TF_SHAPE])
         base_feed_dict={x:inputs,keep_prob:1.0}
         location_feed_dict = {x2:inputs,keep_prob2:1.0}
@@ -207,7 +211,7 @@ for i in range(1000):
         #print target_struc[:len(enc_struc)]
         #print inputs2[1][:len(enc_struc)]
         #print format_pairmap(str_struc)
-        if similar(str_struc,dot_bracket) >= 0.7:
+        if similar(str_struc,dot_bracket) >= 0.8:
             print 'max'
             print str_struc
             print dot_bracket

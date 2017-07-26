@@ -164,8 +164,8 @@ def structure_and_energy_at_current_time(base_seq,pid):
             locks = read_locks(pid)
             if locks == "None":
                 locks = [1]*len_puzzle
-            #attrs = [j,enc_struc,target,energy,target_energy,locks]
-            attrs = [j,current_pairmap,target_pairmap,energy,target_energy,locks]
+            attrs = [j,enc_struc,target,energy,target_energy,current_pairmap,target_pairmap,locks]
+            #attrs = [j,current_pairmap,target_pairmap,energy,target_energy,locks]
             Z2.append(attrs)
 
     return Z2
