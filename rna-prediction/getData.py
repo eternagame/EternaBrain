@@ -10,6 +10,21 @@ Created on Thu Jan 05 18:30:26 2017
 #import time
 import RNA
 import itertools
+import pandas as pd
+import os
+
+def getPid():
+    ps = pd.read_csv(os.getcwd()+'/movesets/puzzle-structure-data.txt',sep=' ',header='infer',delimiter='\t')
+    ps = ps.dropna(subset=['constraints'])
+    c = list(ps['constraints'])
+    p = list(ps['pid'])
+    bad = []
+    for i in range(len(p)):
+        if 'SHAPE,0' not in c[i] or 'SHAPE,1' in c[i] or 'SOFT' in c[i]:
+            bad.append(p[i])
+    single = [x for x in p if x not in bad]
+
+    return single
 
 def getData_pid(pid,pidList,movesets,structure): # returns moveset and puzzzle structure together
   i1 = pidList.index(pid)

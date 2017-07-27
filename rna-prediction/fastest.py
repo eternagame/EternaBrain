@@ -21,6 +21,7 @@ content = [int(x) for x in content]
 progression = [6502966,6502968,6502973,6502976,6502984,6502985,6502993, \
                 6502994,6502995,6502996,6502997,6502998,6502999,6503000] # 6502957
 content.extend(progression)
+content.remove(6502993)
 
 len_longest = 350
 
@@ -40,7 +41,7 @@ def speed(pid):
     for i in (plist):
         s1 = (ast.literal_eval(i))
         s2 = int(s1['num_moves'])
-        if s2 <= 50: # solved in 50 moves or less
+        if s2 <= 30: # solved in 50 moves or less
             print 'fast'
             s3 = s1['moves']
             s4 = s1['begin_from']
@@ -85,9 +86,9 @@ def speed(pid):
 
     #pickle.dump(X2,open(os.getcwd()+'/pickles/X-exp-base-'+str(pid),'wb'))
     if len(encoded) != 0:
-        pickle.dump(X, open(os.getcwd()+'/pickles/X-fast-loc-'+str(pid),'wb'))
-        pickle.dump(encoded_base,open(os.getcwd()+'/pickles/y-fast-base-'+str(pid),'wb'))
-        pickle.dump(encoded_loc,open(os.getcwd()+'/pickles/y-fast-loc-'+str(pid),'wb'))
+        pickle.dump(X, open(os.getcwd()+'/pickles/X2-fast-loc-'+str(pid),'wb'))
+        pickle.dump(encoded_base,open(os.getcwd()+'/pickles/y2-fast-base-'+str(pid),'wb'))
+        pickle.dump(encoded_loc,open(os.getcwd()+'/pickles/y2-fast-loc-'+str(pid),'wb'))
 
-for i in (content[:50]):
+for i in (content[50:]):
     speed(i)
