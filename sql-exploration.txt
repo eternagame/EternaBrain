@@ -1,0 +1,365 @@
+mysql> SELECT nid, field_project_puzzles_value from content_type_lab_project LIMIT 1;
++---------+--------------------------------+
+| nid     | field_project_puzzles_value    |
++---------+--------------------------------+
+| 3376042 | [{"round":0,"puzzles":["66"]}] | 
++---------+--------------------------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT nid, field_project_puzzles_value from content_type_lab_project LIMIT 5;
++---------+-----------------------------------+
+| nid     | field_project_puzzles_value       |
++---------+-----------------------------------+
+| 3376042 | [{"round":0,"puzzles":["66"]}]    | 
+| 3376043 | [{"round":0,"puzzles":["75"]}]    | 
+| 3376044 | [{"round":0,"puzzles":["83"]}]    | 
+| 3376045 | [{"round":0,"puzzles":["2908"]}]  | 
+| 3376046 | [{"round":0,"puzzles":["14111"]}] | 
++---------+-----------------------------------+
+5 rows in set (0.00 sec)
+
+
+mysql> SELECT nid from content_type_puzzle where nid=='66';
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '=='66'' at line 1
+mysql> SELECT nid from content_type_puzzle where nid='66';
++-----+
+| nid |
++-----+
+|  66 | 
++-----+
+1 row in set (0.00 sec)
+
+mysql> select nid, field_puzzle_num_player_submiss_value, field_puzzle_num_synthesis_value from content_type_puzzle where nid='66'
+    -> ;
++-----+---------------------------------------+----------------------------------+
+| nid | field_puzzle_num_player_submiss_value | field_puzzle_num_synthesis_value |
++-----+---------------------------------------+----------------------------------+
+|  66 |                                  NULL |                             NULL | 
++-----+---------------------------------------+----------------------------------+
+1 row in set (0.00 sec)
+
+                                                                                                                                                                                                                                                                                                                                                                              | 
+| 3376088 | [{"round":0,"puzzles":["2333374"]}]                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              | 
+| 3376089 | [{"round":0,"puzzles":["2333380"]}]                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              | 
+| 3376090 | [{"round":0,"puzzles":["2333386"]}]                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              | 
+| 3376091 | [{"round":0,"puzzles":["2333400"]}]     
+
+mysql> select nid, field_structure_value, field_puzzle_type_value, field_synthesis_date_puzzle_value from content_type_puzzle where nid='66' or nid='2333400' or nid='2333386' or nid='2333380' or nid='2333374';
++---------+------------------------------------------------------------------------------------+-------------------------+-----------------------------------+
+| nid     | field_structure_value                                                              | field_puzzle_type_value | field_synthesis_date_puzzle_value |
++---------+------------------------------------------------------------------------------------+-------------------------+-----------------------------------+
+|      66 | ((((((((...((((((...((((((....))))))...))))))...))))))))                           | Experimental            | NULL                              | 
+| 2333374 | .(((((.((((....((......(((((.(((....))).))))).)))))).))))).....(((((((....))))))). | Experimental            | 04/22/2013 11:59 PM               | 
+| 2333380 | ...((.((((.(.((((.((...((((....)).)).)).)).)).)..))))..))......(((((((....))))))). | Experimental            | 04/22/2013 11:59 PM               | 
+| 2333386 | .(((..((((.(((((((....))).))))....((((.(((....))))))).))))..)))(((((((....))))))). | Experimental            | 04/22/2013 11:59 PM               | 
+| 2333400 | ...((((..((((....)))).(((..(((...(((.(....).))).)))..)))..)))).(((((((....))))))). | Experimental            | 04/22/2013 11:59 PM               | 
++---------+------------------------------------------------------------------------------------+-------------------------+-----------------------------------+
+5 rows in set (0.00 sec)
+
+mysql> select nid, field_puzzle_num_player_submiss_value, field_puzzle_num_synthesis_value from content_type_puzzle where nid='2333400' or nid='2333380' or nid='2333374';
++---------+---------------------------------------+----------------------------------+
+| nid     | field_puzzle_num_player_submiss_value | field_puzzle_num_synthesis_value |
++---------+---------------------------------------+----------------------------------+
+| 2333374 |                                  NULL |                             NULL | 
+| 2333380 |                                  NULL |                             NULL | <--- WHY? IF synthed?
+| 2333400 |                                  NULL |                             NULL | 
++---------+---------------------------------------+----------------------------------+
+3 rows in set (0.00 sec)
+
+mysql> SELECT nid, field_sequence_value, field_puzzle_ref_solution_nid, field_solution_submitted_round_value FROM content_type_solution WHERE field_puzzle_ref_solution_nid='2333380';
++---------+-------------------------------------------------------------------------------------------------------------+-------------------------------+--------------------------------------+
+| nid     | field_sequence_value                                                                                        | field_puzzle_ref_solution_nid | field_solution_submitted_round_value |
++---------+-------------------------------------------------------------------------------------------------------------+-------------------------------+--------------------------------------+
+| 2333396 | GGAAAAAAGCAGAUCAGGGCCGAGCAAAGGCCAAAAGGACCAGCACGAGCGCAAGAUCAAGCAAAAAAGCUAGUCUUCGGACUAGCAAAAGAAACAACAACAACAAC |                       2333380 |                                    1 | 
+| 2333397 | GGAAAAAAGAAAUUGAUGUGGUGAUGAGUGGAGAAAUCACAAAUGACACAGAGGCAAUGGUCAAAAAACUAUUAGUUCGCUAAUAGAAAAGAAACAACAACAACAAC |                       2333380 |                                    1 | 
+| 2334087 | GGAAAAAAGCGGUACGCGCGCGGACAAACUACAAAAGUAAGGGUGCGACGGGAAGUACAAGCAAAAAAGACAUACUUCGGUAUGUCAAAAGAAACAACAACAACAAC |                       2333380 |                                    1 | 
+| 2334193 | GGAAAAAAGCACUACACACGCCAGUAAAUCCGAAAACGAGAAACAGGACGAGAAGUAGAAGCAAAAAAGUACCACUUCGGUGGUACAAAAGAAACAACAACAACAAC |                       2333380 |                                    1 | 
+| 2334194 | GGAAAAAAGGACAUGAGGCGCCGGUAAAUCCGGAAACGAGAGACGGGACGGCGGCAUGGGCCAAAAAAGUAGCACUUCGGUGCUACAAAAGAAACAACAACAACAAC |                       2333380 |                                    1 | 
+| 2334195 | GGAAAAAAGGACAUGAGACGACGGUAAAUCCGGAAACGAGAGACGGUACGACGGCAUGAACCAAAAAAGAUCGACUUCGGUCGAUCAAAAGAAACAACAACAACAAC |                       2333380 |                                    1 | 
+| 2334294 | GGAAAAAAGCAGUAUAGCGGAGCGAAAAGACUACAAAGAUCAUCACUACCACAAAUACAAGCAAAAAAAGACUGAUUCGUCAGUCUAAAAGAAACAACAACAACAAC |                       2333380 |                                    1 | 
+| 2334542 | GGAAAAAAGCAGUAGGCGUGCGGUGGAGCCCGGAAACGAGGACAGCGACAGGAACUACGGGCAAAAAAGAUAUAGUUCGCUAUAUCAAAAGAAACAACAACAACAAC |                       2333380 |                                    1 | 
+| 2334860 | GGAAAAAAGGAGAUGAGGUCCUGUGAAAGCCAGAAAUGAGCGCAGAGAGAGCGGCAUCGGCCAAAAAAGUAUAGCUUCGGCUAUACAAAAGAAACAACAACAACAAC |                       2333380 |                                    1 | 
+| 2334956 | GGAAAAAAGCAGUGUAGGACCUGUCGAGCAGCGAAAGCAUGAGAGAGAGUGCGGACACAAGCAAAAAAGUACUACUUCGGUAGUACAAAAGAAACAACAACAACAAC |                       2333380 |                                    1 | 
+| 2334981 | GGAAAAAAGCAGAUCAGGGCCGAGCAAAGGCCGAAAGGACCGGCACGAGCGCGGGAUCGGGCAAAAAAGCUAGACUUCGGUCUAGCAAAAGAAACAACAACAACAAC |                       2333380 |                                    1 | 
+| 2335605 | GGAAAAAAGUGCUAUAGGGACGGACAAAGAAUGAAAAUAUCGGUGCGAUCGCAAAUAGAGACAAAAAAGAUUAUAUUCGUAUAAUCAAAAGAAACAACAACAACAAC |                       2333380 |                                    1 | 
+| 2335633 | GGAAAAAAGCAGUCUAGCGGAGCGAAAAGACUACAAAGAUCAUCACUACCACAAAGACAAGCAAAAAAAGGCUCUUUCGGGAGUCUAAAAGAAACAACAACAACAAC |                       2333380 |                                    1 | 
+
+
+
+eternaproddb dellimiter=“,”  -e “<SQL commands>” > <filename>
+
+“mysql save file”
+
+INTO OUTFILE
+FIELDS TERMINATED BY
+ENCLOSED BY
+LINES TERMINATED BY...
+                                                                                                                                                                                                                                                                                                                                     
+
+GETTING PUZZLE SOLUTIONS (ALL OF THEM):
+
+SELECT cts.nid,field_structure_value,field_sequence_value, ctp.nid, n.uid, n.created, u.name FROM content_type_solution cts LEFT JOIN content_type_puzzle ctp ON ctp.nid=cts.field_puzzle_ref_solution_nid LEFT JOIN node n ON cts.nid=n.nid LEFT JOIN users u ON n.uid=u.uid;
+
+
+SELECT cts.nid AS sol_id,field_structure_value AS second_structure,field_sequence_value AS design, ctp.nid AS puzzle_id, n.uid AS contributor_id, n.created AS time_created, u.name AS contributor_name FROM content_type_solution cts LEFT JOIN content_type_puzzle ctp ON ctp.nid=cts.field_puzzle_ref_solution_nid LEFT JOIN node n ON cts.nid=n.nid LEFT JOIN users u ON n.uid=u.uid;
+
+
+TEST:
+SELECT cts.nid AS sol_id,field_structure_value AS second_structure,field_sequence_value AS design, ctp.nid AS puzzle_id, n.uid AS contributor_id, n.created AS time_created, u.name AS contributor_name FROM content_type_solution cts LEFT JOIN content_type_puzzle ctp ON ctp.nid=cts.field_puzzle_ref_solution_nid LEFT JOIN node n ON cts.nid=n.nid LEFT JOIN users u ON n.uid=u.uid WHERE cts.field_puzzle_ref_solution_nid='2333374';
+
+
+GETTING LAB DATA
+
+USE eternadatabase; SELECT p.nid AS project_id, field_project_puzzles_value AS puzzles_id, n.created AS time_created FROM content_type_lab_project p LEFT JOIN node n ON p.nid=n.nid;
+
+Getting puzzle solves.
+
+USE eternadatabase; SELECT field_puzzle_num_cleared_value AS cleared FROM content_type_puzzle ORDER BY field_puzzle_num_cleared_value DESC LIMIT 30;
+
+USE eternadatabase; select field_puzzle_num_cleared_value AS cleared FROM content_type_puzzle WHERE (nid='6502927' or nid='6502942' or nid='6502943' or nid='6502944' or nid='6502945' or nid='6502946' or nid='6502947' or nid='6502948' or nid='6502949' or nid='6502950' or nid='6502951' or nid='6502952' or nid='6502953' or nid='6502954' or nid='6502955' or nid='6502956' or nid='6502957' or nid='6502958' or nid='6502959' or nid='6502960' or nid='6502961' or nid='6502962' or nid='6502963' or nid='6502964' or nid='6502965' or nid='6502966' or nid='6502967' or nid='6502968' or nid='6502969' or nid='6502970' or nid='6502971' or nid='6502972’);
+
+
+FOR RETENTION.  CHANGES MADE TO GENE SYNTH UP TO BUT NOT INCLUDING 11 @ 1457484060
+
+USE eternadatabase; SELECT COUNT(s.nid) FROM content_type_solution s LEFT JOIN node n ON s.nid=n.nid LEFT JOIN users u ON n.uid=u.uid WHERE (s.field_puzzle_ref_solution_nid='6502927' or s.field_puzzle_ref_solution_nid='6502942' or s.field_puzzle_ref_solution_nid='6502943' or s.field_puzzle_ref_solution_nid='6502944' or s.field_puzzle_ref_solution_nid='6502945' or s.field_puzzle_ref_solution_nid='6502946' or s.field_puzzle_ref_solution_nid='6502947' or s.field_puzzle_ref_solution_nid='6502948' or s.field_puzzle_ref_solution_nid='6502949' or s.field_puzzle_ref_solution_nid='6502950' or s.field_puzzle_ref_solution_nid='6502951' or s.field_puzzle_ref_solution_nid='6502952' or s.field_puzzle_ref_solution_nid='6502953' or s.field_puzzle_ref_solution_nid='6502954' or s.field_puzzle_ref_solution_nid='6502955' or s.field_puzzle_ref_solution_nid='6502956' or s.field_puzzle_ref_solution_nid='6502957' or s.field_puzzle_ref_solution_nid='6502958' or s.field_puzzle_ref_solution_nid='6502959' or s.field_puzzle_ref_solution_nid='6502960' or s.field_puzzle_ref_solution_nid='6502961' or s.field_puzzle_ref_solution_nid='6502962' or s.field_puzzle_ref_solution_nid='6502963' or s.field_puzzle_ref_solution_nid='6502964' or s.field_puzzle_ref_solution_nid='6502965’) AND u.created>1454198400;
+
+USE eternadatabase; SELECT s.field_puzzle_ref_solution_nid, COUNT(s.nid) FROM content_type_solution s LEFT JOIN node n ON s.nid=n.nid LEFT JOIN users u ON n.uid=u.uid WHERE (s.field_puzzle_ref_solution_nid='6502927' or s.field_puzzle_ref_solution_nid='6502942' or s.field_puzzle_ref_solution_nid='6502943' or s.field_puzzle_ref_solution_nid='6502944' or s.field_puzzle_ref_solution_nid='6502945' or s.field_puzzle_ref_solution_nid='6502946' or s.field_puzzle_ref_solution_nid='6502947' or s.field_puzzle_ref_solution_nid='6502948' or s.field_puzzle_ref_solution_nid='6502949' or s.field_puzzle_ref_solution_nid='6502950' or s.field_puzzle_ref_solution_nid='6502951' or s.field_puzzle_ref_solution_nid='6502952' or s.field_puzzle_ref_solution_nid='6502953' or s.field_puzzle_ref_solution_nid='6502954' or s.field_puzzle_ref_solution_nid='6502955' or s.field_puzzle_ref_solution_nid='6502956' or s.field_puzzle_ref_solution_nid='6502957' or s.field_puzzle_ref_solution_nid='6502958' or s.field_puzzle_ref_solution_nid='6502959' or s.field_puzzle_ref_solution_nid='6502960' or s.field_puzzle_ref_solution_nid='6502961' or s.field_puzzle_ref_solution_nid='6502962' or s.field_puzzle_ref_solution_nid='6502963' or s.field_puzzle_ref_solution_nid='6502964' or s.field_puzzle_ref_solution_nid='6502965’) AND u.created>1454198400;
+
+
+mysql> USE eternadatabase; SELECT s.field_puzzle_ref_solution_nid, COUNT(s.nid),COUNT(DISTINCT u.uid) FROM content_type_solution s LEFT JOIN node n ON s.nid=n.nid LEFT JOIN users u ON n.uid=u.uid WHERE s.field_puzzle_ref_solution_nid='6502927';
+Database changed
++-------------------------------+--------------+-----------------------+
+| field_puzzle_ref_solution_nid | COUNT(s.nid) | COUNT(DISTINCT u.uid) |
++-------------------------------+--------------+-----------------------+
+|                       6502927 |         1315 |                  1315 | 
++-------------------------------+--------------+-----------------------+
+1 row in set (0.07 sec)
+
+mysql> 
+
+
+GRABBING a SMALLER NUMBER of nids - only the classic ETERNA ones, and added score this time.
+
+SELECT cts.nid AS sol_id,field_structure_value AS second_structure,field_sequence_value AS design, ctp.nid AS puzzle_id, n.uid AS contributor_id, n.created AS time_created, u.name AS contributor_name, field_solution_submitted_round_value AS round, field_synth_score_value AS score FROM content_type_solution cts LEFT JOIN content_type_puzzle ctp ON ctp.nid=cts.field_puzzle_ref_solution_nid LEFT JOIN node n ON cts.nid=n.nid LEFT JOIN users u ON n.uid=u.uid WHERE cts.field_puzzle_ref_solution_nid='17320' OR cts.field_puzzle_ref_solution_nid='24153' OR cts.field_puzzle_ref_solution_nid='26603' OR cts.field_puzzle_ref_solution_nid='321468' OR cts.field_puzzle_ref_solution_nid='382268' OR cts.field_puzzle_ref_solution_nid='405631' OR cts.field_puzzle_ref_solution_nid='437882' OR cts.field_puzzle_ref_solution_nid='444718' OR cts.field_puzzle_ref_solution_nid='452127' OR cts.field_puzzle_ref_solution_nid='465127' OR cts.field_puzzle_ref_solution_nid='479426' OR cts.field_puzzle_ref_solution_nid='497237' OR cts.field_puzzle_ref_solution_nid='502447' OR cts.field_puzzle_ref_solution_nid='507875' OR cts.field_puzzle_ref_solution_nid='525133' OR cts.field_puzzle_ref_solution_nid='535658' OR cts.field_puzzle_ref_solution_nid='1029219' OR cts.field_puzzle_ref_solution_nid='1961835';
+
+GETTING all move sets for first 25 puzzles.
+
+USE eternadatabase; SELECT nid AS sol_id, field_puzzle_ref_solution_nid AS pid, field_move_history_value AS move_set FROM content_type_solution WHERE (s.field_puzzle_ref_solution_nid='6502927' or s.field_puzzle_ref_solution_nid='6502942' or s.field_puzzle_ref_solution_nid='6502943' or s.field_puzzle_ref_solution_nid='6502944' or s.field_puzzle_ref_solution_nid='6502945' or s.field_puzzle_ref_solution_nid='6502946' or s.field_puzzle_ref_solution_nid='6502947' or s.field_puzzle_ref_solution_nid='6502948' or s.field_puzzle_ref_solution_nid='6502949' or s.field_puzzle_ref_solution_nid='6502950' or s.field_puzzle_ref_solution_nid='6502951' or s.field_puzzle_ref_solution_nid='6502952' or s.field_puzzle_ref_solution_nid='6502953' or s.field_puzzle_ref_solution_nid='6502954' or s.field_puzzle_ref_solution_nid='6502955' or s.field_puzzle_ref_solution_nid='6502956' or s.field_puzzle_ref_solution_nid='6502957' or s.field_puzzle_ref_solution_nid='6502958' or s.field_puzzle_ref_solution_nid='6502959' or s.field_puzzle_ref_solution_nid='6502960' or s.field_puzzle_ref_solution_nid='6502961' or s.field_puzzle_ref_solution_nid='6502962' or s.field_puzzle_ref_solution_nid='6502963' or s.field_puzzle_ref_solution_nid='6502964' or s.field_puzzle_ref_solution_nid='6502965’);
+
+GRABBING ALL USER IDS from FIRST 11 PUZZLES
+
+USE eternadatabase; SELECT n.uid AS uid, s.field_puzzle_ref_solution_nid AS pid FROM content_type_solution s LEFT JOIN node n ON s.nid=n.nid WHERE s.field_puzzle_ref_solution_nid='6502927' or s.field_puzzle_ref_solution_nid='6502942' or s.field_puzzle_ref_solution_nid='6502943' or s.field_puzzle_ref_solution_nid='6502944' or s.field_puzzle_ref_solution_nid='6502945' or s.field_puzzle_ref_solution_nid='6502946' or s.field_puzzle_ref_solution_nid='6502947' or s.field_puzzle_ref_solution_nid='6502948' or s.field_puzzle_ref_solution_nid='6502949' or s.field_puzzle_ref_solution_nid='6502950' or s.field_puzzle_ref_solution_nid='6502951';
+
+GRABBING all USER IDS from FIRST 25 puzzles
+
+USE eternadatabase; SELECT n.uid AS uid, s.field_puzzle_ref_solution_nid AS pid FROM content_type_solution s LEFT JOIN node n ON s.nid=n.nid WHERE (s.field_puzzle_ref_solution_nid='6502927' or s.field_puzzle_ref_solution_nid='6502942' or s.field_puzzle_ref_solution_nid='6502943' or s.field_puzzle_ref_solution_nid='6502944' or s.field_puzzle_ref_solution_nid='6502945' or s.field_puzzle_ref_solution_nid='6502946' or s.field_puzzle_ref_solution_nid='6502947' or s.field_puzzle_ref_solution_nid='6502948' or s.field_puzzle_ref_solution_nid='6502949' or s.field_puzzle_ref_solution_nid='6502950' or s.field_puzzle_ref_solution_nid='6502951' or s.field_puzzle_ref_solution_nid='6502952' or s.field_puzzle_ref_solution_nid='6502953' or s.field_puzzle_ref_solution_nid='6502954' or s.field_puzzle_ref_solution_nid='6502955' or s.field_puzzle_ref_solution_nid='6502956' or s.field_puzzle_ref_solution_nid='6502957' or s.field_puzzle_ref_solution_nid='6502958' or s.field_puzzle_ref_solution_nid='6502959' or s.field_puzzle_ref_solution_nid='6502960' or s.field_puzzle_ref_solution_nid='6502961' or s.field_puzzle_ref_solution_nid='6502962' or s.field_puzzle_ref_solution_nid='6502963' or s.field_puzzle_ref_solution_nid='6502964' or s.field_puzzle_ref_solution_nid='6502965');
+
+
+THIS looks at the uid’s associated with the solves of the top 25 solved-puzzles (roughly - this parts a bit hacky) to compare with individualized retention analysis.
+
+USE eternadatabase; SELECT n.uid AS uid, s.field_puzzle_ref_solution_nid AS pid FROM content_type_solution s LEFT JOIN node n ON s.niEFT JOIN content_type_puzzle p ON s.field_puzzle_ref_solution_nid=p.nid WHERE p.field_puzzle_num_cleared_value>=15000;
+
+
+GETTING ALL MOVE SETS PLUS USERS
+
+USE eternadatabase; SELECT s.nid AS sol_id, field_puzzle_ref_solution_nid AS pid, n.uid AS uid, field_move_history_value AS move_set FROM content_type_solution s LEFT JOIN node n ON s.nid=n.nid WHERE (s.field_puzzle_ref_solution_nid='6502927' or s.field_puzzle_ref_solution_nid BETWEEN ’6502942’ AND ’6503055’) AND n.created > 1459728000;
+
+1459728000 = time when Nando updated the move set collection data.
+6741423 - first solution submitted after that time.
+
+
+Looking at # of new users
+
+
+Jan 6 - 1452038400 - 1300 between here and Feb 16 216
+Feb 2 - 1454371200 - 374 between here and Feb 16 193
+Feb 9 - 1454976000 - 181 between here and Feb 16 181
+Feb 16 - 1455580800 (release of journal article)
+Feb 23 - 1456185600 - 1596 between Feb 16 and here 1596
+March 1 - 1456790400 - 2096 between Feb 16 and here 500
+March 8 - 1457395200 - 464 between march 1 and now
+March 15 - 1458000000 - 331 between March 8 and now
+March 21 - 1458518400 - 221 between now and March 28
+March 28 - 1459123200 - 3376 between Feb 16 and here 5
+
+6503055 is id of last puzzle.  Let’s see how many new users have completed it.
+20 new users have completed it
+
+6503037 is id of last Liquid robotics puzzles, do the same.
+35 have completed it
+
+6503026 is id of last laser micro, do the same
+51
+
+6503013 is last of fluorescent probes
+54
+
+6503000 is last of microchip
+64
+
+6502993 is last of RNA polymerase
+93
+
+6502984 is last of Next Gen sequencer
+114
+
+6502973 is last of thermocycler
+206
+
+6502962 is last of gene synth
+309
+
+6502950 is last of nucleotide mix
+1085
+
+6502927 is first of nucleotide mix
+1130
+
+
+SELECT s.nid, n.created, u.uid FROM content_type_solution s LEFT JOIN node n ON n.nid=s.nid LEFT JOIN users u ON u.uid=n.uid WHERE s.field_puzzle_ref_solution_nid='6503055' and u.created > 1455580800;
+
+SELECT s.nid, n.created, u.uid FROM content_type_solution s LEFT JOIN node n ON n.nid=s.nid LEFT JOIN users u ON u.uid=n.uid WHERE s.field_puzzle_ref_solution_nid='6502927’ and u.created > 1455580800;
+
+
+
+
+## Gets retention curve: number of folks completed each puzzle.
+
+SELECT COUNT(s.nid), s.field_puzzle_ref_solution_nid FROM content_type_solution s LEFT JOIN node n ON n.nid=s.nid LEFT JOIN users u ON u.uid=n.uid WHERE (s.field_puzzle_ref_solution_nid='6502927' OR s.field_puzzle_ref_solution_nid BETWEEN '6502942' AND '6503055') and u.created > 1455580800 GROUP BY s.field_puzzle_ref_solution_nid;
+
+####Looks at puzzle trials.. weird things going on with the first few puzzles, but after that things calm down.
+
+SELECT COUNT(s.nid), s.field_puzzle_trial_puzzle_nid FROM content_type_puzzle_trial s LEFT JOIN node n ON n.nid=s.nid LEFT JOIN users u ON u.uid=n.uid WHERE (s.field_puzzle_trial_puzzle_nid='6502927' OR s.field_puzzle_trial_puzzle_nid BETWEEN '6502942' AND '6503055') and u.created > 1455580800 GROUP BY s.field_puzzle_trial_puzzle_nid;
+
+### Looking at users who signed up vs. completed the first puzzle.
+
+USE eternadatabase; select u.uid FROM content_type_solution s LEFT JOIN node n ON n.nid=s.nid LEFT JOIN users u ON u.uid=n.uid WHERE s.field_puzzle_ref_solution_nid='6502927' and u.created > 1455580800;
+
+USE eternadatabase; SELECT u.uid FROM users u WHERE u.created > 1455580800;
+
+### import json for capturing the json.load... json.dump
+
+### NEED to account for time below, to get more accurate estimate
+
+
+SELECT COUNT(s.nid), n.uid FROM content_type_solution s LEFT JOIN node n ON n.nid=s.nid WHERE n.created < 1455580800 GROUP BY n.uid;
+
+
+GETTING all lab projects and puzzles to do a diversity (by designer) score as suggested by Omei.
+
+USE eternadatabase; SELECT l.nid AS labnid, l.field_project_puzzles_value AS puzzles, n.created AS created FROM content_type_lab_project l LEFT JOIN node n ON n.nid=l.nid;
+
+
+COLLECTING ROUND, and other synthesis information.
+
+select nid AS sid, field_puzzle_ref_solution_nid AS pid, field_sequence_value AS ss, field_synth_score_value AS score, field_solution_energy_value AS energy, field_solution_submitted_round_value AS round, field_show_synthesis_value AS synth, field_gcs_value AS gcs, field_uas_value AS uas, field_gus_value as gus, field_solution_closest_nid_value AS closest from content_type_solution where nid='17331' ;
+
+
+USE eternadatabase; SELECT s.nid AS sid, s.field_puzzle_ref_solution_nid AS pid, n.uid AS uid, n.created AS created, p.field_structure_value AS structure, s.field_sequence_value AS sequence, s.field_synth_score_value AS score, s.field_solution_energy_value AS energy, s.field_solution_submitted_round_value AS round, s.field_show_synthesis_value AS synth, s.field_gcs_value AS gcs, s.field_uas_value AS uas, s.field_gus_value AS gus, s.field_solution_closest_nid_value AS closest from content_type_solution s LEFT JOIN node n ON n.nid=s.nid LEFT JOIN content_type_puzzle p ON s.field_puzzle_ref_solution_nid=p.nid WHERE p.nid='17320' or p.nid='24153' or p.nid='26603' or p.nid='321468' or p.nid='382268' or p.nid='405631' or p.nid='437822' or p.nid='444718' or p.nid='452127' or p.nid='465127' or p.nid= '479426' or p.nid='497237' or p.nid='502447' or p.nid='507875' or p.nid='525133' or p.nid='535658';
+
+
+USE eternadatabase; SELECT s.nid AS sid, s.field_puzzle_ref_solution_nid AS pid, n.uid AS uid, n.created AS created, s.field_synth_score_value AS score, s.field_solution_submitted_round_value AS round, s.field_show_synthesis_value AS synth from content_type_solution s LEFT JOIN node n ON n.nid=s.nid LEFT JOIN content_type_puzzle p ON s.field_puzzle_ref_solution_nid=p.nid WHERE p.nid='17320'
+
+
+["17320","24153","26603","321468","382268","405631","437822","444718","452127","465127","479426","497237","502447","507875","525133","535658","1029219","1961835"]}]
+
+#########################################################
+####CREATING TEMPORARY TABLES to try to get num of puzzles completed before submission
+#########################################################
+
+
+#########
+## Creating a puzzle to time created mapping
+#########
+
+USE eternadatabase; SELECT p.nid, n.created FROM content_type_puzzle p LEFT JOIN node n ON p.nid=n.nid;
+
+################ COLLECTING synth round DATA ###########
+
+USE eternadatabase; SELECT nid AS sid, field_puzzle_ref_solution_nid AS pid, field_solution_synthesis_round_value AS synth_round FROM content_type_solution;
+
+
+######### JOHAN’S RIBOSWITCH PROJECT ################
+
+
+4139129 6369383
+
+ SELECT s.nid AS sid, s.field_puzzle_ref_solution_nid AS pid, n.uid AS uid, n.created AS created, p.field_structure_value AS structure, s.field_sequence_value AS sequence, s.field_synth_score_value AS score, s.field_solution_energy_value AS energy, s.field_solution_submitted_round_value AS round, s.field_show_synthesis_value AS synth, s.field_gcs_value AS gcs, s.field_uas_value AS uas, s.field_gus_value AS gus, s.field_solution_closest_nid_value AS closest from content_type_solution s LEFT JOIN node n ON n.nid=s.nid LEFT JOIN content_type_puzzle p ON s.field_puzzle_ref_solution_nid=p.nid WHERE p.nid >= '4139129' AND p.nid <= '6369383';
+
+
+
+USE eternadatabase; SELECT s.nid AS sid, s.field_puzzle_ref_solution_nid AS pid, s.field_sequence_value AS sequence, field_melting_point_value AS melting_pt, s.field_synth_score_value AS score, s.field_solution_submitted_round_value AS sub_rd, s.field_solution_modded_from_nid AS modded, s.field_solution_energy_value AS energy, s.field_show_synthesis_value AS synth, s.field_solution_time_value AS time_sol, n.created AS n_created, n.uid AS user_id, u.name AS name FROM content_type_solution s LEFT JOIN node n ON s.nid=n.nid LEFT JOIN users u ON n.uid=u.uid WHERE s.field_puzzle_ref_solution_nid >='4139129' AND s.field_puzzle_ref_solution_nid <= '6369383';
+
+Titles, comments and hashtags.
+
+USE eternadatabase; SELECT s.nid AS sid, s.field_puzzle_ref_solution_nid AS pid, n.title AS title, n.comment AS comments FROM content_type_solution s LEFT JOIN node n ON s.nid=n.nid WHERE s.field_puzzle_ref_solution_nid >='4139129' AND s.field_puzzle_ref_solution_nid <= '6369383';
+
+USE eternadatabase; SELECT s.nid AS sid, s.field_puzzle_ref_solution_nid AS pid, nr.body FROM node_revisions nr LEFT JOIN content_type_solution s ON s.nid=nr.nid WHERE s.field_puzzle_ref_solution_nid >='4139129' AND s.field_puzzle_ref_solution_nid <= '6369383';
+
+SELECT s.nid AS sid, s.field_puzzle_ref_solution_nid AS pid, s.field_solution_hashtag_value AS hashtag FROM content_type_solution s WHERE s.field_puzzle_ref_solution_nid >='4139129' AND s.field_puzzle_ref_solution_nid <= '6369383';
+
+SELECT s.nid AS sid, u.name AS name, s.field_solution_hashtag_value AS hashtag, n.title AS title, nr.body AS comment FROM node_revisions nr LEFT JOIN content_type_solution s ON s.nid=nr.nid LEFT JOIN node n ON s.nid=n.nid LEFT JOIN users u ON n.uid=u.uid WHERE s.nid >='4736000';
+
+SELECT s.nid AS sid, u.name AS name, s.field_solution_modded_from_nid AS modded, s.field_solution_hashtag_value AS hashtag, n.title AS title, REPLACE(REPLACE(nr.body, '\r', ' '), '\n', ' ') AS comment FROM node_revisions nr LEFT JOIN content_type_solution s ON s.nid=nr.nid LEFT JOIN node n ON s.nid=n.nid LEFT JOIN users u ON n.uid=u.uid WHERE s.nid >='4736000';
+
+SELECT s.nid AS sid, u.name AS name, s.field_solution_hashtag_value AS hashtag, n.title AS title, nr.body AS comment FROM node_revisions nr LEFT JOIN content_type_solution s ON s.nid=nr.nid LEFT JOIN node n ON s.nid=n.nid LEFT JOIN users u ON n.uid=u.uid WHERE s.nid ='4193075';
+
+
+
+RETENTION REVISITED
+
+USE eternadatabase; SELECT COUNT(s.nid), s.field_puzzle_ref_solution_nid FROM content_type_solution s LEFT JOIN node n ON n.nid=s.nid LEFT JOIN users u ON u.uid=n.uid GROUP BY s.field_puzzle_ref_solution_nid ORDER BY COUNT(s.nid) DESC LIMIT 30;
+
+USE eternadatabase; SELECT COUNT(u.uid), s.field_puzzle_ref_solution_nid FROM content_type_solution s LEFT JOIN node n ON n.nid=s.nid LEFT JOIN users u ON u.uid=n.uid WHERE u.created > 1456790400 GROUP BY s.field_puzzle_ref_solution_nid ORDER BY COUNT(s.nid) DESC LIMIT 30;
+
+SELECT COUNT(u.uid), s.field_puzzle_ref_solution_nid FROM content_type_solution s LEFT JOIN node n ON n.nid=s.nid LEFT JOIN users u ON u.uid=n.uid WHERE (s.field_puzzle_ref_solution_nid='6502927' OR s.field_puzzle_ref_solution_nid BETWEEN '6502942' AND '6503055') and u.created > 1461283200 GROUP BY s.field_puzzle_ref_solution_nid;
+
+
+#### DOING BASIC STUFF FIRST  ####
+
+Contains all puzzles (lab and not) in the following form:
+sid, pid, uid, time created, synth score, synth round, synth data (if != NULL then synthesized).
+
+USE eternadatabase; SELECT s.nid AS sid, s.field_puzzle_ref_solution_nid AS pid, n.uid AS uid, n.created AS created, s.field_synth_score_value AS score, s.field_solution_submitted_round_value AS round, s.field_solution_shape_value AS svalue from content_type_solution s LEFT JOIN node n ON n.nid=s.nid LEFT JOIN content_type_puzzle p ON s.field_puzzle_ref_solution_nid=p.nid WHERE p.nid='17320'
+
+## WANT TO EXCLUDE THE PLAYER LED EXPERIMENTS, which typically had lower submissions I think #####
+USE eternadatabase; SELECT pid AS pid, field_made_by_player_value AS made_by_player FROM content_type_puzzle;
+
+
+### RETURNING TO MOVE SETS ####
+
+SELECT s.nid AS sol_id, field_puzzle_ref_solution_nid AS pid, n.uid AS uid, field_move_history_value AS move_set FROM content_type_solution s LEFT JOIN node n ON s.nid=n.nid LEFT JOIN users u ON n.uid=u.uid WHERE u.name='epicfalcon15';
+
+
+########### BACK TO PROBLEMS AND PUZZLES #################
+
+select field_project_num_synthesis_value AS numsynth, field_project_sub_titles_value AS title, field_project_made_by_player_value as madeByPlayer, field_project_synthesis_date_value as synthDate, field_project_proposed_date_value as proposedDate, field_project_lab_type_value as labType, field_project_puzzles_value as puzzles from content_type_lab_project limit 20;
+
+PUZZLES:
+
+USE eternadatabase; SELECT p.nid AS pid, p.field_puzzle_type_value AS type, p.field_constraints_puzzle_value AS constraints, p.field_made_by_player_value AS player, p.field_puzzle_made_for_lab_value AS lab, p.field_puzzle_num_cleared_value AS numCleared, n.uid AS uid FROM content_type_puzzle p LEFT JOIN node n ON n.nid = p.nid;
+
+
+Puzzles for ROHAN:
+USE eternadatabase; SELECT nid as pid, field_structure_value as structure, field_puzzle_locks_value as locks, field_constraints_puzzle_value as constraints, field_folder_puzzle_value as folder from content_type_puzzle;
+
+PUZZLE OBJECTIVES:
+
+USE eternadatabase; select nid as pid, field_puzzle_objective_value as objective from content_type_puzzle;
+
+USER DATA:
+
+USE eternadatabase; SELECT uid, name, created FROM users;
+
+
+select s.nid, n.created, s.field_move_history_value from content_type_solution s left join node n on s.nid=n.nid WHERE n.created >= '1460388439';
+
+NEW RIBOPAPER DATA
+
+USE eternadatabase; SELECT s.nid AS nid, s.field_puzzle_ref_solution_nid AS pid, n.uid AS uid, n.created AS created FROM content_type_solution s LEFT JOIN node n ON s.nid = n.nid WHERE s.field_puzzle_ref_solution_nid='7559747' OR s.field_puzzle_ref_solution_nid='7559748' OR s.field_puzzle_ref_solution_nid='7568412' OR s.field_puzzle_ref_solution_nid='7568413' OR s.field_puzzle_ref_solution_nid='7559899' OR s.field_puzzle_ref_solution_nid='7559900' OR s.field_puzzle_ref_solution_nid='7559901' OR s.field_puzzle_ref_solution_nid='7559902' OR s.field_puzzle_ref_solution_nid='7574692' OR s.field_puzzle_ref_solution_nid='7574693' OR s.field_puzzle_ref_solution_nid='7579140' OR s.field_puzzle_ref_solution_nid='7579141';
+
+NEED TO GET ALL OF THE PUZZLE DATA TO FIGURE OUT WHO ACCESSED THE LAB select s.nid AS nid, s.field_puzzle_ref_solution_nid AS pid, n.uid AS uid, n.created AS created FROM content_type_solution s LEFT JOIN node n ON s.nid = n.nid WHERE n.created > '1477958400';
+
+AND USER DATA
+
+SELECT uid AS u
