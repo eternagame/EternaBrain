@@ -7,10 +7,15 @@ from numpy.random import choice
 from difflib import SequenceMatcher
 from readData import format_pairmap
 
-dot_bracket = '....((((..(((((..((((..((((.....))))((((((...))).)))))))((((((.((.((.(((((....)).)))))))(((((.((.((.((....))))))((((.(((....)).)).)))..)).)))))).))))))))(((.(((.(((.((((....))))))))))((((((((...))).)).))).)))))))'
+dot_bracket = '((((....))))'
+len_puzzle = len(dot_bracket)
+nucleotides = 'A'*len_puzzle
+ce = 0.0
+te = 0.0
+min_threshold = 0.6
+
 TF_SHAPE = 8 * 350
 BASE_SHAPE = 9 * 350
-len_puzzle = len(dot_bracket)
 len_longest = 350
 
 def similar(a, b):
@@ -53,14 +58,13 @@ def convert_to_list(base_seq):
     #struc = ''.join(str_struc)
     return str_struc
 
-bs = 'A'*len_puzzle
-base_seq = (convert_to_list(bs)) + ([0]*(len_longest - len_puzzle))
+base_seq = (convert_to_list(nucleotides)) + ([0]*(len_longest - len_puzzle))
 # cdb = '.'*len_puzzle
-current_struc = (encode_struc(RNA.fold(bs)[0])) + ([0]*(len_longest - len_puzzle))
+current_struc = (encode_struc(RNA.fold(nucleotides)[0])) + ([0]*(len_longest - len_puzzle))
 target_struc = encode_struc(dot_bracket) + ([0]*(len_longest - len_puzzle))
-current_energy = [0.0] + ([0]*(len_longest - 1))
-target_energy = [0.0] + ([0]*(len_longest - 1))
-current_pm = format_pairmap(bs) + ([0]*(len_longest - len_puzzle))
+current_energy = [ce] + ([0]*(len_longest - 1))
+target_energy = [te] + ([0]*(len_longest - 1))
+current_pm = format_pairmap(nucleotides) + ([0]*(len_longest - len_puzzle))
 target_pm = format_pairmap(dot_bracket) + ([0]*(len_longest - len_puzzle))
 locks = ([1]*len_puzzle) + ([0]*(len_longest - len_puzzle))
 
@@ -211,7 +215,7 @@ for i in range(1000):
         #print target_struc[:len(enc_struc)]
         #print inputs2[1][:len(enc_struc)]
         #print format_pairmap(str_struc)
-        if similar(str_struc,dot_bracket) >= 0.8:
+        if similar(str_struc,dot_bracket) >= min_threshold:
             print 'max'
             print str_struc
             print dot_bracket
