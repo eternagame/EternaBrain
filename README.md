@@ -2,6 +2,9 @@
 Using Eterna data to understand and predict how players solve RNA folding puzzles.
 EternaBrain uses unsupervised machine learning to group Eterna players based on their style of solving RNA folding puzzles, and uses supervised machine learning with neural networks to predict how players will solve RNA folding puzzles.
 
+## Author
+Rohan Koodli
+
 ## Key Puzzles
 ### Multi-state puzzles
 6892343 - 6892348, 7254756 - 7254761
@@ -48,7 +51,7 @@ content = getPid()
 max_moves = 30
 ```
 
-### Step 2: Training the model
+### Step 2: Training the convolutional neural network (CNN)
 EternaBrain uses a convolutional neural net (CNN). Run both `baseCNN.py` and `locationCNN.py`. Just specify the path and name of your pickled data files here:
 ```python
 for pid in content:
@@ -71,6 +74,29 @@ saver.export_meta_graph(os.getcwd()+'/models/base/baseCNN.meta')
 ```
 
 ### Step 3: Predicting
-Load your model into the appropriate locations for the base predictor and location predictor in `predict_pm.py`. Specify the RNA secondary structure and starting nucleotide sequence in `dot_bracket` and `nucleotides`, respectively. Also specify the natural energy and target energy in `current_energy` and `target_energy`, respectively (default is 0 kcal).
+Load your model into the appropriate locations for the base predictor and location predictor in `predict_pm.py`. Specify the RNA secondary structure and starting nucleotide sequence in `dot_bracket` and `nucleotides`, respectively. Also specify the natural energy and target energy in `current_energy` and `target_energy`, respectively (default is 0 kcal). 
+
+```python
+dot_bracket = '((((....))))'
+len_puzzle = len(dot_bracket)
+nucleotides = 'A'*len_puzzle
+ce = 0.0 # current energy
+te = 0.0 # target energy
+```
+
+You can specify the minimum amount of the puzzle you want it to solve (on its own, it generally cannot solve long puzzles). The amount is calculated by how much of the current structure matches the target structure. If you want it to completely solve the puzzle, set `min_threshold` to 1.0
+```python
+min_threshold = 0.8
+```
 
 Then, you can run the model and it will attempt to match the secondary structure you specified.
+
+### Step 4: Running the pseudo-reinforcement learner (PRL)
+Simply input the desired secondary structure as well as the base sequence output of the CNN. The PRL will make mutations at each location and check to see if any of the mutations resulted in the natural structure folding more closely to the target structure. 
+```python
+dot_bracket = '((((....))))'
+seq = 'GGUGUGCUAACC'
+```
+
+### Step 5: The Domain-Specific Pipeline (DSP)
+The DSP implements Eterna player strategies to completely solve the puzzle if the CNN and PRL have not done so already. Currently a work-in-progress; documentation coming soon.
