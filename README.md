@@ -1,6 +1,7 @@
 # EternaBrain
 Using Eterna data to understand and predict how players solve RNA folding puzzles.
-EternaBrain uses unsupervised machine learning to group Eterna players based on their style of solving RNA folding puzzles, and uses supervised machine learning with neural networks to predict how players will solve RNA folding puzzles.
+* Neural networks to learn how top players solve Eterna players and to predict solutions to RNA folding puzzles
+* Unsupervised learning to group players based on their style of solving RNA folding puzzles
 
 ## Author
 Rohan Koodli
@@ -33,7 +34,6 @@ or, if you want less puzzles and more experts, you can read in `teaching-puzzle-
 ```python
 with open(os.getcwd()+'/movesets/teaching-puzzle-ids.txt') as f:
     progression = f.readlines()
-# you may also want to remove whitespace characters like `\n` at the end of each line
 progression = [x.strip() for x in content]
 progression = [int(x) for x in content]
 progression.extend([6502966,6502968,6502973,6502976,6502984,6502985,6502993, \
