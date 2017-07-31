@@ -30,8 +30,8 @@ def find_parens(s):
 
     return toret
 
-dot_bracket = '...((........))(((....)))....((.....((...)).....)).'
-seq_str = 'A'*len(dot_bracket)
+dot_bracket = '((((....).))).((((....).))).((((....).))).((((....).))).((((....).))).((((....).))).((((((((((((((((((((((...)))).))))))).(((((..((((((((((..(((((((...))))))).))))))))))((((.((((((...)))))))))))))))...))))))))))).((((....).))).((((....).))).((((....).))).((((....).))).((((....).)))'
+seq_str = 'GGGGAGCCCUGCCUCUAGUACCGUAGCAUGCGCUCUUUUGCCGACCAUUUAUGGUGGUGGGGUUGGUGAGAGAUGCAGCUUACGCCAUUCUUUUAGUGGAGUCUGUAGAUUCUUUGAGAGGGUGGCGCGUCUGGAGCGAUCCUUUGCUGUGCGGAGGGUCGCUCUGGAUGCCUGGGGGCGUAUAUUUGGGUGGUUCUACUGUUUCUAUAGAGGUAGAGGGGGCGUCAUUAUCUGUCUCCCGGAUAAGAGGAGUAGAUAGUGACGACUGGCGAUCGUUCAAGU'
 seq = list(seq_str)
 
 current_struc,_ = RNA.fold(seq_str)
@@ -89,11 +89,12 @@ for i in range(len(dot_bracket)):
                 #print i
                 if (seq[i] == 'G' and seq[target_pm[i]] == 'C') or (seq[i] == 'C' and seq[target_pm[i]] == 'G'):
                     continue
-                elif dot_bracket[i+1] == '.' and dot_bracket[i+2] == '.' and dot_bracket[i+3] == '.' and dot_bracket[i+4] == '.':
-                    seq[i+1] = 'G'
                 else:
                     seq[i] = 'G'
                     seq[target_pm[i]] = 'C'
+
+            # elif dot_bracket[i+1] == '.' and dot_bracket[i+2] == '.' and dot_bracket[i+3] == '.' and dot_bracket[i+4] == '.':
+            #     seq[i+1] = 'G'
 
         elif dot_bracket[i] == ')':# or dot_bracket[i] == ')':
             #print dot_bracket[i]
@@ -108,5 +109,9 @@ for i in range(len(dot_bracket)):
     except IndexError:
         continue
 
+for i in range(len(dot_bracket)):
+    if dot_bracket[i] == '(':
+        if dot_bracket[i+1] == '.' and dot_bracket[i+2] == '.' and dot_bracket[i+3] == '.' and dot_bracket[i+4] == '.':
+            seq[i+1] = 'G'
 
 print ''.join(seq)
