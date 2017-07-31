@@ -30,18 +30,18 @@ def find_parens(s):
 
     return toret
 
-dot_bracket = '........(((((((((((....))))..((((....))))..((((....)))))))))))..(((((((...))))..((((...))))..((((...))))))).........'
-seq_str = 'AAAAAAAAUUUCGUCUAGAAUAUGUCCUCUGAACGUUUAAAAGAGAAUGAGGGUGUAUUGUUAAGGUGGUUGUUUCGGCCAUCGAUACUAAUUUAGAUAUGUGAAGAAAAAAAAAA'
+dot_bracket = '...((....))(((....)))...'
+seq_str = 'A'*len(dot_bracket)
 seq = list(seq_str)
 
 current_struc,_ = RNA.fold(seq_str)
 target_struc = encode_struc(dot_bracket)
-pm = get_pairmap_from_secstruct(dot_bracket)
+target_pm = get_pairmap_from_secstruct(dot_bracket)
 current_pm = get_pairmap_from_secstruct(current_struc)
 
 pairs = find_parens(dot_bracket)
 
-print pm
+print target_pm
 print current_pm
 
 for base1,base2 in pairs.iteritems(): # corrects incorrect base pairings
@@ -72,5 +72,25 @@ for base1,base2 in pairs.iteritems(): # corrects incorrect base pairings
         seq[base1] = 'C'
     elif (seq[base1] == 'C' and seq[base2] == 'C'):
         seq[base1] = 'G'
+
+print ''.join(seq)
+
+for i in range(len(target_pm)):
+    if target_pm[i] == -1:
+        seq[i] = 'A'
+    else:
+        continue
+
+for i in range(len(dot_bracket)):
+    if dot_bracket[i] == '(':
+        print dot_bracket[i]
+        if dot_bracket[i-1] == '.' or dot_bracket[i-1] == ')' or dot_bracket[i+1] == '.' or dot_bracket[i+1] == ')':
+            print i
+            if (seq[i] == 'G' and seq[pairs[i]] == 'C') or (seq[i] == 'C' and seq[pairs[i]] == 'G'):
+                continue
+            else:
+                seq[i] = 'G'
+                seq[pairs[i]] = 'C'
+
 
 print ''.join(seq)
