@@ -6,13 +6,15 @@ import copy
 from numpy.random import choice
 from difflib import SequenceMatcher
 from readData import format_pairmap
+from fix import prl
+from dsp import dsp
 
-dot_bracket = '((((....))))'
+dot_bracket = '.....(.((((..(((((........)))))..(((.(((.(((((.....))))).((((....)))).))))))..)))).)....................'
 len_puzzle = len(dot_bracket)
 nucleotides = 'A'*len_puzzle
 ce = 0.0
 te = 0.0
-min_threshold = 0.6
+min_threshold = 0.7
 
 TF_SHAPE = 8 * 350
 BASE_SHAPE = 9 * 350
@@ -221,3 +223,7 @@ for i in range(1000):
             print dot_bracket
             print reg
             break
+
+level1 = prl(dot_bracket,reg)
+level2 = dsp(dot_bracket,level1)
+print level2
