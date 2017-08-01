@@ -1,6 +1,8 @@
 import numpy as np
 from eterna_utils import get_pairmap_from_secstruct
 import RNA
+from subprocess import Popen, PIPE, STDOUT
+import re
 
 def encode_struc(dots):
     s = []
@@ -30,7 +32,7 @@ def find_parens(s):
 
     return toret
 
-dot_bracket = '...((((..(((((.....)))))..(((((...)))))..(((((.....)))))..(((((...)))))..(((((.....)))))..(((((.....))))).((((((((((((((((((((((((((((......))))).(((((.............((((.........................................)))).............)))))(((((....))))).)))))))))))))))))))))))..(((((.....)))))..(((((.....)))))..(((((.....)))))..(((((.....)))))..(((((....)))))..(((((.....))))).))))...'
+dot_bracket = '(((((((((((((((.(((((.((.....)).((.....)).((.....)).((.....)).((.....)).))))).(((.....))).(((((.((.....)).((.....)).((.....)).((.....)).((.....)).))))).(((.....))).(((((.((.....)).((.....)).((.....)).((.....)).((.....)).))))).(((.....))).(((((.((.....)).((.....)).((.....)).((.....)).((.....)).))))).(((.....))).(((((.((.....)).((.....)).((.....)).((.....)).((.....)).))))).)))))))))))))))'
 seq_str = 'A'*len(dot_bracket)
 def dsp(dot_bracket,seq_str):
     seq = list(seq_str)
@@ -114,8 +116,30 @@ def dsp(dot_bracket,seq_str):
         if dot_bracket[i] == '(':
             if dot_bracket[i+1] == '.' and dot_bracket[i+2] == '.' and dot_bracket[i+3] == '.' and dot_bracket[i+4] == '.':
                 seq[i+1] = 'G'
-            elif (dot_bracket[i+1] == '.' and dot_bracket[i+2] == '('):
+            # elif (dot_bracket[i+1] == '.' and dot_bracket[i+2] == '('):
+            #     seq[i+1] = 'G'
+
+    for i in range(len(dot_bracket)):
+        if dot_bracket[i] == '(' and dot_bracket[i+1] == '.' and dot_bracket[i+2] == '.' and dot_bracket[i+3] == '(': # UGUG superboost
+            idx = target_pm[i]
+            if dot_bracket[idx] == ')' and dot_bracket[idx-1] == '.' and dot_bracket[idx-2] == '.' and dot_bracket[idx-3] == ')':
+                seq[i+1] = 'U'
+                seq[i+2] = 'G'
+                seq[idx-2] = 'U'
+                seq[idx-1] = 'G'
+
+        elif dot_bracket[i] == '(' and dot_bracket[i+1] == '.' and dot_bracket[i+2] == '(': # G-G in 2 pair internal loop
+            idx = target_pm[i]
+            if dot_bracket[idx] == ')' and dot_bracket[idx-1] == '.' and dot_bracket[idx-2] == ')':
                 seq[i+1] = 'G'
+                seq[idx-1] = 'G'
+
+    p = Popen(['../../../../Desktop/EteRNABot/eternabot/./RNAfold', '-T','37.0'], stdout=PIPE, stdin=PIPE, stderr=STDOUT)
+    pair = p.communicate(input=''.join(seq))[0]
+    formatted = re.split('\s+| \(?\s?',pair)
+    new_struc = formatted[1]
+
+
 
     return ''.join(seq)
 

@@ -9,12 +9,13 @@ from readData import format_pairmap
 from fix import prl
 from dsp import dsp
 
-dot_bracket = '.....(.((((..(((((........)))))..(((.(((.(((((.....))))).((((....)))).))))))..)))).)....................'
+dot_bracket = '.((.((.((..((.(...).)).))..))....)).'
 len_puzzle = len(dot_bracket)
 nucleotides = 'A'*len_puzzle
 ce = 0.0
 te = 0.0
-min_threshold = 0.7
+min_threshold = 0.65
+max_iterations = len_puzzle*4
 
 TF_SHAPE = 8 * 350
 BASE_SHAPE = 9 * 350
@@ -104,7 +105,7 @@ print 'models loaded'
 location_feed_dict = {x2:inputs,keep_prob2:1.0}
 movesets = []
 iteration = 0
-for i in range(1000):
+for i in range(max_iterations):
     if np.all(inputs2[1] == inputs2[2]):
         print("Puzzle Solved")
         break
@@ -218,7 +219,7 @@ for i in range(1000):
         #print inputs2[1][:len(enc_struc)]
         #print format_pairmap(str_struc)
         if similar(str_struc,dot_bracket) >= min_threshold:
-            print 'max'
+            print 'similar'
             print str_struc
             print dot_bracket
             print reg
