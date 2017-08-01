@@ -56,9 +56,9 @@ EternaBrain uses a convolutional neural net (CNN). Run both `baseCNN.py` and `lo
 ```python
 for pid in content:
     try:
-        feats = pickle.load(open(os.getcwd()+'/pickles/X2-fast-loc-'+str(pid),'rb'))
-        ybase = pickle.load(open(os.getcwd()+'/pickles/y2-fast-base-'+str(pid),'rb'))
-        yloc = pickle.load(open(os.getcwd()+'/pickles/y2-fast-loc-'+str(pid),'rb'))
+        feats = pickle.load(open(os.getcwd()+'/pickles/X-exp-loc-'+str(pid),'rb'))
+        ybase = pickle.load(open(os.getcwd()+'/pickles/y-exp-base-'+str(pid),'rb'))
+        yloc = pickle.load(open(os.getcwd()+'/pickles/y-exp-loc-'+str(pid),'rb'))
         for i in range(len(feats)):
             feats[i].append(yloc[i])
         real_X.extend(feats)
@@ -84,19 +84,9 @@ ce = 0.0 # current energy
 te = 0.0 # target energy
 ```
 
-You can specify the minimum amount of the puzzle you want it to solve (on its own, it generally cannot solve long puzzles). The amount is calculated by how much of the current structure matches the target structure. If you want it to completely solve the puzzle, set `min_threshold` to 1.0
+You can specify the minimum amount of the puzzle you want the CNN to solve (on its own, it generally cannot solve long puzzles). The amount is calculated by how much of the current structure matches the target structure. Once it reaches the threshold specified or completes the maximum number of moves, the sequence moves to the reinforcement learner and the domain specific pipeline. If you want the CNN to completely solve the puzzle, set `min_threshold` to 1.0
 ```python
-min_threshold = 0.8
+min_threshold = 0.65
 ```
 
 Then, you can run the model and it will attempt to match the secondary structure you specified.
-
-### Step 4: Running the pseudo-reinforcement learner (PRL)
-Simply input the desired secondary structure as well as the base sequence output of the CNN. The PRL will make mutations at each location and check to see if any of the mutations resulted in the natural structure folding more closely to the target structure. 
-```python
-dot_bracket = '((((....))))'
-seq = 'GGUGUGCUAACC'
-```
-
-### Step 5: The Domain-Specific Pipeline (DSP)
-The DSP implements Eterna player strategies to completely solve the puzzle if the CNN and PRL have not done so already. Currently a work-in-progress; documentation coming soon.
