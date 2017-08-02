@@ -3,6 +3,8 @@ from eterna_utils import get_pairmap_from_secstruct
 import RNA
 from subprocess import Popen, PIPE, STDOUT
 import re
+from difflib import SequenceMatcher
+import copy
 
 def encode_struc(dots):
     s = []
@@ -32,8 +34,8 @@ def find_parens(s):
 
     return toret
 
-dot_bracket = '(((((((((((((((.(((((.((.....)).((.....)).((.....)).((.....)).((.....)).))))).(((.....))).(((((.((.....)).((.....)).((.....)).((.....)).((.....)).))))).(((.....))).(((((.((.....)).((.....)).((.....)).((.....)).((.....)).))))).(((.....))).(((((.((.....)).((.....)).((.....)).((.....)).((.....)).))))).(((.....))).(((((.((.....)).((.....)).((.....)).((.....)).((.....)).))))).)))))))))))))))'
-seq_str = 'A'*len(dot_bracket)
+dot_bracket = '.....((((((((...((((((((((........))))))))))...((((((((((........))))))))))...((((((((((........))))))))))...)))))))).....'
+seq_str = 'AAAAAGUUUUGAGAAAGAAGUCUGGGGAAAAAAACUUGGGUUUCAAAGGGUGAAAUGGAAAAAAACAUUUCACCCAAAGUUCCUAUCCGAAAAAAAGGAUAGGAGCAAACUUAAAACAAAAA'
 def dsp(dot_bracket,seq_str):
     seq = list(seq_str)
 
@@ -138,8 +140,37 @@ def dsp(dot_bracket,seq_str):
     pair = p.communicate(input=''.join(seq))[0]
     formatted = re.split('\s+| \(?\s?',pair)
     new_struc = formatted[1]
+    new_pm = get_pairmap_from_secstruct(new_struc)
+    match = SequenceMatcher(None,new_pm,target_pm).ratio()
+    for j in range(3):
+        for i in range(len(dot_bracket)):
+            if new_pm == target_pm:
+                print 'puzzle solved'
+                break
+            else:
+                if new_pm[i] == target_pm[i]:
+                    continue
+                else:
+                    paired = target_pm[i]
+                    base1 = seq[i]
+                    base2 = seq[paired]
 
+                    if paired == -1: continue
 
+                    seq[i] = base2
+                    seq[paired] = base1
+                    p = Popen(['../../../../Desktop/EteRNABot/eternabot/./RNAfold', '-T','37.0'], stdout=PIPE, stdin=PIPE, stderr=STDOUT)
+                    pair = p.communicate(input=''.join(seq))[0]
+                    formatted = re.split('\s+| \(?\s?',pair)
+                    new_pm = get_pairmap_from_secstruct(formatted[1])
+
+                    new_match = SequenceMatcher(None,new_pm,target_pm).ratio()
+
+                    if new_match > match:
+                        match = copy.deepcopy(new_match)
+                    else:
+                        seq[i] = base1
+                        seq[paired] = base2
 
     return ''.join(seq)
 

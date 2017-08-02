@@ -9,7 +9,7 @@ from readData import format_pairmap
 from fix import prl
 from dsp import dsp
 
-dot_bracket = '.((.((.((..((.(...).)).))..))....)).'
+dot_bracket = '........(((((((((((....))))..((((....))))..((((....)))))))))))..(((((((...))))..((((...))))..((((...))))))).........'
 len_puzzle = len(dot_bracket)
 nucleotides = 'A'*len_puzzle
 ce = 0.0
