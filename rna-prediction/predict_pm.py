@@ -9,17 +9,17 @@ from readData import format_pairmap
 from fix import prl
 from dsp import dsp
 
-dot_bracket = '........(((((((((((....))))..((((....))))..((((....)))))))))))..(((((((...))))..((((...))))..((((...))))))).........'
+dot_bracket = '((((((((((((((.((((((...........((((((((((((.....((((((((....(((((((((((((........))))))))))....))))))))....))))))....)))))...((((((.......))))))))))............)))))).))))....))))))...))))...'
 len_puzzle = len(dot_bracket)
 nucleotides = 'A'*len_puzzle
 ce = 0.0
 te = 0.0
-min_threshold = 0.65
-max_iterations = len_puzzle*4
-
-TF_SHAPE = 8 * 350
-BASE_SHAPE = 9 * 350
-len_longest = 350
+min_threshold = 0.6
+max_iterations = len_puzzle*3
+max_len = 350
+TF_SHAPE = 8 * max_len
+BASE_SHAPE = 9 * max_len
+len_longest = max_len
 
 def similar(a, b):
     return SequenceMatcher(None, a, b).ratio()
@@ -77,7 +77,7 @@ inputs2 = np.array([base_seq,current_struc,target_struc,current_energy,target_en
 inputs = inputs2.reshape([-1,TF_SHAPE])
 
 with tf.Graph().as_default() as base_graph:
-    saver1 = tf.train.import_meta_graph(os.getcwd()+'/models/base/baseCNN10.meta')
+    saver1 = tf.train.import_meta_graph(os.getcwd()+'/models/base/baseCNN10.meta') # CNN10 or CNN10
 sess1 = tf.Session(graph=base_graph) # config=tf.ConfigProto(allow_soft_placement=True,log_device_placement=True)
 saver1.restore(sess1,os.getcwd()+'/models/base/baseCNN10')
 

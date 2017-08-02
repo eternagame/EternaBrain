@@ -172,6 +172,44 @@ def dsp(dot_bracket,seq_str):
                         seq[i] = base1
                         seq[paired] = base2
 
+    for i in range(len(dot_bracket)):
+        if new_pm[i] == target_pm[i]:
+            continue
+        else:
+            paired = target_pm[i]
+            seq[i] = 'G'
+            seq[paired] = 'C'
+
+    for j in range(3):
+        for i in range(len(dot_bracket)):
+            if new_pm == target_pm:
+                print 'puzzle solved'
+                break
+            else:
+                if new_pm[i] == target_pm[i]:
+                    continue
+                else:
+                    paired = target_pm[i]
+                    base1 = seq[i]
+                    base2 = seq[paired]
+
+                    if paired == -1: continue
+
+                    seq[i] = base2
+                    seq[paired] = base1
+                    p = Popen(['../../../../Desktop/EteRNABot/eternabot/./RNAfold', '-T','37.0'], stdout=PIPE, stdin=PIPE, stderr=STDOUT)
+                    pair = p.communicate(input=''.join(seq))[0]
+                    formatted = re.split('\s+| \(?\s?',pair)
+                    new_pm = get_pairmap_from_secstruct(formatted[1])
+
+                    new_match = SequenceMatcher(None,new_pm,target_pm).ratio()
+
+                    if new_match > match:
+                        match = copy.deepcopy(new_match)
+                    else:
+                        seq[i] = base1
+                        seq[paired] = base2
+
     return ''.join(seq)
 
     cs,_ = RNA.fold(''.join(seq))

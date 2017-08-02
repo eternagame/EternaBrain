@@ -117,8 +117,8 @@ def all_same(items):
 len_longest = 108
 
 #current = convert(base_seq)
-dot_bracket = '((((....))))'
-seq = 'GGGGAAAACCCA'
+dot_bracket = '.....((((((((...((((((((((........))))))))))...((((((((((........))))))))))...((((((((((........))))))))))...)))))))).....'
+seq = 'AAAAAGUUUUGAGAAAGAAGUCUGGGGAAAAAAACUUGGGUUUCAAAGGGUGAAAUGGAAAAAAACAUUUCACCCAAAGUUCCUAUCCGAAAAAAAGGAUAGGAGCAAACUUAAAACAAAAA'
 
 def prl(dot_bracket,seq):
     target_struc = encode_struc(dot_bracket)
