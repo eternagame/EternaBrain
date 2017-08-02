@@ -18,12 +18,12 @@ Python: numpy, tensorflow, pandas, seaborn, matplotlib
 
 RNAfold from ViennaRNA
 
-EteRNAbot - You will have to clone the EteRNAbot repository and move the files to your directory. Currently, there is no installation option for EteRNAbot.
+EteRNABot - You will have to clone the EteRNABot repository and move the files to your directory. Currently, there is no installation option for EteRNABot.
 
 ## To Use
 ### Step 1: Generate the training data
 #### Selecting expert solutions
-Go to `experts.py` and modify the variables `content` and `uidList`. `content` is the puzzle ID's of the puzzles you want movesets on, and `uidList` is the user ID's of the players you want movesets from. You can either specify these manually, or you can use functions to get them for you. `getPid()` will retrieve all the single state puzzles, and `experience` will retrieve all players with an experience above a certain threshold. 
+Go to `experts.py` and modify the variables `content` and `uidList`. `content` is the puzzle IDs of the puzzles you want movesets on, and `uidList` is the user ID's of the players you want movesets from. You can either specify these manually, or you can use functions to get them for you. `getPid()` will retrieve all the single state puzzles, and `experience` will retrieve all players with an experience above a certain threshold.
 
 Example:
 ```python
@@ -74,7 +74,7 @@ saver.export_meta_graph(os.getcwd()+'/models/base/baseCNN.meta')
 ```
 
 ### Step 3: Predicting
-Load your model into the appropriate locations for the base predictor and location predictor in `predict_pm.py`. Specify the RNA secondary structure and starting nucleotide sequence in `dot_bracket` and `nucleotides`, respectively. Also specify the natural energy and target energy in `current_energy` and `target_energy`, respectively (default is 0 kcal). 
+Load your model into the appropriate locations for the base predictor and location predictor in `predict_pm.py`. Specify the RNA secondary structure and starting nucleotide sequence in `dot_bracket` and `nucleotides`, respectively. Also specify the natural energy and target energy in `current_energy` and `target_energy`, respectively (default is 0 kcal).
 
 ```python
 dot_bracket = '((((....))))'
@@ -84,9 +84,9 @@ ce = 0.0 # current energy
 te = 0.0 # target energy
 ```
 
-You can specify the minimum amount of the puzzle you want the CNN to solve (on its own, it generally cannot solve long puzzles). The amount is calculated by how much of the current structure matches the target structure. Once it reaches the threshold specified or completes the maximum number of moves, the sequence moves to the reinforcement learner and the domain specific pipeline. If you want the CNN to completely solve the puzzle, set `min_threshold` to 1.0
+You can specify the minimum amount of the puzzle you want the CNN to solve (on its own, it generally cannot solve long puzzles). The amount is calculated by how much of the current structure matches the target structure. Once it reaches the threshold specified or completes the maximum number of moves, the sequence moves to the reinforcement learner and the domain specific pipeline.
 ```python
 min_threshold = 0.65
 ```
 
-Then, you can run the model and it will attempt to match the secondary structure you specified.
+Now, you can run the model and it will attempt to find a nucleotide sequence that will fold into the secondary structure provided.

@@ -1,5 +1,5 @@
 # Create Python Environment with RNA package
-NOTE: This process works only with Python 2 and macOS.
+NOTE: This process works only with Vienna 2.1 onwards and Python 2.
 
 ## First Installation
 
