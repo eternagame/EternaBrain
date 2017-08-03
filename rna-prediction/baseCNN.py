@@ -11,6 +11,7 @@ import tensorflow as tf
 import pickle
 from sklearn.cross_validation import train_test_split
 from tf_funcs import average_gradients
+from getData import getPid
 #from matplotlib import pyplot as plt
 
 # enc0 = np.array([[[[1,2,3,4],[0,1,0,1],[-33,0,0,0]],[[1,2,3,4],[0,1,1,0],[-23,0,0,0]]],[[[3,3,3,3],[0,0,0,0],[2,0,0,0]],[[1,1,1,0],[1,0,1,0],[-23,0,0,0]]]])
@@ -26,11 +27,13 @@ content = [int(x) for x in content]
 progression = [6502966,6502968,6502973,6502976,6502984,6502985,6502993, \
                 6502994,6502995,6502996,6502997,6502998,6502999,6503000] # 6502957
 content.extend(progression)
+
+# content = getPid()
 content.remove(6502966)
 content.remove(6502976)
 content.remove(6502984)
-content.remove(4960718)
-content.remove(3468526)
+# content.remove(4960718)
+# content.remove(3468526)
 
 real_X = []
 real_y = []
@@ -38,9 +41,9 @@ pids = []
 
 for pid in content:
     try:
-        feats = pickle.load(open(os.getcwd()+'/pickles/X2-exp-loc-'+str(pid),'rb'))
-        ybase = pickle.load(open(os.getcwd()+'/pickles/y2-exp-base-'+str(pid),'rb'))
-        yloc = pickle.load(open(os.getcwd()+'/pickles/y2-exp-loc-'+str(pid),'rb'))
+        feats = pickle.load(open(os.getcwd()+'/pickles/X5-exp-loc-'+str(pid),'rb'))
+        ybase = pickle.load(open(os.getcwd()+'/pickles/y5-exp-base-'+str(pid),'rb'))
+        yloc = pickle.load(open(os.getcwd()+'/pickles/y5-exp-loc-'+str(pid),'rb'))
         for i in range(len(feats)):
             feats[i].append(yloc[i])
         real_X.extend(feats)
@@ -78,18 +81,19 @@ for i in indxs:
 print abs_max
 
 print len(real_X), len(real_y)
+print np.array(real_X).shape, np.array(real_y).shape
 
-TRAIN_KEEP_PROB = 1.0
+TRAIN_KEEP_PROB = 0.9
 TEST_KEEP_PROB = 1.0
 learning_rate = 0.0001
 ne = 150
 #tb_path = '/tensorboard/baseDNN-500-10-10-50-100'
 
 train = 30000
-test = 50
+test = 100
 len_puzzle = abs_max
 
-TF_SHAPE = 7 * len_puzzle
+TF_SHAPE = 9 * len_puzzle
 
 #testtest = np.array(real_X[train:train+test]).reshape([-1,TF_SHAPE])
 
@@ -133,25 +137,25 @@ def maxpool2d(x):
     return tf.nn.max_pool(x, ksize=[1,2,2,1], strides=[1,2,2,1], padding="SAME")
 
 def convNeuralNet(x):
-    weights = {'w_conv1':tf.get_variable('w_conv1',[7,7,1,2],initializer=tf.random_normal_initializer()),
-               'w_conv2':tf.get_variable('w_conv2',[7,7,2,4],initializer=tf.random_normal_initializer()),
-               'w_conv3':tf.get_variable('w_conv3',[7,7,4,8],initializer=tf.random_normal_initializer()),
-               'w_conv4':tf.get_variable('w_conv4',[7,7,8,16],initializer=tf.random_normal_initializer()),
-               'w_conv5':tf.get_variable('w_conv5',[7,7,16,32],initializer=tf.random_normal_initializer()),
-               'w_conv6':tf.get_variable('w_conv6',[7,7,32,64],initializer=tf.random_normal_initializer()),
-               'w_conv7':tf.get_variable('w_conv7',[7,7,64,128],initializer=tf.random_normal_initializer()),
-               'w_conv8':tf.get_variable('w_conv8',[7,7,128,256],initializer=tf.random_normal_initializer()),
-               'w_conv9':tf.get_variable('w_conv9',[7,7,256,512],initializer=tf.random_normal_initializer()),
-               'w_conv10':tf.get_variable('w_conv10',[7,7,512,1024],initializer=tf.random_normal_initializer()),
-            #    'w_conv11':tf.get_variable('w_conv11',[7,7,1024,2048],initializer=tf.random_normal_initializer()),
-            #    'w_conv12':tf.get_variable('w_conv12',[7,7,2048,4096],initializer=tf.random_normal_initializer()),
-            #    'w_conv13':tf.get_variable('w_conv13',[7,7,4096,8192],initializer=tf.random_normal_initializer()),
-            #    'w_conv14':tf.get_variable('w_conv14',[7,7,8192,16384],initializer=tf.random_normal_initializer()),
-            #    'w_conv15':tf.get_variable('w_conv15',[7,7,16384,32768],initializer=tf.random_normal_initializer()),
+    weights = {'w_conv1':tf.get_variable('w_conv1',[9,9,1,2],initializer=tf.random_normal_initializer()),
+               'w_conv2':tf.get_variable('w_conv2',[9,9,2,4],initializer=tf.random_normal_initializer()),
+               'w_conv3':tf.get_variable('w_conv3',[9,9,4,8],initializer=tf.random_normal_initializer()),
+               'w_conv4':tf.get_variable('w_conv4',[9,9,8,16],initializer=tf.random_normal_initializer()),
+               'w_conv5':tf.get_variable('w_conv5',[9,9,16,32],initializer=tf.random_normal_initializer()),
+               'w_conv6':tf.get_variable('w_conv6',[9,9,32,64],initializer=tf.random_normal_initializer()),
+               'w_conv7':tf.get_variable('w_conv7',[9,9,64,128],initializer=tf.random_normal_initializer()),
+               'w_conv8':tf.get_variable('w_conv8',[9,9,128,256],initializer=tf.random_normal_initializer()),
+               'w_conv9':tf.get_variable('w_conv9',[9,9,256,512],initializer=tf.random_normal_initializer()),
+               'w_conv10':tf.get_variable('w_conv10',[9,9,512,1024],initializer=tf.random_normal_initializer()),
+            #    'w_conv11':tf.get_variable('w_conv11',[9,9,1024,2048],initializer=tf.random_normal_initializer()),
+            #    'w_conv12':tf.get_variable('w_conv12',[9,9,2048,4096],initializer=tf.random_normal_initializer()),
+            #    'w_conv13':tf.get_variable('w_conv13',[9,9,4096,8192],initializer=tf.random_normal_initializer()),
+            #    'w_conv14':tf.get_variable('w_conv14',[9,9,8192,16384],initializer=tf.random_normal_initializer()),
+            #    'w_conv15':tf.get_variable('w_conv15',[9,9,16384,32768],initializer=tf.random_normal_initializer()),
                'w_fc1':tf.get_variable('w_fc1',[1024,1024],initializer=tf.random_normal_initializer()),
                'w_fc2':tf.get_variable('w_fc2',[1024,2048],initializer=tf.random_normal_initializer()),
-               'w_fc3':tf.get_variable('w_fc3',[2048,2048],initializer=tf.random_normal_initializer()),
-               'w_fc4':tf.get_variable('w_fc4',[2048,4096],initializer=tf.random_normal_initializer()),
+               'w_fc3':tf.get_variable('w_fc3',[2048,4096],initializer=tf.random_normal_initializer()),
+               #'w_fc4':tf.get_variable('w_fc4',[2048,4096],initializer=tf.random_normal_initializer()),
                'out':tf.get_variable('w_out',[4096,n_classes],initializer=tf.random_normal_initializer())}
 
     biases = {'b_conv1':tf.get_variable('b_conv1',[2],initializer=tf.random_normal_initializer()),
@@ -171,11 +175,11 @@ def convNeuralNet(x):
             #   'b_conv15':tf.get_variable('b_conv15',[32768],initializer=tf.random_normal_initializer()),
               'b_fc1':tf.get_variable('b_fc1',[1024],initializer=tf.random_normal_initializer()),
               'b_fc2':tf.get_variable('b_fc2',[2048],initializer=tf.random_normal_initializer()),
-              'b_fc3':tf.get_variable('b_fc3',[2048],initializer=tf.random_normal_initializer()),
-              'b_fc4':tf.get_variable('b_fc4',[4096],initializer=tf.random_normal_initializer()),
+              'b_fc3':tf.get_variable('b_fc3',[4096],initializer=tf.random_normal_initializer()),
+              #'b_fc4':tf.get_variable('b_fc4',[4096],initializer=tf.random_normal_initializer()),
               'out':tf.get_variable('b_out',[n_classes],initializer=tf.random_normal_initializer())}
 
-    x = tf.reshape(x,shape=[-1,7,len_puzzle,1])
+    x = tf.reshape(x,shape=[-1,9,len_puzzle,1])
 
     conv1 = conv2d(x, weights['w_conv1'])
     conv1 = maxpool2d(conv1)
@@ -229,9 +233,9 @@ def convNeuralNet(x):
 
     fc3 = tf.nn.sigmoid(tf.add(tf.matmul(fc2,weights['w_fc3']),biases['b_fc3']))
 
-    fc4 = tf.nn.sigmoid(tf.add(tf.matmul(fc3,weights['w_fc4']),biases['b_fc4']))
+    #fc4 = tf.nn.sigmoid(tf.add(tf.matmul(fc3,weights['w_fc4']),biases['b_fc4']))
 
-    last = tf.nn.dropout(fc4,keep_prob)
+    last = tf.nn.dropout(fc3,keep_prob)
 
     #output = tf.add(tf.matmul(fc,weights['out']),biases['out'],name='final')
     output = tf.add(tf.matmul(last, weights['out']), biases['out'], name='op7')
@@ -314,7 +318,7 @@ def train(x):
                     [ta] = sess.run([accuracy],feed_dict={x:epoch_x,y:epoch_y,keep_prob:TRAIN_KEEP_PROB})
                     print 'Train Accuracy', ta
                 if epoch % 50 == 0 and i == 0:
-                    saver.save(sess,os.getcwd()+'/models/base/baseCNN5.ckpt')
+                    #saver.save(sess,os.getcwd()+'/models/base/baseCNN10.ckpt')
                     print 'Checkpoint saved'
                     # ta_list.append(ta)
                 # if i % 5 == 0:
@@ -324,8 +328,8 @@ def train(x):
                 epoch_loss += c
             print '\n','Epoch', epoch + 1, 'completed out of', num_epochs, '\nLoss:',epoch_loss
 
-        saver.save(sess, os.getcwd()+'/models/base/baseCNN5')
-        saver.export_meta_graph(os.getcwd()+'/models/base/baseCNN5.meta')
+        saver.save(sess, os.getcwd()+'/models/base/baseCNN14')
+        saver.export_meta_graph(os.getcwd()+'/models/base/baseCNN14.meta')
         print 'Model saved'
 
         print '\n','Train Accuracy', accuracy.eval(feed_dict={x:real_X_9, y:real_y_9, keep_prob:TRAIN_KEEP_PROB})
