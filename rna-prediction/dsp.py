@@ -34,8 +34,8 @@ def find_parens(s):
 
     return toret
 
-dot_bracket = '.....((((((((...((((((((((........))))))))))...((((((((((........))))))))))...((((((((((........))))))))))...)))))))).....'
-seq_str = 'AAAAAGUUUUGAGAAAGAAGUCUGGGGAAAAAAACUUGGGUUUCAAAGGGUGAAAUGGAAAAAAACAUUUCACCCAAAGUUCCUAUCCGAAAAAAAGGAUAGGAGCAAACUUAAAACAAAAA'
+dot_bracket = '.....((((..((((....)))).)))).....'
+seq_str = 'A'*len(dot_bracket)
 def dsp(dot_bracket,seq_str):
     seq = list(seq_str)
 
@@ -129,14 +129,20 @@ def dsp(dot_bracket,seq_str):
                 seq[i+2] = 'G'
                 seq[idx-2] = 'U'
                 seq[idx-1] = 'G'
+            elif dot_bracket[idx] == ')' and dot_bracket[idx-1] == '.' and dot_bracket[idx-2] == ')':
+                seq[i+1] = 'G'
+                seq[idx-1] = 'G'
 
         elif dot_bracket[i] == '(' and dot_bracket[i+1] == '.' and dot_bracket[i+2] == '(': # G-G in 2 pair internal loop
             idx = target_pm[i]
             if dot_bracket[idx] == ')' and dot_bracket[idx-1] == '.' and dot_bracket[idx-2] == ')':
                 seq[i+1] = 'G'
                 seq[idx-1] = 'G'
+            elif dot_bracket[idx] == ')' and dot_bracket[idx-1] == '.' and dot_bracket[idx-2] == '.' and dot_bracket[idx-3] == ')':
+                seq[i+1] = 'G'
+                seq[idx-1] = 'G'
 
-    p = Popen(['../../../../Desktop/EteRNABot/eternabot/./RNAfold', '-T','37.0'], stdout=PIPE, stdin=PIPE, stderr=STDOUT)
+    p = Popen(['../../../EteRNABot/eternabot/./RNAfold', '-T','37.0'], stdout=PIPE, stdin=PIPE, stderr=STDOUT)
     pair = p.communicate(input=''.join(seq))[0]
     formatted = re.split('\s+| \(?\s?',pair)
     new_struc = formatted[1]
@@ -159,7 +165,7 @@ def dsp(dot_bracket,seq_str):
 
                     seq[i] = base2
                     seq[paired] = base1
-                    p = Popen(['../../../../Desktop/EteRNABot/eternabot/./RNAfold', '-T','37.0'], stdout=PIPE, stdin=PIPE, stderr=STDOUT)
+                    p = Popen(['../../../EteRNABot/eternabot/./RNAfold', '-T','37.0'], stdout=PIPE, stdin=PIPE, stderr=STDOUT)
                     pair = p.communicate(input=''.join(seq))[0]
                     formatted = re.split('\s+| \(?\s?',pair)
                     new_pm = get_pairmap_from_secstruct(formatted[1])
@@ -171,6 +177,8 @@ def dsp(dot_bracket,seq_str):
                     else:
                         seq[i] = base1
                         seq[paired] = base2
+
+                    
 
     for i in range(len(dot_bracket)):
         if new_pm[i] == target_pm[i]:
@@ -197,7 +205,7 @@ def dsp(dot_bracket,seq_str):
 
                     seq[i] = base2
                     seq[paired] = base1
-                    p = Popen(['../../../../Desktop/EteRNABot/eternabot/./RNAfold', '-T','37.0'], stdout=PIPE, stdin=PIPE, stderr=STDOUT)
+                    p = Popen(['../../../EteRNABot/eternabot/./RNAfold', '-T','37.0'], stdout=PIPE, stdin=PIPE, stderr=STDOUT)
                     pair = p.communicate(input=''.join(seq))[0]
                     formatted = re.split('\s+| \(?\s?',pair)
                     new_pm = get_pairmap_from_secstruct(formatted[1])

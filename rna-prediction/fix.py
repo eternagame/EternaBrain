@@ -164,10 +164,10 @@ def prl(dot_bracket,seq):
                 # # print c_struc
                 # print dot_bracket
 
-                a_reward = len(list(set(a_struc) & set(pm)))/float((len(pm)))
-                u_reward = len(list(set(u_struc) & set(pm)))/float((len(pm)))
-                g_reward = len(list(set(g_struc) & set(pm)))/float((len(pm)))
-                c_reward = len(list(set(c_struc) & set(pm)))/float((len(pm)))
+                a_reward = SequenceMatcher(None,a_struc,pm)
+                u_reward = SequenceMatcher(None,u_struc,pm)
+                g_reward = SequenceMatcher(None,g_struc,pm)
+                c_reward = SequenceMatcher(None,c_struc,pm)
 
                 # a_reward = similar(a_struc,pm)
                 # u_reward = similar(u_struc,pm)
