@@ -23,6 +23,19 @@ def experience(threshold):
 
     return experienced_players
 
+def read_movesets_uid(uid): # get data from user ID
+  moveset_dataFrame = pd.read_csv(os.getcwd()+'/movesets/moveset6-22a.txt', sep=" ", header="infer", delimiter='\t')
+  puzzles_uid = moveset_dataFrame.loc[moveset_dataFrame['uid'] == uid]
+  plist = list(puzzles_uid['move_set'])
+  pidList = list(puzzles_uid['pid'])
+  # plist_dict = []
+  # for i in plist:
+  #   s1 = (ast.literal_eval(i))
+  #   s2 = s1['moves']
+  #   plist_dict.append(s2)
+
+  return plist, pidList
+
 def read_movesets_uid_pid(uid,pid,df='list'): # get data from user ID
   moveset_dataFrame = pd.read_csv(os.getcwd()+'/movesets/moveset6-22a.txt', sep=" ", header="infer", delimiter='\t')
   puzzles1 = moveset_dataFrame.loc[moveset_dataFrame['uid'] == uid]
@@ -157,21 +170,6 @@ def read_structure_raw(pid):
 
     struc = ''.join(list(puzzles_pid['structure']))
     return struc
-
-
-def read_movesets_uid(moveset_file,uid): # get data from user ID
-  moveset_dataFrame = pd.read_csv(moveset_file, sep=" ", header="infer", delimiter='\t')
-  puzzles_uid = moveset_dataFrame.loc[moveset_dataFrame['uid'] == uid]
-  plist = list(puzzles_uid['move_set'])
-  pidList = list(puzzles_uid['pid'])
-  plist_dict = []
-  for i in plist:
-    s1 = (ast.literal_eval(i))
-    s2 = s1['moves']
-    plist_dict.append(s2)
-
-  return plist_dict, pidList
-
 
 def read_movesets_all(moveset_file): # get data from puzzle ID
   moveset_dataFrame = pd.read_csv(moveset_file, sep=" ", header="infer", delimiter='\t')
