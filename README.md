@@ -6,15 +6,21 @@ Using Eterna data to understand and predict how players solve RNA folding puzzle
 ## Author
 Rohan Koodli
 
-## Key Puzzles
-### Multi-state puzzles
-6892343 - 6892348, 7254756 - 7254761
+## Benchmarks
+### [Eterna100](https://daslab.stanford.edu/site_data/pub_pdf/2016_Anderson-Lee_JMB.pdf)
+61/100
 
-## Key Players
-8627, 55836, 231387, 42833
+### K-fold Cross-Validation
+baseCNN
+* Train: 0.71
+* Test: 0.51
+
+locationCNN
+* Train: 0.31
+* Test: 0.34
 
 ## Dependencies
-Python: numpy, tensorflow, pandas, seaborn, matplotlib
+Python: `numpy, tensorflow, pandas, seaborn, matplotlib`
 
 RNAfold from ViennaRNA
 
@@ -90,3 +96,10 @@ min_threshold = 0.65
 ```
 
 Now, you can run the model and it will attempt to find a nucleotide sequence that will fold into the secondary structure provided.
+
+## Key Puzzles
+### Multi-state puzzles
+6892343 - 6892348, 7254756 - 7254761
+
+## Key Players
+8627, 55836, 231387, 42833
