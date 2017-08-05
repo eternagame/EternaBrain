@@ -88,7 +88,7 @@ TRAIN_KEEP_PROB = 0.9
 TEST_KEEP_PROB = 1.0
 learning_rate = 0.0001
 ne = 150
-#tb_path = '/tensorboard/baseDNN-500-10-10-50-100'
+tb_path = '/tensorboard/locationCNN14'
 
 train = 30000
 test = 100
@@ -243,45 +243,45 @@ def convNeuralNet(x):
 
     return output
 
-    # tf.summary.histogram('weights-hl_1',hl_1['weights'])
-    # tf.summary.histogram('biases-hl_1',hl_1['biases'])
-    # tf.summary.histogram('act-hl_1',l1)
-    #
-    # tf.summary.histogram('weights-hl_2',hl_2['weights'])
-    # tf.summary.histogram('biases-hl_2',hl_2['biases'])
-    # tf.summary.histogram('act-hl_2',l2)
-    #
-    # tf.summary.histogram('weights-hl_3',hl_3['weights'])
-    # tf.summary.histogram('biases-hl_3',hl_3['biases'])
-    # tf.summary.histogram('act-hl_3',l3)
-    #
-    # tf.summary.histogram('weights-hl_4',hl_4['weights'])
-    # tf.summary.histogram('biases-hl_4',hl_4['biases'])
-    # tf.summary.histogram('act-hl_4',l4)
-    #
-    # tf.summary.histogram('weights-hl_5',hl_5['weights'])
-    # tf.summary.histogram('biases-hl_5',hl_5['biases'])
-    # tf.summary.histogram('act-hl_5',l5)
-    #
-    # tf.summary.histogram('weights-hl_6',hl_6['weights'])
-    # tf.summary.histogram('biases-hl_6',hl_6['biases'])
-    # tf.summary.histogram('act-hl_6',l6)
-    #
-    # tf.summary.histogram('weights-hl_7',hl_7['weights'])
-    # tf.summary.histogram('biases-hl_7',hl_7['biases'])
-    # tf.summary.histogram('act-hl_7',l7)
-    #
-    # tf.summary.histogram('weights-hl_8',hl_8['weights'])
-    # tf.summary.histogram('biases-hl_8',hl_8['biases'])
-    # tf.summary.histogram('act-hl_8',l8)
-    #
-    # tf.summary.histogram('weights-hl_9',hl_9['weights'])
-    # tf.summary.histogram('biases-hl_9',hl_9['biases'])
-    # tf.summary.histogram('act-hl_9',l9)
-    #
-    # tf.summary.histogram('weights-hl_10',hl_10['weights'])
-    # tf.summary.histogram('biases-hl_10',hl_10['biases'])
-    # tf.summary.histogram('act-hl_10',l10)
+    tf.summary.histogram('weights1',weights['w_conv1'])
+    tf.summary.histogram('biases1',biases['b_conv1'])
+    tf.summary.histogram('act1',conv1)
+
+    tf.summary.histogram('weights2',weights['w_conv2'])
+    tf.summary.histogram('biases2',biases['b_conv2'])
+    tf.summary.histogram('act2',conv2)
+
+    tf.summary.histogram('weights3',weights['w_conv3'])
+    tf.summary.histogram('biases3',biases['b_conv3'])
+    tf.summary.histogram('act3',conv3)
+
+    tf.summary.histogram('weights4',weights['w_conv4'])
+    tf.summary.histogram('biases4',biases['b_conv4'])
+    tf.summary.histogram('act4',conv4)
+
+    tf.summary.histogram('weights5',weights['w_conv5'])
+    tf.summary.histogram('biases5',biases['b_conv5'])
+    tf.summary.histogram('act5',conv5)
+
+    tf.summary.histogram('weights6',weights['w_conv6'])
+    tf.summary.histogram('biases6',biases['b_conv6'])
+    tf.summary.histogram('act6',conv6)
+
+    tf.summary.histogram('weights7',weights['w_conv7'])
+    tf.summary.histogram('biases7',biases['b_conv7'])
+    tf.summary.histogram('act7',conv7)
+
+    tf.summary.histogram('weights8',weights['w_conv8'])
+    tf.summary.histogram('biases8',biases['b_conv8'])
+    tf.summary.histogram('act8',conv8)
+
+    tf.summary.histogram('weights9',weights['w_conv9'])
+    tf.summary.histogram('biases9',biases['b_conv9'])
+    tf.summary.histogram('act9',conv9)
+
+    tf.summary.histogram('weights10',weights['w_conv10'])
+    tf.summary.histogram('biases10',biases['b_conv10'])
+    tf.summary.histogram('act10',conv10)
 
 
 print "Training"
@@ -307,8 +307,8 @@ def train(x):
         sess.run(tf.global_variables_initializer())
         saver = tf.train.Saver()
         merged_summary = tf.summary.merge_all()
-        #writer = tf.summary.FileWriter(os.getcwd()+tb_path)
-        #writer.add_graph(sess.graph)
+        writer = tf.summary.FileWriter(os.getcwd()+tb_path)
+        writer.add_graph(sess.graph)
         for epoch in range(num_epochs):
             epoch_loss = 0
             for i in range(int(real_X_9.shape[0])/batch_size):#mnist.train.num_examples/batch_size)): # X.shape[0]
@@ -320,18 +320,19 @@ def train(x):
                     print 'Train Accuracy', ta
                 if epoch % 50 == 0 and i == 0:
                     #saver.save(sess,os.getcwd()+'/models/location/locationCNN10.ckpt')
-                    print 'Checkpoint saved'
+                    #print 'Checkpoint saved at',os.getcwd()+'/models/base/locationCNN15'
+                    pass
                     #ta_list.append(ta)
-                # if i % 5 == 0:
-                #     s = sess.run(merged_summary,feed_dict={x:epoch_x,y:epoch_y,keep_prob:TRAIN_KEEP_PROB})
-                #     writer.add_summary(s,i)
+                if i % 5 == 0:
+                    s = sess.run(merged_summary,feed_dict={x:epoch_x,y:epoch_y,keep_prob:TRAIN_KEEP_PROB})
+                    writer.add_summary(s,i)
 
                 epoch_loss += c
             print '\n','Epoch', epoch + 1, 'completed out of', num_epochs, '\nLoss:',epoch_loss
 
-        saver.save(sess, os.getcwd()+'/models/location/locationCNN14')
-        saver.export_meta_graph(os.getcwd()+'/models/location/locationCNN14.meta')
-        print "Model saved"
+        # saver.save(sess, os.getcwd()+'/models/location/locationCNN15')
+        # saver.export_meta_graph(os.getcwd()+'/models/location/locationCNN15.meta')
+        # print "Model saved"
 
         print '\n','Train Accuracy', accuracy.eval(feed_dict={x:real_X_9, y:real_y_9, keep_prob:TRAIN_KEEP_PROB})
         print '\n','Test Accuracy', accuracy.eval(feed_dict={x:test_real_X, y:test_real_y, keep_prob:1.0}) #X, y #mnist.test.images, mnist.test.labels
