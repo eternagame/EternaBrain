@@ -12,6 +12,7 @@ import ast
 import matplotlib.pyplot as plt
 import numpy as np
 import pickle
+import seaborn; seaborn.set()
 
 # filepath = os.getcwd() + '/movesets/move-set-11-14-2016.txt'
 new_ms = os.getcwd() + '/movesets/moveset6-22a.txt'
@@ -26,7 +27,7 @@ with open(os.getcwd()+'/movesets/teaching-puzzle-ids.txt') as f:
 # you may also want to remove whitespace characters like `\n` at the end of each line
 content = [x.strip() for x in content]
 content = [int(x) for x in content]
-progression = [6502966,6502968,6502973,6502976,6502984,6502985, \
+progression = [6502963,6502966,6502968,6502969,6502970,6502973,6502976,6502984,6502985, \
                 6502994,6502995,6502996,6502997,6502998,6502999,6503000] # 6502957
 content.extend(progression)
 l = range(501)
@@ -44,9 +45,9 @@ for pid in content:
     print 'done with pid %i' % pid
     plt.hist(total[str(pid)],bins=l[::10])
 
-plt.savefig('/Users/rohankoodli/Desktop/allsinglestate.png')
-plt.show()
-#total = pickle.load(open(os.getcwd()+'num_moves','rb'))
+#plt.savefig('/Users/rohankoodli/Desktop/allsinglestate.png')
+#pickle.dump(total, open(os.getcwd()+'/pickles/num_moves'+str(pid),'wb'))
+#total = pickle.load(open(os.getcwd()+'/pickles/num_moves6503000','rb'))
 
 # plt.hist(total['6502997'],bins=l[::10])
 # plt.hist(total['6502995'],bins=l[::10])
@@ -59,11 +60,13 @@ plt.show()
 # plt.hist(total['6502968'],bins=l[::10]) # fig 2
 # plt.savefig('/Users/rohankoodli/Desktop/Figure_2.png')
 
-plt.hist(total['6502969'],bins=l[::10])
-plt.hist(total['6502970'],bins=l[::10])
-plt.hist(total['6502976'],bins=l[::10])
-plt.savefig('/Users/rohankoodli/Desktop/Figure_3.png')
-
+# plt.hist(total['6502969'],bins=l[::10])
+# plt.hist(total['6502970'],bins=l[::10])
+# plt.hist(total['6502976'],bins=l[::10])
+plt.title('Distribution of number of moves taken to solve a puzzle')
+plt.xlabel('Number of moves')
+plt.ylabel('Frequency')
+plt.savefig('/Users/rohankoodli/Desktop/allsinglestate.png')
 plt.show()
 
 def num_puzzles():
