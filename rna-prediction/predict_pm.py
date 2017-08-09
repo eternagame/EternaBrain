@@ -9,14 +9,14 @@ from readData import format_pairmap
 from fix import prl
 from dsp import dsp
 
-dot_bracket = '((.(..(.(....).(....).)..).(....).))'
+dot_bracket = '(((((.((((((.((((((.((((((.((((((.((((((....((((((......)))))).)))))).(((((...(((((((...)))))))))))).)))))).((((((((((((...)))))))...))))).))))))....))))))....))))))....)))))'
 len_puzzle = len(dot_bracket)
 nucleotides = 'A'*len_puzzle
 ce = 0.0
 te = 0.0
 min_threshold = 0.5
 max_iterations = len_puzzle*3
-max_len = 350
+max_len = 400
 TF_SHAPE = 8 * max_len
 BASE_SHAPE = 9 * max_len
 len_longest = max_len
@@ -77,9 +77,9 @@ inputs2 = np.array([base_seq,current_struc,target_struc,current_energy,target_en
 inputs = inputs2.reshape([-1,TF_SHAPE])
 
 with tf.Graph().as_default() as base_graph:
-    saver1 = tf.train.import_meta_graph(os.getcwd()+'/models/base/baseCNN14.meta') # CNN10 or CNN10
+    saver1 = tf.train.import_meta_graph(os.getcwd()+'/models/base/baseCNN15.meta') # CNN15
 sess1 = tf.Session(graph=base_graph) # config=tf.ConfigProto(allow_soft_placement=True,log_device_placement=True)
-saver1.restore(sess1,os.getcwd()+'/models/base/baseCNN14')
+saver1.restore(sess1,os.getcwd()+'/models/base/baseCNN15')
 
 x = base_graph.get_tensor_by_name('x_placeholder:0')
 y = base_graph.get_tensor_by_name('y_placeholder:0')
@@ -90,9 +90,9 @@ base_weights = base_graph.get_tensor_by_name('op7:0')
 base_feed_dict={x:inputs,keep_prob:1.0}
 
 with tf.Graph().as_default() as location_graph:
-    saver2 = tf.train.import_meta_graph(os.getcwd()+'/models/location/locationCNN14.meta')
+    saver2 = tf.train.import_meta_graph(os.getcwd()+'/models/location/locationCNN15.meta')
 sess2 = tf.Session(graph=location_graph) # config=tf.ConfigProto(allow_soft_placement=True,log_device_placement=True)
-saver2.restore(sess2,os.getcwd()+'/models/location/locationCNN14')
+saver2.restore(sess2,os.getcwd()+'/models/location/locationCNN15')
 
 x2 = location_graph.get_tensor_by_name('x_placeholder:0')
 y2 = location_graph.get_tensor_by_name('y_placeholder:0')

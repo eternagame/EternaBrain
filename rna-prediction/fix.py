@@ -191,6 +191,7 @@ def prl(dot_bracket,seq):
 
                     current_seq = new_seq
                     cdb = convert_to_struc(current_seq)
+                    m = [best_move,location]
                 else:
                     pass
                 # print current_seq
