@@ -90,7 +90,7 @@ ce = 0.0 # current energy
 te = 0.0 # target energy
 ```
 
-You can specify the minimum amount of the puzzle you want the CNN to solve (on its own, it generally cannot solve long puzzles). The amount is calculated by how much of the current structure matches the target structure. Once it reaches the threshold specified or completes the maximum number of moves, the sequence moves to the reinforcement learner and the domain specific pipeline.
+You can specify the minimum amount of the puzzle you want the CNN to solve (on its own, it generally cannot solve long puzzles). The amount is calculated by how much of the current structure matches the target structure. Once it reaches the threshold specified or completes the maximum number of moves, the sequence moves to the Single Action Playout (SAP), which runs a Monte Carlo Tree Search to determine what mutations bring the RNA molecule closer to the target secondary structure.
 ```python
 min_threshold = 0.65
 ```
