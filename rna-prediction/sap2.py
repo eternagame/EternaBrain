@@ -46,7 +46,7 @@ def str_to_num(s):
 
 dot_bracket = '.....((((..((((....)))).)))).....'
 seq_str = 'A'*len(dot_bracket)
-def dsp(dot_bracket,seq_str):
+def dsp(dot_bracket,seq_str): # domain specific pipeline
     seq = list(seq_str)
     m = []
 
@@ -180,6 +180,9 @@ def dsp(dot_bracket,seq_str):
                 m.append([3,i+2])
                 m.append([3,idx])
 
+    '''
+    Randomly flips base pairs
+    '''
     p = Popen(['../../../EteRNABot/eternabot/./RNAfold', '-T','37.0'], stdout=PIPE, stdin=PIPE, stderr=STDOUT)
     pair = p.communicate(input=''.join(seq))[0]
     formatted = re.split('\s+| \(?\s?',pair)
@@ -227,8 +230,8 @@ def dsp(dot_bracket,seq_str):
             paired = target_pm[i]
             seq[i] = 'G'
             seq[paired] = 'C'
-            m.append(3,i+1])
-            m.append(4,paired+1])
+            m.append([3,i+1])
+            m.append([4,paired+1])
 
     for j in range(3):
         for i in range(len(dot_bracket)):

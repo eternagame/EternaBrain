@@ -6,8 +6,8 @@ import copy
 from numpy.random import choice
 from difflib import SequenceMatcher
 from readData import format_pairmap
-from fix import prl
-from dsp import dsp
+from sap1 import sbc
+from sap2 import dsp
 
 dot_bracket = '(((((.((((((.((((((.((((((.((((((.((((((....((((((......)))))).)))))).(((((...(((((((...)))))))))))).)))))).((((((((((((...)))))))...))))).))))))....))))))....))))))....)))))'
 len_puzzle = len(dot_bracket)
@@ -225,6 +225,6 @@ for i in range(max_iterations):
             print reg
             break
 
-level1 = prl(dot_bracket,reg)
+level1 = sap(dot_bracket,reg)
 level2 = dsp(dot_bracket,level1)
 print level2

@@ -120,7 +120,7 @@ len_longest = 108
 dot_bracket = '.....((((((((...((((((((((........))))))))))...((((((((((........))))))))))...((((((((((........))))))))))...)))))))).....'
 seq = 'AAAAAGUUUUGAGAAAGAAGUCUGGGGAAAAAAACUUGGGUUUCAAAGGGUGAAAUGGAAAAAAACAUUUCACCCAAAGUUCCUAUCCGAAAAAAAGGAUAGGAGCAAACUUAAAACAAAAA'
 
-def prl(dot_bracket,seq):
+def sbc(dot_bracket,seq): # Monte Carlo Tree Search with Depth 1
     target_struc = encode_struc(dot_bracket)
     pm = get_pairmap_from_secstruct(dot_bracket)
     #cdb = '.((((....))))'
@@ -203,4 +203,4 @@ def prl(dot_bracket,seq):
 
     return convert_to_str(current_seq)
 
-print prl(dot_bracket,seq)
+print sbc(dot_bracket,seq)
