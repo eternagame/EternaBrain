@@ -121,6 +121,7 @@ dot_bracket = '.....((((((((...((((((((((........))))))))))...((((((((((........
 seq = 'AAAAAGUUUUGAGAAAGAAGUCUGGGGAAAAAAACUUGGGUUUCAAAGGGUGAAAUGGAAAAAAACAUUUCACCCAAAGUUCCUAUCCGAAAAAAAGGAUAGGAGCAAACUUAAAACAAAAA'
 
 def sbc(dot_bracket,seq): # Monte Carlo Tree Search with Depth 1
+    movesets = []
     target_struc = encode_struc(dot_bracket)
     pm = get_pairmap_from_secstruct(dot_bracket)
     #cdb = '.((((....))))'
@@ -192,6 +193,7 @@ def sbc(dot_bracket,seq): # Monte Carlo Tree Search with Depth 1
                     current_seq = new_seq
                     cdb = convert_to_struc(current_seq)
                     m = [best_move,location]
+                    movesets.append(m)
                 else:
                     pass
                 # print current_seq
@@ -201,6 +203,6 @@ def sbc(dot_bracket,seq): # Monte Carlo Tree Search with Depth 1
                 current_pm = get_pairmap_from_secstruct(cdb)
                 # print len(list(set(current_pm) & set(pm)))/float((len(pm)))
 
-    return convert_to_str(current_seq)
+    return convert_to_str(current_seq),movesets
 
 print sbc(dot_bracket,seq)

@@ -1,5 +1,6 @@
 import tensorflow as tf
 import os
+import pickle
 import numpy as np
 import RNA
 import copy
@@ -9,12 +10,12 @@ from readData import format_pairmap
 from sap1 import sbc
 from sap2 import dsp
 
-dot_bracket = '(((((.((((((.((((((.((((((.((((((.((((((....((((((......)))))).)))))).(((((...(((((((...)))))))))))).)))))).((((((((((((...)))))))...))))).))))))....))))))....))))))....)))))'
+dot_bracket = '((((...)))).'
 len_puzzle = len(dot_bracket)
 nucleotides = 'A'*len_puzzle
 ce = 0.0
 te = 0.0
-min_threshold = 0.5
+min_threshold = 0.6
 max_iterations = len_puzzle*3
 max_len = 400
 TF_SHAPE = 8 * max_len
@@ -225,6 +226,22 @@ for i in range(max_iterations):
             print reg
             break
 
-level1 = sap(dot_bracket,reg)
-level2 = dsp(dot_bracket,level1)
+level1,m2 = sbc(dot_bracket,reg)
+level2,m3 = dsp(dot_bracket,level1)
 print level2
+
+movesets.extend(m2)
+movesets.extend(m3)
+print movesets
+
+mp = pickle.load(open(os.getcwd()+'/pickles/evolved-raw-ms','r'))
+bp = pickle.load(open(os.getcwd()+'/pickles/evolved-raw-bf','r'))
+
+mp.append(movesets)
+bp.append(nucleotides)
+
+pickle.dump(mp,open(os.getcwd()+'/pickles/evolved-raw-ms','w'))
+pickle.dump(bp,open(os.getcwd()+'/pickles/evolved-raw-bf','w'))
+
+# pickle.dump([movesets], open(os.getcwd()+'/pickles/evolved-raw-ms','w'))
+# pickle.dump([nucleotides], open(os.getcwd()+'/pickles/evolved-raw-bf','w'))

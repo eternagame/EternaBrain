@@ -265,7 +265,7 @@ def dsp(dot_bracket,seq_str): # domain specific pipeline
                         seq[i] = base1
                         seq[paired] = base2
 
-    return ''.join(seq)
+    return ''.join(seq),m
 
     cs,_ = RNA.fold(''.join(seq))
     current_pm = get_pairmap_from_secstruct(cs)
