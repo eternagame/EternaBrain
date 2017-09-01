@@ -10,17 +10,17 @@ from readData import format_pairmap
 from sap1 import sbc
 from sap2 import dsp
 
-dot_bracket = '((((...)))).'
-len_puzzle = len(dot_bracket)
-nucleotides = 'A'*len_puzzle
+DOT_BRACKET = '((....)).((....)).((....)).((....))'
+len_puzzle = len(DOT_BRACKET)
+NUCLEOTIDES = 'A'*len_puzzle
 ce = 0.0
 te = 0.0
-min_threshold = 0.6
-max_iterations = len_puzzle*3
-max_len = 400
-TF_SHAPE = 8 * max_len
-BASE_SHAPE = 9 * max_len
-len_longest = max_len
+MIN_THRESHOLD = 0.6
+MAX_ITERATIONS = len_puzzle*3
+MAX_LEN = 400
+TF_SHAPE = 8 * MAX_LEN
+BASE_SHAPE = 9 * MAX_LEN
+len_longest = MAX_LEN
 
 def similar(a, b):
     return SequenceMatcher(None, a, b).ratio()
@@ -62,17 +62,17 @@ def convert_to_list(base_seq):
     #struc = ''.join(str_struc)
     return str_struc
 
-base_seq = (convert_to_list(nucleotides)) + ([0]*(len_longest - len_puzzle))
+base_seq = (convert_to_list(NUCLEOTIDES)) + ([0]*(len_longest - len_puzzle))
 # cdb = '.'*len_puzzle
-current_struc = (encode_struc(RNA.fold(nucleotides)[0])) + ([0]*(len_longest - len_puzzle))
-target_struc = encode_struc(dot_bracket) + ([0]*(len_longest - len_puzzle))
+current_struc = (encode_struc(RNA.fold(NUCLEOTIDES)[0])) + ([0]*(len_longest - len_puzzle))
+target_struc = encode_struc(DOT_BRACKET) + ([0]*(len_longest - len_puzzle))
 current_energy = [ce] + ([0]*(len_longest - 1))
 target_energy = [te] + ([0]*(len_longest - 1))
-current_pm = format_pairmap(nucleotides) + ([0]*(len_longest - len_puzzle))
-target_pm = format_pairmap(dot_bracket) + ([0]*(len_longest - len_puzzle))
+current_pm = format_pairmap(NUCLEOTIDES) + ([0]*(len_longest - len_puzzle))
+target_pm = format_pairmap(DOT_BRACKET) + ([0]*(len_longest - len_puzzle))
 locks = ([1]*len_puzzle) + ([0]*(len_longest - len_puzzle))
 
-print len(base_seq),len(current_struc),len(dot_bracket),len(target_struc),len(current_energy),len(target_energy),len(locks)
+print len(base_seq),len(current_struc),len(DOT_BRACKET),len(target_struc),len(current_energy),len(target_energy),len(locks)
 
 inputs2 = np.array([base_seq,current_struc,target_struc,current_energy,target_energy,current_pm,target_pm,locks])
 inputs = inputs2.reshape([-1,TF_SHAPE])
@@ -106,7 +106,7 @@ print 'models loaded'
 location_feed_dict = {x2:inputs,keep_prob2:1.0}
 movesets = []
 iteration = 0
-for i in range(max_iterations):
+for i in range(MAX_ITERATIONS):
     if np.all(inputs2[1] == inputs2[2]):
         print("Puzzle Solved")
         break
@@ -166,7 +166,7 @@ for i in range(max_iterations):
         current_pm = format_pairmap(str_struc)
         print str_struc
         #print len(str_struc)
-        print similar(str_struc,dot_bracket)
+        print similar(str_struc,DOT_BRACKET)
         rna_struc = []
         for i in inputs2[2]:
             if i == 1:
@@ -219,15 +219,15 @@ for i in range(max_iterations):
         #print target_struc[:len(enc_struc)]
         #print inputs2[1][:len(enc_struc)]
         #print format_pairmap(str_struc)
-        if similar(str_struc,dot_bracket) >= min_threshold:
+        if similar(str_struc,DOT_BRACKET) >= MIN_THRESHOLD:
             print 'similar'
             print str_struc
-            print dot_bracket
+            print DOT_BRACKET
             print reg
             break
 
-level1,m2 = sbc(dot_bracket,reg)
-level2,m3 = dsp(dot_bracket,level1)
+level1,m2 = sbc(DOT_BRACKET,reg)
+level2,m3 = dsp(DOT_BRACKET,level1)
 print level2
 
 movesets.extend(m2)
@@ -238,10 +238,10 @@ mp = pickle.load(open(os.getcwd()+'/pickles/evolved-raw-ms','r'))
 bp = pickle.load(open(os.getcwd()+'/pickles/evolved-raw-bf','r'))
 
 mp.append(movesets)
-bp.append(nucleotides)
+bp.append(NUCLEOTIDES)
 
 pickle.dump(mp,open(os.getcwd()+'/pickles/evolved-raw-ms','w'))
 pickle.dump(bp,open(os.getcwd()+'/pickles/evolved-raw-bf','w'))
 
 # pickle.dump([movesets], open(os.getcwd()+'/pickles/evolved-raw-ms','w'))
-# pickle.dump([nucleotides], open(os.getcwd()+'/pickles/evolved-raw-bf','w'))
+# pickle.dump([NUCLEOTIDES], open(os.getcwd()+'/pickles/evolved-raw-bf','w'))
