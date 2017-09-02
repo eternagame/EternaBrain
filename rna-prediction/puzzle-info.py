@@ -14,59 +14,76 @@ import numpy as np
 import pickle
 import seaborn; seaborn.set()
 
-# filepath = os.getcwd() + '/movesets/move-set-11-14-2016.txt'
-new_ms = os.getcwd() + '/movesets/moveset6-22a.txt'
-# ms_df = pd.read_csv(filepath, sep=" ", header="infer", delimiter='\t')
+def plot_moves():
+    # filepath = os.getcwd() + '/movesets/move-set-11-14-2016.txt'
+    new_ms = os.getcwd() + '/movesets/moveset6-22a.txt'
+    # ms_df = pd.read_csv(filepath, sep=" ", header="infer", delimiter='\t')
 
-#print ms_df
+    #print ms_df
 
-moveset_dataFrame = pd.read_csv(new_ms, sep=' ', header='infer', delimiter='\t')
-pidList = [6502997,6502995,6502990,6502996,6502963,6502964,6502966,6502967,6502968,6502969,6502970,6502976]
-with open(os.getcwd()+'/movesets/teaching-puzzle-ids.txt') as f:
-    content = f.readlines()
-# you may also want to remove whitespace characters like `\n` at the end of each line
-content = [x.strip() for x in content]
-content = [int(x) for x in content]
-progression = [6502963,6502966,6502968,6502969,6502970,6502973,6502976,6502984,6502985, \
-                6502994,6502995,6502996,6502997,6502998,6502999,6503000] # 6502957
-content.extend(progression)
-l = range(501)
+    moveset_dataFrame = pd.read_csv(new_ms, sep=' ', header='infer', delimiter='\t')
+    pidList = [6502997,6502995,6502990,6502996,6502963,6502964,6502966,6502967,6502968,6502969,6502970,6502976]
+    with open(os.getcwd()+'/movesets/teaching-puzzle-ids.txt') as f:
+        content = f.readlines()
+    # you may also want to remove whitespace characters like `\n` at the end of each line
+    content = [x.strip() for x in content]
+    content = [int(x) for x in content]
+    progression = [6502963,6502966,6502968,6502969,6502970,6502973,6502976,6502984,6502985, \
+                    6502994,6502995,6502996,6502997,6502998,6502999,6503000] # 6502957
+    content.extend(progression)
+    l = range(501)
 
-total = {}
-for pid in content:
-    puzzles_pid = moveset_dataFrame.loc[moveset_dataFrame['pid'] == pid]
-    plist = list(puzzles_pid['move_set'])
-    plist_dict = []
-    for i in plist:
-        s1 = (ast.literal_eval(i))
-        s2 = int(s1['num_moves'])
-        plist_dict.append(s2)
-    total[str(pid)] = plist_dict
-    print 'done with pid %i' % pid
-    plt.hist(total[str(pid)],bins=l[::10])
+    total = {}
+    for pid in content:
+        puzzles_pid = moveset_dataFrame.loc[moveset_dataFrame['pid'] == pid]
+        plist = list(puzzles_pid['move_set'])
+        plist_dict = []
+        for i in plist:
+            s1 = (ast.literal_eval(i))
+            s2 = int(s1['num_moves'])
+            plist_dict.append(s2)
+        total[str(pid)] = plist_dict
+        print 'done with pid %i' % pid
+        plt.hist(total[str(pid)],bins=l[::10])
 
-#plt.savefig('/Users/rohankoodli/Desktop/allsinglestate.png')
-#pickle.dump(total, open(os.getcwd()+'/pickles/num_moves'+str(pid),'wb'))
-#total = pickle.load(open(os.getcwd()+'/pickles/num_moves6503000','rb'))
+    #plt.savefig('/Users/rohankoodli/Desktop/allsinglestate.png')
+    #pickle.dump(total, open(os.getcwd()+'/pickles/num_moves'+str(pid),'wb'))
+    #total = pickle.load(open(os.getcwd()+'/pickles/num_moves6503000','rb'))
+    print total['6502997']
+    # plt.hist(total['6502997'],bins=l[::10])
+    # plt.hist(total['6502995'],bins=l[::10])
+    # plt.hist(total['6502990'],bins=l[::10])
+    # plt.hist(total['6502996'],bins=l[::10]) # fig 1
+    # plt.hist(total['6502963'],bins=l[::10])
+    # plt.hist(total['6502964'],bins=l[::10])
+    # plt.hist(total['6502966'],bins=l[::10])
+    # plt.hist(total['6502967'],bins=l[::10])
+    # plt.hist(total['6502968'],bins=l[::10]) # fig 2
+    # plt.savefig('/Users/rohankoodli/Desktop/Figure_2.png')
 
-# plt.hist(total['6502997'],bins=l[::10])
-# plt.hist(total['6502995'],bins=l[::10])
-# plt.hist(total['6502990'],bins=l[::10])
-# plt.hist(total['6502996'],bins=l[::10]) # fig 1
-# plt.hist(total['6502963'],bins=l[::10])
-# plt.hist(total['6502964'],bins=l[::10])
-# plt.hist(total['6502966'],bins=l[::10])
-# plt.hist(total['6502967'],bins=l[::10])
-# plt.hist(total['6502968'],bins=l[::10]) # fig 2
-# plt.savefig('/Users/rohankoodli/Desktop/Figure_2.png')
+    # plt.hist(total['6502969'],bins=l[::10])
+    # plt.hist(total['6502970'],bins=l[::10])
+    # plt.hist(total['6502976'],bins=l[::10])
+    # plt.title('Distribution of number of moves taken to solve a puzzle')
+    # plt.xlabel('Number of moves')
+    # plt.ylabel('Frequency')
+    # plt.savefig('/Users/rohankoodli/Desktop/allsinglestate.png')
+    # plt.show()
 
-# plt.hist(total['6502969'],bins=l[::10])
-# plt.hist(total['6502970'],bins=l[::10])
-# plt.hist(total['6502976'],bins=l[::10])
-plt.title('Distribution of number of moves taken to solve a puzzle')
-plt.xlabel('Number of moves')
-plt.ylabel('Frequency')
-plt.savefig('/Users/rohankoodli/Desktop/allsinglestate.png')
+def plot_experience():
+    full_problems = pd.read_csv(os.getcwd()+'/movesets/full-problems-nov2016.txt', sep=" ", header="infer", delimiter='\t')
+    user_df = full_problems[['uid']]
+    users = np.array(user_df,dtype=int) # list of users
+    experienced_players = []
+    unique, counts = np.unique(users, return_counts=True) # unique and counts are same length
+
+    return counts
+
+plt.hist(plot_experience(),bins=range(5001)[::50])
+plt.yscale('log')
+plt.ylabel('Number of Players (logarithmic scale)')
+plt.xlabel('Number of total Puzzle Solutions')
+plt.title('Distribution of Player Experience by number of puzzles solved')
 plt.show()
 
 def num_puzzles():
