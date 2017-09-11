@@ -13,7 +13,7 @@ Rohan Koodli
 ## Dependencies
 Python: `numpy, tensorflow, pandas, seaborn, matplotlib`
 
-`RNAfold` from ViennaRNA
+`RNAfold` versions 1.8.5 and 2.3.5 from ViennaRNA
 
 `EteRNABot` - You will have to clone the EteRNABot repository and move the files to your directory. Currently, there is no installation option for EteRNABot.
 
@@ -71,19 +71,19 @@ saver.export_meta_graph(os.getcwd()+'/models/base/baseCNN.meta')
 ```
 
 ### Step 3: Predicting
-Load your model into the appropriate locations for the base predictor and location predictor in `predict_pm.py`. Specify the RNA secondary structure and starting nucleotide sequence in `dot_bracket` and `nucleotides`, respectively. Also specify the natural energy and target energy in `current_energy` and `target_energy`, respectively (default is 0 kcal).
+Load your model into the appropriate locations for the base predictor and location predictor in `predict_pm.py`. Specify the RNA secondary structure and starting nucleotide sequence in `DOT_BRACKET` and `NUCLEOTIDES`, respectively. Also specify the natural energy and target energy in `current_energy` and `target_energy`, respectively (default is 0 kcal).
 
 ```python
-dot_bracket = '((((....))))'
+DOT_BRACKET = '((((....))))'
 len_puzzle = len(dot_bracket)
-nucleotides = 'A'*len_puzzle
+NUCLEOTIDES = 'A'*len_puzzle
 ce = 0.0 # current energy
 te = 0.0 # target energy
 ```
 
 You can specify the minimum amount of the puzzle you want the CNN to solve (on its own, it generally cannot solve long puzzles). The amount is calculated by how much of the current structure matches the target structure. Once it reaches the threshold specified or completes the maximum number of moves, the sequence moves to the Single Action Playout (SAP), which runs a Monte Carlo Tree Search to determine what mutations bring the RNA molecule closer to the target secondary structure.
 ```python
-min_threshold = 0.65
+MIN_THRESHOLD = 0.65
 ```
 
 Now, you can run the model and it will attempt to find a nucleotide sequence that will fold into the secondary structure provided.
