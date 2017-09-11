@@ -10,21 +10,12 @@ Rohan Koodli
 ### [Eterna100](https://daslab.stanford.edu/site_data/pub_pdf/2016_Anderson-Lee_JMB.pdf)
 61/100
 
-### K-fold Cross-Validation
-baseCNN
-* Train: 0.71
-* Test: 0.51
-
-locationCNN
-* Train: 0.31
-* Test: 0.34
-
 ## Dependencies
 Python: `numpy, tensorflow, pandas, seaborn, matplotlib`
 
-RNAfold from ViennaRNA
+`RNAfold` from ViennaRNA
 
-EteRNABot - You will have to clone the EteRNABot repository and move the files to your directory. Currently, there is no installation option for EteRNABot.
+`EteRNABot` - You will have to clone the EteRNABot repository and move the files to your directory. Currently, there is no installation option for EteRNABot.
 
 ## To Use
 ### Step 1: Generate the training data
