@@ -10,13 +10,13 @@ from readData import format_pairmap
 from sap1 import sbc
 from sap2 import dsp
 
-DOT_BRACKET = '((....)).((....)).((....)).((....))'
+DOT_BRACKET = '...((....))....(((((((((.........)))))))))....((((.....)))).....(((....)))...(((((.......)))))....(((...((....)).....(((....)))....((((((.......))))))....(((....))).....((((((....(((.......)))..(((........)))...(((((......)))))...((((.....))))..)))))).........((....)).....((....))......(((((..........)))))......)))'
 len_puzzle = len(DOT_BRACKET)
 NUCLEOTIDES = 'A'*len_puzzle
 ce = 0.0
 te = 0.0
-MIN_THRESHOLD = 0.6
-MAX_ITERATIONS = len_puzzle*3
+MIN_THRESHOLD = 0.3
+MAX_ITERATIONS = len_puzzle*2
 MAX_LEN = 400
 TF_SHAPE = 8 * MAX_LEN
 BASE_SHAPE = 9 * MAX_LEN
@@ -232,7 +232,7 @@ print level2
 
 movesets.extend(m2)
 movesets.extend(m3)
-print movesets
+#print movesets
 
 mp = pickle.load(open(os.getcwd()+'/pickles/evolved-raw-ms','r'))
 bp = pickle.load(open(os.getcwd()+'/pickles/evolved-raw-bf','r'))
