@@ -1,3 +1,8 @@
+'''
+Implements the Single Base Mutator (SBC)
+Runs a traditional MCTS which mutates single bases and calculates immediate reward
+First process of the SAP
+'''
 import tensorflow as tf
 import numpy as np
 import copy
@@ -119,7 +124,11 @@ len_longest = 108
 #current = convert(base_seq)
 dot_bracket = '.....((((((((...((((((((((........))))))))))...((((((((((........))))))))))...((((((((((........))))))))))...)))))))).....'
 seq = 'AAAAAGUUUUGAGAAAGAAGUCUGGGGAAAAAAACUUGGGUUUCAAAGGGUGAAAUGGAAAAAAACAUUUCACCCAAAGUUCCUAUCCGAAAAAAAGGAUAGGAGCAAACUUAAAACAAAAA'
-
+'''
+:param dot_bracket: The target structure for the RNA in dot-bracket notation
+:param seq: The current RNA sequence
+:return: An updated RNA sequence after the SBC
+'''
 def sbc(dot_bracket,seq): # Monte Carlo Tree Search with Depth 1
     movesets = []
     target_struc = encode_struc(dot_bracket)

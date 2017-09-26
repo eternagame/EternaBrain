@@ -3,6 +3,8 @@
 Created on Fri Mar 31 21:49:27 2017
 
 @author: rohankoodli
+Creates, trains, and saves the CNN for predicting base/nucleotide (A, U, G, C)
+Trains on 92 key puzzles from the 99th percentile of Eterna players (Players who've solved > 3000 puzzles)
 """
 
 import numpy as np
@@ -87,7 +89,7 @@ TRAIN_KEEP_PROB = 0.9
 TEST_KEEP_PROB = 1.0
 learning_rate = 0.0001
 ne = 150
-tb_path = '/tensorboard/baseCNN14'
+tb_path = '/tensorboard/baseCNN18'
 
 train = 30000
 test = 100
@@ -137,26 +139,27 @@ def maxpool2d(x):
     return tf.nn.max_pool(x, ksize=[1,2,2,1], strides=[1,2,2,1], padding="SAME")
 
 def convNeuralNet(x):
-    weights = {'w_conv1':tf.get_variable('w_conv1',[9,9,1,2],initializer=tf.random_normal_initializer()),
-               'w_conv2':tf.get_variable('w_conv2',[9,9,2,4],initializer=tf.random_normal_initializer()),
-               'w_conv3':tf.get_variable('w_conv3',[9,9,4,8],initializer=tf.random_normal_initializer()),
-               'w_conv4':tf.get_variable('w_conv4',[9,9,8,16],initializer=tf.random_normal_initializer()),
-               'w_conv5':tf.get_variable('w_conv5',[9,9,16,32],initializer=tf.random_normal_initializer()),
-               'w_conv6':tf.get_variable('w_conv6',[9,9,32,64],initializer=tf.random_normal_initializer()),
-               'w_conv7':tf.get_variable('w_conv7',[9,9,64,128],initializer=tf.random_normal_initializer()),
-               'w_conv8':tf.get_variable('w_conv8',[9,9,128,256],initializer=tf.random_normal_initializer()),
-               'w_conv9':tf.get_variable('w_conv9',[9,9,256,512],initializer=tf.random_normal_initializer()),
-               'w_conv10':tf.get_variable('w_conv10',[9,9,512,1024],initializer=tf.random_normal_initializer()),
-            #    'w_conv11':tf.get_variable('w_conv11',[9,9,1024,2048],initializer=tf.random_normal_initializer()),
-            #    'w_conv12':tf.get_variable('w_conv12',[9,9,2048,4096],initializer=tf.random_normal_initializer()),
-            #    'w_conv13':tf.get_variable('w_conv13',[9,9,4096,8192],initializer=tf.random_normal_initializer()),
-            #    'w_conv14':tf.get_variable('w_conv14',[9,9,8192,16384],initializer=tf.random_normal_initializer()),
-            #    'w_conv15':tf.get_variable('w_conv15',[9,9,16384,32768],initializer=tf.random_normal_initializer()),
+    weights = {'w_conv1':tf.get_variable('w_conv1',[8,8,1,2],initializer=tf.random_normal_initializer()),
+               'w_conv2':tf.get_variable('w_conv2',[8,8,2,4],initializer=tf.random_normal_initializer()),
+               'w_conv3':tf.get_variable('w_conv3',[8,8,4,8],initializer=tf.random_normal_initializer()),
+               'w_conv4':tf.get_variable('w_conv4',[8,8,8,16],initializer=tf.random_normal_initializer()),
+               'w_conv5':tf.get_variable('w_conv5',[8,8,16,32],initializer=tf.random_normal_initializer()),
+               'w_conv6':tf.get_variable('w_conv6',[8,8,32,64],initializer=tf.random_normal_initializer()),
+               'w_conv7':tf.get_variable('w_conv7',[8,8,64,128],initializer=tf.random_normal_initializer()),
+               'w_conv8':tf.get_variable('w_conv8',[8,8,128,256],initializer=tf.random_normal_initializer()),
+               'w_conv9':tf.get_variable('w_conv9',[8,8,256,512],initializer=tf.random_normal_initializer()),
+               'w_conv10':tf.get_variable('w_conv10',[8,8,512,1024],initializer=tf.random_normal_initializer()),
+            #    'w_conv11':tf.get_variable('w_conv11',[8,8,1024,2048],initializer=tf.random_normal_initializer()),
+            #    'w_conv12':tf.get_variable('w_conv12',[8,8,2048,4096],initializer=tf.random_normal_initializer()),
+            #    'w_conv13':tf.get_variable('w_conv13',[8,8,4096,8192],initializer=tf.random_normal_initializer()),
+            #    'w_conv14':tf.get_variable('w_conv14',[8,8,8192,16384],initializer=tf.random_normal_initializer()),
+            #    'w_conv15':tf.get_variable('w_conv15',[8,8,16384,32768],initializer=tf.random_normal_initializer()),
                'w_fc1':tf.get_variable('w_fc1',[1024,1024],initializer=tf.random_normal_initializer()),
                'w_fc2':tf.get_variable('w_fc2',[1024,2048],initializer=tf.random_normal_initializer()),
                'w_fc3':tf.get_variable('w_fc3',[2048,4096],initializer=tf.random_normal_initializer()),
-               #'w_fc4':tf.get_variable('w_fc4',[2048,4096],initializer=tf.random_normal_initializer()),
-               'out':tf.get_variable('w_out',[4096,n_classes],initializer=tf.random_normal_initializer())}
+               'w_fc4':tf.get_variable('w_fc4',[4096,8192],initializer=tf.random_normal_initializer()),
+               'w_fc5':tf.get_variable('w_fc5',[8192,16384],initializer=tf.random_normal_initializer()),
+               'out':tf.get_variable('w_out',[16384,n_classes],initializer=tf.random_normal_initializer())}
 
     biases = {'b_conv1':tf.get_variable('b_conv1',[2],initializer=tf.random_normal_initializer()),
               'b_conv2':tf.get_variable('b_conv2',[4],initializer=tf.random_normal_initializer()),
@@ -176,7 +179,8 @@ def convNeuralNet(x):
               'b_fc1':tf.get_variable('b_fc1',[1024],initializer=tf.random_normal_initializer()),
               'b_fc2':tf.get_variable('b_fc2',[2048],initializer=tf.random_normal_initializer()),
               'b_fc3':tf.get_variable('b_fc3',[4096],initializer=tf.random_normal_initializer()),
-              #'b_fc4':tf.get_variable('b_fc4',[4096],initializer=tf.random_normal_initializer()),
+              'b_fc4':tf.get_variable('b_fc4',[8192],initializer=tf.random_normal_initializer()),
+              'b_fc5':tf.get_variable('b_fc5',[16384],initializer=tf.random_normal_initializer()),
               'out':tf.get_variable('b_out',[n_classes],initializer=tf.random_normal_initializer())}
 
     x = tf.reshape(x,shape=[-1,9,len_puzzle,1])
@@ -233,9 +237,11 @@ def convNeuralNet(x):
 
     fc3 = tf.nn.sigmoid(tf.add(tf.matmul(fc2,weights['w_fc3']),biases['b_fc3']))
 
-    #fc4 = tf.nn.sigmoid(tf.add(tf.matmul(fc3,weights['w_fc4']),biases['b_fc4']))
+    fc4 = tf.nn.sigmoid(tf.add(tf.matmul(fc3,weights['w_fc4']),biases['b_fc4']))
 
-    last = tf.nn.dropout(fc3,keep_prob)
+    fc5 = tf.nn.sigmoid(tf.add(tf.matmul(fc4,weights['w_fc5']),biases['b_fc5']))
+
+    last = tf.nn.dropout(fc5,keep_prob)
 
     #output = tf.add(tf.matmul(fc,weights['out']),biases['out'],name='final')
     output = tf.add(tf.matmul(last, weights['out']), biases['out'], name='op7')
@@ -318,8 +324,8 @@ def train(x):
                     [ta] = sess.run([accuracy],feed_dict={x:epoch_x,y:epoch_y,keep_prob:TRAIN_KEEP_PROB})
                     print 'Train Accuracy', ta
                 if epoch % 50 == 0 and i == 0:
-                    #saver.save(sess,os.getcwd()+'/models/base/baseCNN10.ckpt')
-                    #print 'Checkpoint saved at',os.getcwd()+'/models/base/baseCNN15'
+                    #saver.save(sess,os.getcwd()+'/models/base/baseCNN18.ckpt')
+                    #print 'Checkpoint saved at',os.getcwd()+'/models/base/baseCNN18'
                     pass
                     # ta_list.append(ta)
                 if i % 5 == 0:
@@ -329,9 +335,9 @@ def train(x):
                 epoch_loss += c
             print '\n','Epoch', epoch + 1, 'completed out of', num_epochs, '\nLoss:',epoch_loss
 
-        #saver.save(sess, os.getcwd()+'/models/base/baseCNN15')
-        #saver.export_meta_graph(os.getcwd()+'/models/base/baseCNN15.meta')
-        #print 'Model saved'
+        saver.save(sess, os.getcwd()+'/models/base/baseCNN18')
+        saver.export_meta_graph(os.getcwd()+'/models/base/baseCNN18.meta')
+        print 'Model saved'
 
         print '\n','Train Accuracy', accuracy.eval(feed_dict={x:real_X_9, y:real_y_9, keep_prob:TRAIN_KEEP_PROB})
         print '\n','Test Accuracy', accuracy.eval(feed_dict={x:test_real_X, y:test_real_y, keep_prob:1.0}) #X, y #mnist.test.images, mnist.test.labels

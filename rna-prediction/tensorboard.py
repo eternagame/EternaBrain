@@ -1,3 +1,6 @@
+'''
+Plots the test, training, and baseline accuracies for the CNNs
+'''
 from matplotlib import pyplot as plt
 import seaborn; seaborn.set()
 import os

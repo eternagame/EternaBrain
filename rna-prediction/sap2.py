@@ -1,3 +1,8 @@
+'''
+Implements the Domain Specific Pipeline (DSP)
+Runs an MCTS modified to implement Eterna player strategies
+Second process of the SAP
+'''
 import numpy as np
 from eterna_utils import get_pairmap_from_secstruct
 import RNA
@@ -46,6 +51,11 @@ def str_to_num(s):
 
 dot_bracket = '.....((((..((((....)))).)))).....'
 seq_str = 'A'*len(dot_bracket)
+'''
+:param dot_bracket: The target structure of the RNA in dot-bracket notation
+:param seq_str: The current RNA sequence
+:return The updated RNA sequence after the DSP
+'''
 def dsp(dot_bracket,seq_str): # domain specific pipeline
     seq = list(seq_str)
     m = []

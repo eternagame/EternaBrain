@@ -3,6 +3,8 @@
 Created on Fri Mar 31 21:49:27 2017
 
 @author: rohankoodli
+Creates, trains, and saves the CNN for predicting location of nucleotide change
+Trains on 92 key puzzles from the 99th percentile of Eterna players (Players who've solved > 3000 puzzles)
 """
 
 import numpy as np
@@ -88,7 +90,7 @@ TRAIN_KEEP_PROB = 0.9
 TEST_KEEP_PROB = 1.0
 learning_rate = 0.0001
 ne = 150
-tb_path = '/tensorboard/locationCNN14'
+tb_path = '/tensorboard/locationCNN18'
 
 train = 30000
 test = 100
@@ -156,10 +158,11 @@ def convNeuralNet(x):
                'w_fc1':tf.get_variable('w_fc1',[1024,1024],initializer=tf.random_normal_initializer()),
                'w_fc2':tf.get_variable('w_fc2',[1024,2048],initializer=tf.random_normal_initializer()),
                'w_fc3':tf.get_variable('w_fc3',[2048,4096],initializer=tf.random_normal_initializer()),
-            #    'w_fc4':tf.get_variable('w_fc4',[2048,4096],initializer=tf.random_normal_initializer()),
-               'out':tf.get_variable('w_out',[4096,n_classes],initializer=tf.random_normal_initializer())}
+               'w_fc4':tf.get_variable('w_fc4',[4096,8192],initializer=tf.random_normal_initializer()),
+               'w_fc5':tf.get_variable('w_fc5',[8192,16384],initializer=tf.random_normal_initializer()),
+               'out':tf.get_variable('w_out',[16384,n_classes],initializer=tf.random_normal_initializer())}
 
-    biases = {'b_conv1':tf.get_variable('b_conv1',[8],initializer=tf.random_normal_initializer()),
+    biases = {'b_conv1':tf.get_variable('b_conv1',[2],initializer=tf.random_normal_initializer()),
               'b_conv2':tf.get_variable('b_conv2',[4],initializer=tf.random_normal_initializer()),
               'b_conv3':tf.get_variable('b_conv3',[8],initializer=tf.random_normal_initializer()),
               'b_conv4':tf.get_variable('b_conv4',[16],initializer=tf.random_normal_initializer()),
@@ -177,7 +180,8 @@ def convNeuralNet(x):
               'b_fc1':tf.get_variable('b_fc1',[1024],initializer=tf.random_normal_initializer()),
               'b_fc2':tf.get_variable('b_fc2',[2048],initializer=tf.random_normal_initializer()),
               'b_fc3':tf.get_variable('b_fc3',[4096],initializer=tf.random_normal_initializer()),
-            #   'b_fc4':tf.get_variable('b_fc4',[4096],initializer=tf.random_normal_initializer()),
+              'b_fc4':tf.get_variable('b_fc4',[8192],initializer=tf.random_normal_initializer()),
+              'b_fc5':tf.get_variable('b_fc5',[16384],initializer=tf.random_normal_initializer()),
               'out':tf.get_variable('b_out',[n_classes],initializer=tf.random_normal_initializer())}
 
     x = tf.reshape(x,shape=[-1,8,len_puzzle,1])
@@ -234,9 +238,11 @@ def convNeuralNet(x):
 
     fc3 = tf.nn.sigmoid(tf.add(tf.matmul(fc2,weights['w_fc3']),biases['b_fc3']))
 
-    #fc4 = tf.nn.sigmoid(tf.add(tf.matmul(fc3,weights['w_fc4']),biases['b_fc4']))
+    fc4 = tf.nn.sigmoid(tf.add(tf.matmul(fc3,weights['w_fc4']),biases['b_fc4']))
 
-    last = tf.nn.dropout(fc3,keep_prob)
+    fc5 = tf.nn.sigmoid(tf.add(tf.matmul(fc4,weights['w_fc5']),biases['b_fc5']))
+
+    last = tf.nn.dropout(fc5,keep_prob)
 
     #output = tf.add(tf.matmul(fc,weights['out']),biases['out'],name='final')
     output = tf.add(tf.matmul(last, weights['out']), biases['out'], name='op7')
@@ -319,8 +325,8 @@ def train(x):
                     [ta] = sess.run([accuracy],feed_dict={x:epoch_x,y:epoch_y,keep_prob:TRAIN_KEEP_PROB})
                     print 'Train Accuracy', ta
                 if epoch % 50 == 0 and i == 0:
-                    #saver.save(sess,os.getcwd()+'/models/location/locationCNN10.ckpt')
-                    #print 'Checkpoint saved at',os.getcwd()+'/models/base/locationCNN15'
+                    #saver.save(sess,os.getcwd()+'/models/location/locationCNN18.ckpt')
+                    #print 'Checkpoint saved at',os.getcwd()+'/models/location/locationCNN18'
                     pass
                     #ta_list.append(ta)
                 if i % 5 == 0:
@@ -330,9 +336,9 @@ def train(x):
                 epoch_loss += c
             print '\n','Epoch', epoch + 1, 'completed out of', num_epochs, '\nLoss:',epoch_loss
 
-        # saver.save(sess, os.getcwd()+'/models/location/locationCNN15')
-        # saver.export_meta_graph(os.getcwd()+'/models/location/locationCNN15.meta')
-        # print "Model saved"
+        saver.save(sess, os.getcwd()+'/models/location/locationCNN18')
+        saver.export_meta_graph(os.getcwd()+'/models/location/locationCNN18.meta')
+        print "Model saved"
 
         print '\n','Train Accuracy', accuracy.eval(feed_dict={x:real_X_9, y:real_y_9, keep_prob:TRAIN_KEEP_PROB})
         print '\n','Test Accuracy', accuracy.eval(feed_dict={x:test_real_X, y:test_real_y, keep_prob:1.0}) #X, y #mnist.test.images, mnist.test.labels

@@ -1,3 +1,8 @@
+'''
+Loads the saved TensorFlow models and runs a simulation of EternaBrain solving a real Eterna puzzle
+Input a target structure in dot-bracket notation and any initial params (energy, locked bases)
+'''
+
 import tensorflow as tf
 import os
 import pickle
@@ -10,7 +15,7 @@ from readData import format_pairmap
 from sap1 import sbc
 from sap2 import dsp
 
-DOT_BRACKET = '...((....))....(((((((((.........)))))))))....((((.....)))).....(((....)))...(((((.......)))))....(((...((....)).....(((....)))....((((((.......))))))....(((....))).....((((((....(((.......)))..(((........)))...(((((......)))))...((((.....))))..)))))).........((....)).....((....))......(((((..........)))))......)))'
+DOT_BRACKET = '(((.(((((((...))))..))))))...(((.(((((((...))))..))))))...(((.(((((((...))))..))))))...(((.(((((((...))))..))))))...(((.(((((((...))))..))))))...(((.(((((((...))))..))))))...(((.(((((((...))))..))))))...(((.(((((((...))))..))))))...(((.(((((((...))))..))))))'
 len_puzzle = len(DOT_BRACKET)
 NUCLEOTIDES = 'A'*len_puzzle
 ce = 0.0
@@ -234,14 +239,14 @@ movesets.extend(m2)
 movesets.extend(m3)
 #print movesets
 
-mp = pickle.load(open(os.getcwd()+'/pickles/evolved-raw-ms','r'))
-bp = pickle.load(open(os.getcwd()+'/pickles/evolved-raw-bf','r'))
-
-mp.append(movesets)
-bp.append(NUCLEOTIDES)
-
-pickle.dump(mp,open(os.getcwd()+'/pickles/evolved-raw-ms','w'))
-pickle.dump(bp,open(os.getcwd()+'/pickles/evolved-raw-bf','w'))
+# mp = pickle.load(open(os.getcwd()+'/pickles/evolved-raw-ms','r'))
+# bp = pickle.load(open(os.getcwd()+'/pickles/evolved-raw-bf','r'))
+#
+# mp.append(movesets)
+# bp.append(NUCLEOTIDES)
+#
+# pickle.dump(mp,open(os.getcwd()+'/pickles/evolved-raw-ms','w'))
+# pickle.dump(bp,open(os.getcwd()+'/pickles/evolved-raw-bf','w'))
 
 # pickle.dump([movesets], open(os.getcwd()+'/pickles/evolved-raw-ms','w'))
 # pickle.dump([NUCLEOTIDES], open(os.getcwd()+'/pickles/evolved-raw-bf','w'))
