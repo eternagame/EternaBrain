@@ -11,11 +11,13 @@ Rohan Koodli
 61/100
 
 ## Dependencies
-Python: `numpy, tensorflow, pandas, seaborn, matplotlib`
+Python: `numpy, tensorflow, pandas, seaborn, matplotlib, scikit-learn`
 
 `RNAfold` versions 1.8.5 and 2.3.5 from ViennaRNA
 
 `EteRNABot` - You will have to clone the EteRNABot repository and move the files to your directory. Currently, there is no installation option for EteRNABot.
+
+R: `ggplot2, reshape2`
 
 ## To Use
 ### Step 1: Generate the training data
