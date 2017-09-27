@@ -5,14 +5,14 @@ Created on Sat Apr  8 12:18:56 2017
 @author: rohankoodli
 """
 
-
 import os
 import pandas as pd
 import ast
-import matplotlib.pyplot as plt
+#import matplotlib.pyplot as plt
 import numpy as np
 import pickle
-import seaborn; seaborn.set()
+from readData import read_movesets_uid_pid, experience
+#import seaborn; seaborn.set()
 
 def plot_moves():
     # filepath = os.getcwd() + '/movesets/move-set-11-14-2016.txt'
@@ -79,12 +79,32 @@ def plot_experience():
 
     return counts
 
-plt.hist(plot_experience(),bins=range(5001)[::50])
-plt.yscale('log')
-plt.ylabel('Number of Players (logarithmic scale)')
-plt.xlabel('Number of total Puzzle Solutions')
-plt.title('Distribution of Player Experience by number of puzzles solved')
-plt.show()
+# plt.hist(plot_experience(),bins=range(5001)[::50])
+# plt.yscale('log')
+# plt.ylabel('Number of Players (logarithmic scale)')
+# plt.xlabel('Number of total Puzzle Solutions')
+# plt.title('Distribution of Player Experience by number of puzzles solved')
+# plt.show()
+new_ms = os.getcwd() + '/movesets/moveset6-22a.txt'
+
+moveset_dataFrame = pd.read_csv(new_ms, sep=' ', header='infer', delimiter='\t')
+#puzzles_pid = moveset_dataFrame.loc[moveset_dataFrame['pid'] == 1005956]
+for i in [8627]:
+    puzzles1 = moveset_dataFrame.loc[moveset_dataFrame['uid'] == i]
+    d = list(puzzles1['move_set'])
+    for j in d[1000:1010]:
+        try:
+            #print "thunder", 392
+            s1 = ast.literal_eval(j)
+            s2 = int(s1['num_moves'])
+            print i
+            print list(puzzles1['pid'])[d.index(j)]
+            print s2
+        #print '\n'
+        except ValueError:
+            continue
+    #print d
+
 
 def num_puzzles():
     pidlist = list(ms_df['pid'])

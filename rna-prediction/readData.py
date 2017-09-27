@@ -10,13 +10,13 @@ import os
 import numpy as np
 from eterna_utils import get_pairmap_from_secstruct
 
-'''
-Returns player IDs of players who have solved over a certain threshold of puzzles
-
-:param threshold: The minimum number of puzzles to be classified as an "expert"
-:return: A list of "expert" players
-'''
 def experience(threshold):
+    '''
+    Returns player IDs of players who have solved over a certain threshold of puzzles
+
+    :param threshold: The minimum number of puzzles to be classified as an "expert"
+    :return: A list of "expert" players
+'''
     full_problems = pd.read_csv(os.getcwd()+'/movesets/full-problems-nov2016.txt', sep=" ", header="infer", delimiter='\t')
     user_df = full_problems[['uid']]
     users = np.array(user_df,dtype=int) # list of users
@@ -29,51 +29,52 @@ def experience(threshold):
 
     return experienced_players
 
-'''
-Returns move sets from a specific player
 
-:param uid: The user ID of the Eterna player
-:return: The move sets of that player
-:return: The list of puzzle IDs of puzzles that he/she has solved
-'''
 def read_movesets_uid(uid): # get data from user ID
-  moveset_dataFrame = pd.read_csv(os.getcwd()+'/movesets/moveset6-22a.txt', sep=" ", header="infer", delimiter='\t')
-  puzzles_uid = moveset_dataFrame.loc[moveset_dataFrame['uid'] == uid]
-  plist = list(puzzles_uid['move_set'])
-  pidList = list(puzzles_uid['pid'])
-  # plist_dict = []
-  # for i in plist:
-  #   s1 = (ast.literal_eval(i))
-  #   s2 = s1['moves']
-  #   plist_dict.append(s2)
+    '''
+    Returns move sets from a specific player
 
-  return plist, pidList
+    :param uid: The user ID of the Eterna player
+    :return: The move sets of that player
+    :return: The list of puzzle IDs of puzzles that he/she has solved
+    '''
+    moveset_dataFrame = pd.read_csv(os.getcwd()+'/movesets/moveset6-22a.txt', sep=" ", header="infer", delimiter='\t')
+    puzzles_uid = moveset_dataFrame.loc[moveset_dataFrame['uid'] == uid]
+    plist = list(puzzles_uid['move_set'])
+    pidList = list(puzzles_uid['pid'])
+      # plist_dict = []
+      # for i in plist:
+      #   s1 = (ast.literal_eval(i))
+      #   s2 = s1['moves']
+      #   plist_dict.append(s2)
 
-'''
-Returns move sets for a specific puzzle only 1 user has solved
+    return plist, pidList
 
-:param uid: The user's ID
-:param pid: The puzzle ID
-:param df: Whether you want the returned move sets to be in a pandas dataframe or a list
-:return: The move sets either in a list or a pandas dataframe
-'''
 def read_movesets_uid_pid(uid,pid,df='list'): # get data from user ID
-  moveset_dataFrame = pd.read_csv(os.getcwd()+'/movesets/moveset6-22a.txt', sep=" ", header="infer", delimiter='\t')
-  puzzles1 = moveset_dataFrame.loc[moveset_dataFrame['uid'] == uid]
-  puzzles2 = puzzles1.loc[puzzles1['pid'] == pid]
-  if df == "list":
-    return list(puzzles2['move_set'])
-  elif df == "df":
-    return puzzles2
+    """
+    Returns move sets for a specific puzzle only 1 user has solved
 
-  # plist = list(puzzles2)
-  # plist_dict = []
-  # for i in plist:
-  #   s1 = (ast.literal_eval(i))
-  #   s2 = s1['moves']
-  #   plist_dict.append(s2)
-  #
-  # return plist_dict
+    :param uid: The user's ID
+    :param pid: The puzzle ID
+    :param df: Whether you want the returned move sets to be in a pandas dataframe or a list
+    :return: The move sets either in a list or a pandas dataframe
+    """
+    moveset_dataFrame = pd.read_csv(os.getcwd()+'/movesets/moveset6-22a.txt', sep=" ", header="infer", delimiter='\t')
+    puzzles1 = moveset_dataFrame.loc[moveset_dataFrame['uid'] == uid]
+    puzzles2 = puzzles1.loc[puzzles1['pid'] == pid]
+    if df == "list":
+        return list(puzzles2['move_set'])
+    elif df == "df":
+        return puzzles2
+
+    # plist = list(puzzles2)
+    # plist_dict = []
+    # for i in plist:
+    #   s1 = (ast.literal_eval(i))
+    #   s2 = s1['moves']
+    #   plist_dict.append(s2)
+    #
+    # return plist_dict
 
 '''
 DEPRECATED
@@ -128,13 +129,14 @@ def experience_labs(puzzle,threshold):
 
     return final_dict,user_list,encoded_bf,lens
 
-'''
-Returns a list of locked bases (0s and 1s) for a specific puzzle
 
-:param pid: The puzzle ID
-:return: The locked bases in a list of 0s and 1s
-'''
 def read_locks(pid):
+    '''
+    Returns a list of locked bases (0s and 1s) for a specific puzzle
+
+    :param pid: The puzzle ID
+    :return: The locked bases in a list of 0s and 1s
+    '''
     puzzle_structure = pd.read_csv(os.getcwd()+'/movesets/puzzle-structure-data.txt', sep=" ", header='infer', delimiter='\t')
     puzzles_pid = puzzle_structure.loc[puzzle_structure['pid'] == pid]
 
@@ -152,34 +154,35 @@ def read_locks(pid):
     except TypeError:
         return "None"
 
-'''
-Reads and returns the move sets for a certain puzzle
-
-:param moveset_file: The filepath to the move set data
-:param pid: The puzzle ID of the puzzle
-:return: The list of the movesets for that specific puzzle
-:return: The list of users who have solved that puzzle
-'''
 def read_movesets_pid(moveset_file,pid): # get data from puzzle ID
-  moveset_dataFrame = pd.read_csv(moveset_file, sep=" ", header="infer", delimiter='\t')
-  puzzles_pid = moveset_dataFrame.loc[moveset_dataFrame['pid'] == pid]
-  plist = list(puzzles_pid['move_set'])
-  ulist = list(puzzles_pid['uid'])
-  plist_dict = []
-  for i in plist:
-    s1 = (ast.literal_eval(i))
-    s2 = s1['moves']
-    plist_dict.append(s2)
+    '''
+    Reads and returns the move sets for a certain puzzle
 
-  return plist_dict, ulist
+    :param moveset_file: The filepath to the move set data
+    :param pid: The puzzle ID of the puzzle
+    :return: The list of the movesets for that specific puzzle
+    :return: The list of users who have solved that puzzle
+    '''
+    moveset_dataFrame = pd.read_csv(moveset_file, sep=" ", header="infer", delimiter='\t')
+    puzzles_pid = moveset_dataFrame.loc[moveset_dataFrame['pid'] == pid]
+    plist = list(puzzles_pid['move_set'])
+    ulist = list(puzzles_pid['uid'])
+    plist_dict = []
+    for i in plist:
+        s1 = (ast.literal_eval(i))
+        s2 = s1['moves']
+        plist_dict.append(s2)
 
-'''
-Gets the structure of the RNA puzzle
+    return plist_dict, ulist
 
-:param: pid: The puzzle ID
-:return: The structure encoded from dot-bracket notation into 1s, 2s and 3s
-'''
+
 def read_structure(pid):
+    '''
+    Gets the structure of the RNA puzzle
+
+    :param: pid: The puzzle ID
+    :return: The structure encoded from dot-bracket notation into 1s, 2s and 3s
+    '''
     puzzle_structure = pd.read_csv(os.getcwd()+'/movesets/puzzle-structure-data.txt', sep=" ", header='infer', delimiter='\t')
     puzzles_pid = puzzle_structure.loc[puzzle_structure['pid'] == pid]
 

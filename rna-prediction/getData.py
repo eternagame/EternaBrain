@@ -13,12 +13,12 @@ import itertools
 import pandas as pd
 import os
 
-'''
-Gets the puzzle IDs for all single-state RNA puzzles
-
-:return: Puzzle IDs of all single-state puzzles
-'''
 def getPid():
+    '''
+    Gets the puzzle IDs for all single-state RNA puzzles
+
+    :return: Puzzle IDs of all single-state puzzles
+    '''
     ps = pd.read_csv(os.getcwd()+'/movesets/puzzle-structure-data.txt',sep=' ',header='infer',delimiter='\t')
     ps = ps.dropna(subset=['constraints'])
     c = list(ps['constraints'])
@@ -40,13 +40,14 @@ def getData_pid(pid,pidList,movesets,structure): # returns moveset and puzzzle s
 
   return movesets[i1], structure['structure'][i2]
 
-'''
-Uses RNAfold to calculate structures and energies
 
-:param sequence: An RNA sequence
-:return: The encoded structure and the Gibbs free energy in kcal/mol
-'''
 def getStructure(sequence):
+    '''
+    Uses RNAfold to calculate structures and energies
+
+    :param sequence: An RNA sequence
+    :return: The encoded structure and the Gibbs free energy in kcal/mol
+    '''
     base_seq = []
     for i in sequence:
         if i == 1:

@@ -16,7 +16,7 @@ y = [219,273,134,123,346,319,512,32,20,23,104,211,280,330,150,576,555,441,479,39
 
 # fractastar5, cuboid, gcplacement, cloudbeta, six legd turtle, water strider, stickshift, martian, tarax, chctrac, frac3, trtmoves, adenine, the sun
 x = [400     , 380   , 16         , 63       , 108            , 103          , 39        , 213    , 282  , 116    , 119  , 316     , 175    , 258]
-yp = [1224   , 1132   , 51         , 211      , 100            , 130          , 40        , 324    , 656  , 176    , 265  , 703     , 281    , 379]
+yp = [1224   , 1132   , 51        , 211      , 100            , 130          , 40        , 324    , 656  , 176    , 265  , 703     , 281    , 379]
 yb = [945    , 788   , 23         , 45       , 111             , 41          , 56        , 313    , 633  , 76     , 75   , 554     , 211    , 366]
 
 ypt = [i ** 0.5 for i in yp]
@@ -49,8 +49,8 @@ def brain_eq_list(x):
 
 plt.scatter(x,yp,label='Top Eterna Players')
 plt.scatter(x,yb,label='EternaBrain')
-plt.plot(range(401),player_eq_list(range(401)),label='Curve of best fit for Players            y = %.3f + %.3fx + %.3fx^2' %(p_eq[2],p_eq[1],p_eq[0]))
-plt.plot(range(401),brain_eq_list(range(401)),label='Curve of best fit for EternaBrain     y = %.3f + %.3fx + %.3fx^2' %(b_eq[2],b_eq[1],b_eq[0]))
+plt.plot(range(401),player_eq_list(range(401)),label='Curve of best fit for Players')
+plt.plot(range(401),brain_eq_list(range(401)),label='Curve of best fit for EternaBrain')
 plt.title("Time needed to solve a puzzle of a given length")
 plt.xlabel("Length of the puzzle (in number of nucleotides)")
 plt.ylabel("Time (in seconds)")

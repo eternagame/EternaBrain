@@ -22,8 +22,9 @@ progression = [6502966,6502968,6502973,6502976,6502984,6502985,6502993, \
                 6502994,6502995,6502996,6502997,6502998,6502999,6503000] # 6502957
 content.extend(progression)
 content.remove(6502993)
+max_moves = 30
 
-len_longest = 350
+len_longest = 500
 
 new_ms = os.getcwd() + '/movesets/moveset6-22a.txt'
 moveset_dataFrame = pd.read_csv(new_ms, sep=' ', header='infer', delimiter='\t')
@@ -41,7 +42,7 @@ def speed(pid):
     for i in (plist):
         s1 = (ast.literal_eval(i))
         s2 = int(s1['num_moves'])
-        if s2 <= 30: # solved in 50 moves or less
+        if s2 <= max_moves: # solved in 50 moves or less
             print 'fast'
             s3 = s1['moves']
             s4 = s1['begin_from']

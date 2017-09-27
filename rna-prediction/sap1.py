@@ -124,12 +124,16 @@ len_longest = 108
 #current = convert(base_seq)
 dot_bracket = '.....((((((((...((((((((((........))))))))))...((((((((((........))))))))))...((((((((((........))))))))))...)))))))).....'
 seq = 'AAAAAGUUUUGAGAAAGAAGUCUGGGGAAAAAAACUUGGGUUUCAAAGGGUGAAAUGGAAAAAAACAUUUCACCCAAAGUUCCUAUCCGAAAAAAAGGAUAGGAGCAAACUUAAAACAAAAA'
-'''
-:param dot_bracket: The target structure for the RNA in dot-bracket notation
-:param seq: The current RNA sequence
-:return: An updated RNA sequence after the SBC
-'''
+
 def sbc(dot_bracket,seq): # Monte Carlo Tree Search with Depth 1
+    '''
+    Mutates individual bases with MCTS
+
+    :param dot_bracket: The target structure for the RNA in dot-bracket notation
+    :param seq: The current RNA sequence
+    :return: An updated RNA sequence after the SBC
+    '''
+
     movesets = []
     target_struc = encode_struc(dot_bracket)
     pm = get_pairmap_from_secstruct(dot_bracket)

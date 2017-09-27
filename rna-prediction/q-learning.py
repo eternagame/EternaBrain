@@ -146,16 +146,28 @@ session = tf.Session()
 state = tf.placeholder("float", [None,NUM_STATES*4],name='state')
 targets = tf.placeholder("float", [None, NUM_ACTIONS],name='targets')
 
-hidden_weights = tf.get_variable('weights',[NUM_STATES*4, NUM_ACTIONS],initializer=tf.random_normal_initializer())
+hidden_weights1 = tf.get_variable('weights1',[NUM_STATES*4, 250],initializer=tf.truncated_normal_initializer())
+hidden_weights2 = tf.get_variable('weights2',[250, 250],initializer=tf.truncated_normal_initializer())
+out_weights = tf.get_variable('outw',[250, NUM_ACTIONS],initializer=tf.truncated_normal_initializer())
 
-output = tf.matmul(state, hidden_weights)
+biases1 = tf.get_variable('biases1',[250],initializer=tf.truncated_normal_initializer())
+biases2 = tf.get_variable('biases2',[250],initializer=tf.truncated_normal_initializer())
+out_biases = tf.get_variable('outb',[NUM_ACTIONS],initializer=tf.truncated_normal_initializer())
+
+l1 = tf.add(tf.matmul(state,hidden_weights1),biases1)
+l1 = tf.nn.sigmoid(l1)
+
+l2 = tf.add(tf.matmul(l1,hidden_weights2),biases2)
+l2 = tf.nn.sigmoid(l2)
+
+output = tf.add(tf.matmul(l2,out_weights),out_biases)
 
 loss = tf.reduce_mean(tf.square(output - targets))
 train_operation = tf.train.AdamOptimizer(0.1).minimize(loss)
 
 session.run(tf.global_variables_initializer())
 
-for i in range(3):
+for i in range(2):
     state_batch = []
     rewards_batch = []
     rand_seq = []
@@ -164,9 +176,10 @@ for i in range(3):
 
     # create a batch of states
     for state_index in range(len_puzzle):
-        current_seq_shaped = np.array(current_seq).reshape([192])
-        print current_seq_shaped.shape
-        print np.array(current_seq).shape
+
+        current_seq_shaped = np.array(current_seq).reshape([NUM_STATES*4])
+        #print current_seq_shaped.shape
+        #print np.array(current_seq).shape
         state_batch.append(current_seq_shaped)
         #print seq
         #print sec_struc
@@ -235,15 +248,15 @@ for i in range(3):
         #                   u_reward,
         #                   g_reward,
         #                   c_reward]
-        #print action_rewards
+        print action_rewards
         rewards_batch.append(action_rewards)
 
     session.run(train_operation, feed_dict={
         state: state_batch,
         targets: rewards_batch})
 
-    # print(([target_struc[x] + np.max(session.run(output, feed_dict={state: [np.random.randint(1,5,size=(len_puzzle))]}))
-    #        for x in range(NUM_STATES)]))
+    print(([np.max(session.run(output, feed_dict={state: [np.array(current_seq).reshape([NUM_STATES*4])]}))
+           for x in range(NUM_STATES)]))
     final_list = []
 
 

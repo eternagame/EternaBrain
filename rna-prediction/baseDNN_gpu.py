@@ -148,7 +148,7 @@ learning_rate = 0.0001
 ne = 300
 #tb_path = '/tensorboard/baseDNN-500-10-10-50-100'
 
-train = 1800000
+train = 30000
 test = 20
 num_nodes = 250
 len_puzzle = max(max_lens)
@@ -216,26 +216,9 @@ def neuralNet(data):
     hl_5 = {'weights':tf.get_variable('Weights5',[n_nodes_hl4, n_nodes_hl5],initializer=tf.random_normal_initializer()),
             'biases':tf.get_variable('Biases5',[n_nodes_hl5],initializer=tf.random_normal_initializer())}
 
-    # hl_6 = {'weights':tf.get_variable(initializer=tf.random_normal_initializer(),([n_nodes_hl5, n_nodes_hl6]),'Weights'),
-    #         'biases':tf.get_variable(initializer=tf.random_normal_initializer(),([n_nodes_hl6]),name='Biases')}
-    #
-    # hl_7 = {'weights':tf.get_variable(initializer=tf.random_normal_initializer(),([n_nodes_hl6, n_nodes_hl7]),name='Weights'),
-    #         'biases':tf.get_variable(initializer=tf.random_normal_initializer(),([n_nodes_hl7]),name='Biases')}
-    #
-    # hl_8 = {'weights':tf.get_variable(initializer=tf.random_normal_initializer(),([n_nodes_hl7, n_nodes_hl8]),name='Weights'),
-    #         'biases':tf.get_variable(initializer=tf.random_normal_initializer(),([n_nodes_hl8]),name='Biases')}
-    #
-    # hl_9 = {'weights':tf.get_variable(initializer=tf.random_normal_initializer(),([n_nodes_hl8, n_nodes_hl9]),name='Weights'),
-    #         'biases':tf.get_variable(initializer=tf.random_normal_initializer(),([n_nodes_hl9]),name='Biases')}
-    #
-    # hl_10 = {'weights':tf.get_variable(initializer=tf.random_normal_initializer(),([n_nodes_hl9, n_nodes_hl10]),name='Weights'),
-    #         'biases':tf.get_variable(initializer=tf.random_normal_initializer(),([n_nodes_hl10]),name='Biases')}
-
     output_layer = {'weights':tf.get_variable('Weights-outputlayer',[n_nodes_hl5, n_classes],initializer=tf.random_normal_initializer()),
             'biases':tf.get_variable('Biases-outputlayer',[n_classes],initializer=tf.random_normal_initializer())}
 
-    # l1 = tf.add(tf.matmul(data, hl_1['weights']), hl_1['biases'])
-    # l1 = tf.nn.sigmoid(l1, name='op1')
     l1 = tf.add(tf.matmul(data, hl_1['weights']), hl_1['biases'])
     l1 = tf.nn.sigmoid(l1, name='op1')
 
@@ -251,71 +234,15 @@ def neuralNet(data):
     l5 = tf.add(tf.matmul(l4, hl_5['weights']), hl_5['biases'])
     l5 = tf.nn.sigmoid(l5, name='op5')
 
-    # l6 = tf.add(tf.matmul(l5, hl_6['weights']), hl_6['biases'])
-    # l6 = tf.nn.relu(l6)
-    #
-    # l7 = tf.add(tf.matmul(l6, hl_7['weights']), hl_7['biases'])
-    # l7 = tf.nn.relu(l7)
-    #
-    # l8 = tf.add(tf.matmul(l7, hl_8['weights']), hl_8['biases'])
-    # l8 = tf.nn.relu(l8)
-    #
-    # l9 = tf.add(tf.matmul(l8, hl_9['weights']), hl_9['biases'])
-    # l9 = tf.nn.relu(l9)
-    #
-    # l10 = tf.add(tf.matmul(l9, hl_10['weights']), hl_10['biases'])
-    # l10 = tf.nn.relu(l10)
-
     dropout = tf.nn.dropout(l5,keep_prob, name='op6')
     ol = tf.add(tf.matmul(dropout, output_layer['weights']), output_layer['biases'], name='op7')
-
-    # tf.summary.histogram('weights-hl_1',hl_1['weights'])
-    # tf.summary.histogram('biases-hl_1',hl_1['biases'])
-    # tf.summary.histogram('act-hl_1',l1)
-    #
-    # tf.summary.histogram('weights-hl_2',hl_2['weights'])
-    # tf.summary.histogram('biases-hl_2',hl_2['biases'])
-    # tf.summary.histogram('act-hl_2',l2)
-    #
-    # tf.summary.histogram('weights-hl_3',hl_3['weights'])
-    # tf.summary.histogram('biases-hl_3',hl_3['biases'])
-    # tf.summary.histogram('act-hl_3',l3)
-    #
-    # tf.summary.histogram('weights-hl_4',hl_4['weights'])
-    # tf.summary.histogram('biases-hl_4',hl_4['biases'])
-    # tf.summary.histogram('act-hl_4',l4)
-    #
-    # tf.summary.histogram('weights-hl_5',hl_5['weights'])
-    # tf.summary.histogram('biases-hl_5',hl_5['biases'])
-    # tf.summary.histogram('act-hl_5',l5)
-
-    # tf.summary.histogram('weights-hl_6',hl_6['weights'])
-    # tf.summary.histogram('biases-hl_6',hl_6['biases'])
-    # tf.summary.histogram('act-hl_6',l6)
-    #
-    # tf.summary.histogram('weights-hl_7',hl_7['weights'])
-    # tf.summary.histogram('biases-hl_7',hl_7['biases'])
-    # tf.summary.histogram('act-hl_7',l7)
-    #
-    # tf.summary.histogram('weights-hl_8',hl_8['weights'])
-    # tf.summary.histogram('biases-hl_8',hl_8['biases'])
-    # tf.summary.histogram('act-hl_8',l8)
-    #
-    # tf.summary.histogram('weights-hl_9',hl_9['weights'])
-    # tf.summary.histogram('biases-hl_9',hl_9['biases'])
-    # tf.summary.histogram('act-hl_9',l9)
-    #
-    # tf.summary.histogram('weights-hl_10',hl_10['weights'])
-    # tf.summary.histogram('biases-hl_10',hl_10['biases'])
-    # tf.summary.histogram('act-hl_10',l10)
-
     return ol
 
 print "Training"
 def train(x):
     tower_grads = []
     opt = tf.train.AdamOptimizer(learning_rate)
-    for i in xrange(8):
+    for i in xrange(2):
         with tf.device('/gpu:%d' % i):
             with tf.variable_scope('NN',reuse=i>0):
                 prediction = neuralNet(x)

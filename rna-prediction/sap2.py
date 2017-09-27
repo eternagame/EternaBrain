@@ -51,12 +51,15 @@ def str_to_num(s):
 
 dot_bracket = '.....((((..((((....)))).)))).....'
 seq_str = 'A'*len(dot_bracket)
-'''
-:param dot_bracket: The target structure of the RNA in dot-bracket notation
-:param seq_str: The current RNA sequence
-:return The updated RNA sequence after the DSP
-'''
+
 def dsp(dot_bracket,seq_str): # domain specific pipeline
+    '''
+    Adds player strategies via a MCTS
+
+    :param dot_bracket: The target structure of the RNA in dot-bracket notation
+    :param seq_str: The current RNA sequence
+    :return: The updated RNA sequence after the DSP
+    '''
     seq = list(seq_str)
     m = []
 

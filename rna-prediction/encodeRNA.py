@@ -16,16 +16,17 @@ import numpy as np
 
 # def longest(a):
 #     return max(len(a), * map(longest, a)) if isinstance(a, list) and a else 0
-'''
-For every move change, updates the complete sequence of the RNA, updated
-to support pasting and resetting
 
-:param ms: The encoded move sets
-:param struc: Encoded structure
-
-:return: List of updated base sequences for every base change
-'''
 def base_sequence_at_current_time_pr(ms,struc):
+    '''
+    For every move change, updates the complete sequence of the RNA, updated
+    to support pasting and resetting
+
+    :param ms: The encoded move sets
+    :param struc: Encoded structure
+
+    :return: List of updated base sequences for every base change
+    '''
     #Z = []
     Z = []
     # for i in ms:
@@ -156,17 +157,18 @@ def base_sequence_at_current_time_deprecated(ms,struc):
 
     return Z1
 
-'''
-Calculates the natural structure and energy of RNA sequences and generates
-complete featurespace for the CNNs
 
-:param base_seq: The current RNA sequence
-:param pid: The puzzle ID
-:return: The full feature set for the CNNs
-            [base sequence, current structure, target structure, current energy
-                target energy, current pairmap, target pairmap, locked bases]
-'''
 def structure_and_energy_at_current_time(base_seq,pid):
+    '''
+    Calculates the natural structure and energy of RNA sequences and generates
+    complete featurespace for the CNNs
+
+    :param base_seq: The current RNA sequence
+    :param pid: The puzzle ID
+    :return: The full feature set for the CNNs
+                [base sequence, current structure, target structure, current energy
+                    target energy, current pairmap, target pairmap, locked bases]
+    '''
     Z2 = []
     for i in base_seq:
         for j in i:
@@ -194,18 +196,19 @@ def structure_and_energy_at_current_time(base_seq,pid):
 
     return Z2
 
-'''
-The same program as above with location added as a feature to pass to baseCNN
 
-:param base_seq: The current RNA sequence
-:param pid: The puzzle ID
-:param moveset: The move sets
-:param longest: The length of the longest puzzle in the featurespace
-:return: The full feature set for the CNNs
-            [base sequence, current structure, target structure, current energy
-                target energy, current pairmap, target pairmap, locked bases]
-'''
 def structure_and_energy_at_current_time_with_location(base_seq,pid,moveset,longest):
+    '''
+    The same program as above with location added as a feature to pass to baseCNN
+
+    :param base_seq: The current RNA sequence
+    :param pid: The puzzle ID
+    :param moveset: The move sets
+    :param longest: The length of the longest puzzle in the featurespace
+    :return: The full feature set for the CNNs
+                [base sequence, current structure, target structure, current energy
+                    target energy, current pairmap, target pairmap, locked bases]
+    '''
     Z2 = []
     for i in base_seq:
         for j in i:
@@ -306,14 +309,15 @@ def encode_movesets_style(moveset):
 
     return ms
 
-'''
-Encodes the raw move set data into [base,location]
-Updated to support pasting and resetting
 
-:param moveset: The move set list
-:return: List of lists containing [base,location]
-'''
 def encode_movesets_style_pr(moveset):
+    '''
+    Encodes the raw move set data into [base,location]
+    Updated to support pasting and resetting
+
+    :param moveset: The move set list
+    :return: List of lists containing [base,location]
+    '''
     ms = []
     #lens = [len(x) for j in x for x in moveset]
     #max_lens = max(lens)
@@ -410,14 +414,15 @@ def encode_movesets_style_dev(moveset):
     '''
 
     return ms
-'''
-Encodes the labels for baseCNN
 
-:param moveset: The move set list
-:return: One-hot encoded nucleotides
-            [A, U, G, C]
-'''
 def encode_bases(moveset):
+    '''
+    Encodes the labels for baseCNN
+
+    :param moveset: The move set list
+    :return: One-hot encoded nucleotides
+                [A, U, G, C]
+    '''
     ms = []
     #lens = [len(x) for j in x for x in moveset]
     #max_lens = max(lens)
@@ -451,13 +456,14 @@ def encode_bases(moveset):
 
     return ms
 
-'''
-Encodes the labels for locationCNN
 
-:param moveset: The move set list
-:return: One-hot encoded location vectors
-'''
 def encode_location(moveset,puzzle_length):
+    '''
+    Encodes the labels for locationCNN
+
+    :param moveset: The move set list
+    :return: One-hot encoded location vectors
+    '''
     ms = []
     #lens = [len(x) for j in x for x in moveset]
     #max_lens = max(lens)
