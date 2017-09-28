@@ -8,7 +8,7 @@ import ast
 import pandas as pd
 import os
 import numpy as np
-from eterna_utils import get_pairmap_from_secstruct
+from eterna_score import get_pairmap_from_secstruct
 
 def experience(threshold):
     '''

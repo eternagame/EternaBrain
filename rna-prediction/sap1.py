@@ -3,15 +3,14 @@ Implements the Single Base Mutator (SBC)
 Runs a traditional MCTS which mutates single bases and calculates immediate reward
 First process of the SAP
 '''
-import tensorflow as tf
-import numpy as np
+
 import copy
 import RNA
-from eterna_score import eternabot_score
+#from eterna_score import eternabot_score
 from difflib import SequenceMatcher
-from eterna_score import eternabot_score
+#from eterna_score import eternabot_score
 from random import choice
-from eterna_utils import get_pairmap_from_secstruct
+from eterna_score import get_pairmap_from_secstruct
 
 def hot_one_state(seq,index,base):
     #array = np.zeros(NUM_STATES)

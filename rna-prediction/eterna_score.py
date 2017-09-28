@@ -3,11 +3,34 @@ Function that will take RNA sequence as input and output Eternabot score for rew
 @authot: Rohan Koodli
 '''
 
-import sys
-import numpy as np
 import RNA
-import ensemble_utils
-from eterna_utils import get_dotplot, get_rna_elements_from_secstruct, get_pairmap_from_secstruct
+#import ensemble_utils
+#from eterna_utils import get_dotplot, get_rna_elements_from_secstruct, get_pairmap_from_secstruct
+
+
+def get_pairmap_from_secstruct(secstruct):
+    '''
+    Gets pairmap from dot-bracket notation
+    :param secstruct: A secondary structure in dot-bracket notation
+    :return: A pairmap
+    '''
+    pair_stack = []
+    pairs_array = []
+    i_range = range(0, len(secstruct))
+
+    for ii in i_range:
+        pairs_array.append(-1)
+
+    for ii in i_range:
+        if (secstruct[ii] == "("):
+            pair_stack.append(ii)
+        elif (secstruct[ii] == ")"):
+            index = pair_stack.pop()
+            pairs_array[index] = ii
+            pairs_array[ii] = index
+
+    return pairs_array
+
 def find_parens(s):
     toret = {}
     pstack = []
@@ -26,24 +49,24 @@ def find_parens(s):
     return toret
 
 def convert(base_seq):
-    A = np.array([1.,0.,0.,0.])
-    U = np.array([0.,1.,0.,0.])
-    G = np.array([0.,0.,1.,0.])
-    C = np.array([0.,0.,0.,1.])
-    str_struc = []
-    for i in base_seq:
-        if np.array_equal(i,A):
-            str_struc.append('A')
-        elif np.array_equal(i,U):
-            str_struc.append('U')
-        elif np.array_equal(i,G):
-            str_struc.append('G')
-        elif np.array_equal(i,C):
-            str_struc.append('C')
-    struc = ''.join(str_struc)
+    # A = np.array([1.,0.,0.,0.])
+    # U = np.array([0.,1.,0.,0.])
+    # G = np.array([0.,0.,1.,0.])
+    # C = np.array([0.,0.,0.,1.])
+    # str_struc = []
+    # for i in base_seq:
+    #     if np.array_equal(i,A):
+    #         str_struc.append('A')
+    #     elif np.array_equal(i,U):
+    #         str_struc.append('U')
+    #     elif np.array_equal(i,G):
+    #         str_struc.append('G')
+    #     elif np.array_equal(i,C):
+    #         str_struc.append('C')
+    struc = base_seq
     s,e = RNA.fold(struc)
     return s,e,struc
-
+'''
 def eternabot_score(seq):
     struc,fe,str_seq = convert(seq)
     attrs_dict = {'secstruct':struc, 'sequence':str_seq, 'fe':fe}
@@ -80,8 +103,8 @@ def eternabot_score(seq):
         return 0
     else:
         scores = ensemble.score(attrs_dict)
-        return scores
-
+        return scores['finalscore'] / 100.0
+'''
 
 # seq = "GGAAAUCC"
 # struc = '(((..)))'

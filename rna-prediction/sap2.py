@@ -4,7 +4,7 @@ Runs an MCTS modified to implement Eterna player strategies
 Second process of the SAP
 '''
 import numpy as np
-from eterna_utils import get_pairmap_from_secstruct
+from eterna_score import get_pairmap_from_secstruct
 import RNA
 from subprocess import Popen, PIPE, STDOUT
 import re
