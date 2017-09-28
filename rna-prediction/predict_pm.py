@@ -231,8 +231,8 @@ for i in range(MAX_ITERATIONS):
             print reg
             break
 
-level1,m2 = sbc(DOT_BRACKET,reg)
-level2,m3 = dsp(DOT_BRACKET,level1)
+level1,m2,_ = sbc(DOT_BRACKET,reg)
+level2,m3,_ = dsp(DOT_BRACKET,level1)
 print level2
 
 movesets.extend(m2)

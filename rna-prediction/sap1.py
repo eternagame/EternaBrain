@@ -137,6 +137,7 @@ def sbc(dot_bracket,seq): # Monte Carlo Tree Search with Depth 1
     movesets = []
     target_struc = encode_struc(dot_bracket)
     pm = get_pairmap_from_secstruct(dot_bracket)
+    SOLVE = False
     #cdb = '.((((....))))'
     #current_struc = encode_struc(cdb)
     #percent_match = similar(dot_bracket,cdb)
@@ -153,6 +154,7 @@ def sbc(dot_bracket,seq): # Monte Carlo Tree Search with Depth 1
                 # print current_seq
                 # print convert_to_str(current_seq)
                 # print 'Puzzle Solved'
+                SOLVE = True
                 break
             else:
                 #percent_match = similar(dot_bracket,cdb)
@@ -216,6 +218,6 @@ def sbc(dot_bracket,seq): # Monte Carlo Tree Search with Depth 1
                 current_pm = get_pairmap_from_secstruct(cdb)
                 # print len(list(set(current_pm) & set(pm)))/float((len(pm)))
 
-    return convert_to_str(current_seq),movesets
+    return convert_to_str(current_seq),movesets,SOLVE
 
-print sbc(dot_bracket,seq)
+#print sbc(dot_bracket,seq)

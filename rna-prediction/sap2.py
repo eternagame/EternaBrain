@@ -62,6 +62,7 @@ def dsp(dot_bracket,seq_str): # domain specific pipeline
     '''
     seq = list(seq_str)
     m = []
+    SOLVE = False
 
     current_struc,_ = RNA.fold(seq_str)
     target_struc = encode_struc(dot_bracket)
@@ -206,6 +207,7 @@ def dsp(dot_bracket,seq_str): # domain specific pipeline
         for i in range(len(dot_bracket)):
             if new_pm == target_pm:
                 print 'puzzle solved'
+                SOLVE = True
                 break
             else:
                 if new_pm[i] == target_pm[i]:
@@ -250,6 +252,7 @@ def dsp(dot_bracket,seq_str): # domain specific pipeline
         for i in range(len(dot_bracket)):
             if new_pm == target_pm:
                 print 'puzzle solved'
+                SOLVE = True
                 break
             else:
                 if new_pm[i] == target_pm[i]:
@@ -278,11 +281,11 @@ def dsp(dot_bracket,seq_str): # domain specific pipeline
                         seq[i] = base1
                         seq[paired] = base2
 
-    return ''.join(seq),m
+    return ''.join(seq),m,SOLVE
 
     cs,_ = RNA.fold(''.join(seq))
     current_pm = get_pairmap_from_secstruct(cs)
 
 # print current_pm
 # print target_pm
-print dsp(dot_bracket,seq_str)
+#print dsp(dot_bracket,seq_str)
