@@ -115,119 +115,128 @@ for db in plist:
     movesets = []
     iteration = 0
     for i in range(MAX_ITERATIONS):
-        if np.all(inputs2[1] == inputs2[2]):
-            print("Puzzle Solved")
-            break
-        else:
-            location_array = ((sess2.run(location_weights,location_feed_dict))[0])
-
-            inputs2 = inputs.reshape([8,TF_SHAPE/8])
-            location_array = location_array[:len_puzzle] - min(location_array[:len_puzzle])
-            total_l = sum(location_array)
-            location_array = location_array/total_l
-            location_change = (choice(list(range(0,len(location_array))),1,p=location_array,replace=False))[0]
-            #location_change = np.argmax(location_array)
-            la = [0.0] * len_longest
-            la[location_change] = 1.0
-            inputs2 = np.append(inputs2, la)
-            inputs = inputs2.reshape([-1,BASE_SHAPE])
-            base_feed_dict = {x:inputs,keep_prob:1.0}
-
-            base_array = ((sess1.run(base_weights,base_feed_dict))[0])
-            base_array = base_array - min(base_array)
-
-            total = sum(base_array)
-            base_array = base_array/total
-
-            #if np.random.rand() > 0.0:
-            # FOR CHOOSING STOCHASTICALLY
-            base_change = (choice([1,2,3,4],1,p=base_array,replace=False))[0]
-            #else:
-            # NOT STOCHASTICALLY
-            #base_change = np.argmax(base_array) + 1
-
-            inputs2 = inputs.reshape([9,BASE_SHAPE/9])
-
-            temp = copy.deepcopy(inputs2[0])
-            temp[location_change] = base_change
-            move = [base_change,location_change]
-            movesets.append(move)
-            #print move
-            str_seq = []
-            for i in temp:
-                if i == 1:
-                    str_seq.append('A')
-                elif i == 2:
-                    str_seq.append('U')
-                elif i == 3:
-                    str_seq.append('G')
-                elif i == 4:
-                    str_seq.append('C')
-                else:
-                    continue
-            str_seq = ''.join(str_seq)
-            str_struc,current_e = RNA.fold(str_seq)
-            current_pm = format_pairmap(str_struc)
-            print str_struc
-            #print len(str_struc)
-            print similar(str_struc,DOT_BRACKET)
-            rna_struc = []
-            for i in inputs2[2]:
-                if i == 1:
-                    rna_struc.append('.')
-                elif i == 2:
-                    rna_struc.append('(')
-                elif i == 3:
-                    rna_struc.append(')')
-                else:
-                    continue
-            rna_struc = ''.join(rna_struc)
-            target_e = RNA.energy_of_structure(str_seq,rna_struc,0)
-            enc_struc = []
-            for i in str_struc:
-                if i == '.':
-                    enc_struc.append(1)
-                elif i == '(':
-                    enc_struc.append(2)
-                elif i == ')':
-                    enc_struc.append(3)
-                else:
-                    continue
-            inputs2[0] = temp
-            inputs2[1][:len(enc_struc)] = (enc_struc)
-            inputs2[3][0] = current_e
-            inputs2[4][0] = target_e
-            inputs2[5][:len(enc_struc)] = current_pm
-            inputs_loc = inputs2[0:8]
-            inputs = inputs_loc.reshape([-1,TF_SHAPE])
-            base_feed_dict={x:inputs,keep_prob:1.0}
-            location_feed_dict = {x2:inputs,keep_prob2:1.0}
-            iteration += 1
-            reg = []
-            for i in inputs2[0]:
-                if i == 1:
-                    reg.append('A')
-                elif i == 2:
-                    reg.append('U')
-                elif i == 3:
-                    reg.append('G')
-                elif i == 4:
-                    reg.append('C')
-                else:
-                    continue
-            reg = ''.join(reg)
-            print reg
-            print iteration
-            if similar(str_struc,DOT_BRACKET) >= MIN_THRESHOLD:
-                print 'similar'
-                print str_struc
-                print DOT_BRACKET
-                print reg
+        try:
+            if np.all(inputs2[1] == inputs2[2]):
+                print("Puzzle Solved")
                 break
+            else:
+                location_array = ((sess2.run(location_weights,location_feed_dict))[0])
+
+                inputs2 = inputs.reshape([8,TF_SHAPE/8])
+                location_array = location_array[:len_puzzle] - min(location_array[:len_puzzle])
+                total_l = sum(location_array)
+                location_array = location_array/total_l
+                location_change = (choice(list(range(0,len(location_array))),1,p=location_array,replace=False))[0]
+                #location_change = np.argmax(location_array)
+                la = [0.0] * len_longest
+                la[location_change] = 1.0
+                inputs2 = np.append(inputs2, la)
+                inputs = inputs2.reshape([-1,BASE_SHAPE])
+                base_feed_dict = {x:inputs,keep_prob:1.0}
+
+                base_array = ((sess1.run(base_weights,base_feed_dict))[0])
+                base_array = base_array - min(base_array)
+
+                total = sum(base_array)
+                base_array = base_array/total
+
+                #if np.random.rand() > 0.0:
+                # FOR CHOOSING STOCHASTICALLY
+                base_change = (choice([1,2,3,4],1,p=base_array,replace=False))[0]
+                #else:
+                # NOT STOCHASTICALLY
+                #base_change = np.argmax(base_array) + 1
+
+                inputs2 = inputs.reshape([9,BASE_SHAPE/9])
+
+                temp = copy.deepcopy(inputs2[0])
+                temp[location_change] = base_change
+                move = [base_change,location_change]
+                movesets.append(move)
+                #print move
+                str_seq = []
+                for i in temp:
+                    if i == 1:
+                        str_seq.append('A')
+                    elif i == 2:
+                        str_seq.append('U')
+                    elif i == 3:
+                        str_seq.append('G')
+                    elif i == 4:
+                        str_seq.append('C')
+                    else:
+                        continue
+                str_seq = ''.join(str_seq)
+                str_struc,current_e = RNA.fold(str_seq)
+                current_pm = format_pairmap(str_struc)
+                print str_struc
+                #print len(str_struc)
+                print similar(str_struc,DOT_BRACKET)
+                rna_struc = []
+                for i in inputs2[2]:
+                    if i == 1:
+                        rna_struc.append('.')
+                    elif i == 2:
+                        rna_struc.append('(')
+                    elif i == 3:
+                        rna_struc.append(')')
+                    else:
+                        continue
+                rna_struc = ''.join(rna_struc)
+                target_e = RNA.energy_of_structure(str_seq,rna_struc,0)
+                enc_struc = []
+                for i in str_struc:
+                    if i == '.':
+                        enc_struc.append(1)
+                    elif i == '(':
+                        enc_struc.append(2)
+                    elif i == ')':
+                        enc_struc.append(3)
+                    else:
+                        continue
+                inputs2[0] = temp
+                inputs2[1][:len(enc_struc)] = (enc_struc)
+                inputs2[3][0] = current_e
+                inputs2[4][0] = target_e
+                inputs2[5][:len(enc_struc)] = current_pm
+                inputs_loc = inputs2[0:8]
+                inputs = inputs_loc.reshape([-1,TF_SHAPE])
+                base_feed_dict={x:inputs,keep_prob:1.0}
+                location_feed_dict = {x2:inputs,keep_prob2:1.0}
+                iteration += 1
+                reg = []
+                for i in inputs2[0]:
+                    if i == 1:
+                        reg.append('A')
+                    elif i == 2:
+                        reg.append('U')
+                    elif i == 3:
+                        reg.append('G')
+                    elif i == 4:
+                        reg.append('C')
+                    else:
+                        continue
+                reg = ''.join(reg)
+                print reg
+                print iteration
+                if similar(str_struc,DOT_BRACKET) >= MIN_THRESHOLD:
+                    print 'similar'
+                    print str_struc
+                    print DOT_BRACKET
+                    print reg
+                    break
+        except KeyboardInterrupt:
+            print 'Puzzles solved: %i/100' % SOLVED
+            print 'Puzzles attempted: %i/100' % (plist.index(db) + 1)
+            break
 
     level1,m2,S1 = sbc(DOT_BRACKET,reg)
     level2,m3,S2 = dsp(DOT_BRACKET,level1)
-    print level2
+    #print level2
+    if S1 or S2:
+        SOLVED += 1
 
     movesets.extend(m2)
     movesets.extend(m3)
+
+print SOLVED
