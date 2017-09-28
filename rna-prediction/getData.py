@@ -9,7 +9,6 @@ Created on Thu Jan 05 18:30:26 2017
 #from selenium.webdriver.common.keys import Keys
 #import time
 import RNA
-import itertools
 import pandas as pd
 import os
 

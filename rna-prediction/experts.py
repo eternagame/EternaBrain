@@ -4,7 +4,6 @@ from readData import experience, read_movesets_uid_pid, read_movesets_uid
 from encodeRNA import base_sequence_at_current_time_pr, structure_and_energy_at_current_time
 from encodeRNA import encode_bases,encode_location,encode_movesets_style_pr
 from encodeRNA import structure_and_energy_at_current_time_with_location
-#import pandas as pd
 import ast
 import concurrent.futures
 import time

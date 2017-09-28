@@ -12,7 +12,6 @@ encode RNA strucutre and encode movesets
 import copy
 from getData import getStructure, getTargetEnergy
 from readData import read_structure, read_locks, read_structure_raw, format_pairmap
-import numpy as np
 
 # def longest(a):
 #     return max(len(a), * map(longest, a)) if isinstance(a, list) and a else 0

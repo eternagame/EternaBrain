@@ -1,8 +1,6 @@
 import matplotlib.pyplot as plt
 import numpy as np
-import os
 import seaborn; seaborn.set()
-import math
 
 # players
 x = [214,214,214,104,379,392,400,16,16,22,104,150,312,285,105,400,382,361,315,287,72,116]

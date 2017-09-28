@@ -16,7 +16,7 @@ def experience(threshold):
 
     :param threshold: The minimum number of puzzles to be classified as an "expert"
     :return: A list of "expert" players
-'''
+    '''
     full_problems = pd.read_csv(os.getcwd()+'/movesets/full-problems-nov2016.txt', sep=" ", header="infer", delimiter='\t')
     user_df = full_problems[['uid']]
     users = np.array(user_df,dtype=int) # list of users
