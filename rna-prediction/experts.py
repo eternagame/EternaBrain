@@ -19,12 +19,19 @@ progression.extend([6502966,6502968,6502973,6502976,6502984,6502985,6502993, \
                 6502994,6502995,6502996,6502997,6502998,6502999,6503000])
 
 content = [123]
-uidList = [36921]
+#uidList = [36921]
+uidList = experience(3000) # top 99 percentile
 print len(uidList)
 #print content
 len_longest = 500
 
 def prep(pid):
+    """
+    Selects expert move sets and saves in npy file
+
+    :param pid: Puzzle ID
+    :return: npy saved files of training data
+    """
     # pidList = pid
     # pid = pidList[0]
     threshold = 50
@@ -79,6 +86,14 @@ def prep(pid):
     np.save(open(os.getcwd()+'/npsaves/y-exp-loc-'+str(pid),'wb'),encoded_loc)
 
 def read(pid,uidList):
+    """
+    Returns training data for expert players of one puzzle
+
+    :param pid: Puzzle ID
+    :param uidList: List of user IDs
+    :return: Pickled training data
+    """
+
     print 'ready with pid %i' % pid
 
     #uidList.remove(87216)
@@ -145,6 +160,14 @@ def read(pid,uidList):
     pickle.dump(encoded_loc,open(os.getcwd()+'/pickles/y-hog-loc-'+str(pid),'wb'))
 
 def read2(data,pids):
+    """
+    Returns CNN-ready training data for expert players of several
+    puzzles
+
+    :param data: List of move set data
+    :param pids: List of puzzle IDs
+    :return: Pickled training data
+    """
     #print 'ready with pid %i' % pid
 
     #uidList.remove(87216)
@@ -209,6 +232,11 @@ def read2(data,pids):
         pickle.dump(encoded_loc,open(os.getcwd()+'/pickles/y-hog-loc-'+str(pid),'wb'))
 
 def run(_):
+    """
+    Meant for running/parallelizing training data preparation
+    :param _: Not used
+    :return: Runs prep() function
+    """
     return prep()
 
 # for i in reversed(content[:content.index(7165340)]):

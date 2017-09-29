@@ -30,6 +30,13 @@ new_ms = os.getcwd() + '/movesets/moveset6-22a.txt'
 moveset_dataFrame = pd.read_csv(new_ms, sep=' ', header='infer', delimiter='\t')
 
 def speed(pid):
+    """
+    Encodes the puzzle solutions that were completed in the fewest
+    number of moves
+
+    :param pid: Puzzle ID
+    :return: CNN training data of fastest solutions for that puzzle
+    """
     final_dict = []
     bf_list = []
 
