@@ -6,3 +6,4 @@ clustering-graphs/
 models/
 *.sbatch
 movesets/
+scp.txt
