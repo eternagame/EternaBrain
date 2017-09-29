@@ -4,7 +4,7 @@ Using Eterna data to understand and predict how players solve RNA folding puzzle
 * Unsupervised learning to group players based on their style of solving RNA folding puzzles
 
 ## Author
-Rohan Koodli
+[Rohan Koodli](https://github.com/rk900)
 
 ## Benchmarks
 ### [Eterna100](https://daslab.stanford.edu/site_data/pub_pdf/2016_Anderson-Lee_JMB.pdf)
@@ -13,9 +13,7 @@ Rohan Koodli
 ## Dependencies
 Python: `numpy, tensorflow, pandas, seaborn, matplotlib, scikit-learn`
 
-`RNAfold` versions 1.8.5 and 2.3.5 from ViennaRNA
-
-`EteRNABot` - You will have to clone the EteRNABot repository and move the files to your directory. Currently, there is no installation option for EteRNABot.
+`RNAfold` versions 1.8.5 and 2.3.5 from ViennaRNA (see [config-ViennaRNA.md](https://github.com/EteRNAgame/EternaBrain/blob/master/config-ViennaRNA.md) for installation instructions)
 
 R: `ggplot2, reshape2`
 
@@ -27,7 +25,7 @@ Go to `experts.py` and modify the variables `content` and `uidList`. `content` i
 Example:
 ```python
 content = getPid() # all single-state puzzles
-uidList = experience(3000) # the top 70 experts
+uidList = experience(3000) # the top 70 experts, or the top 1 percent of all players
 ```
 or, if you want less puzzles and more experts, you can read in `teaching-puzzle-ids.txt`, which contains 92 key puzzles:
 ```python
