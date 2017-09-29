@@ -7,3 +7,4 @@ models/
 *.sbatch
 movesets/
 scp.txt
+*.out
