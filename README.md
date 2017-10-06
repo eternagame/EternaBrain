@@ -13,7 +13,7 @@ Using Eterna data to understand and predict how players solve RNA folding puzzle
 ## Dependencies
 Python: `numpy, tensorflow, pandas, seaborn, matplotlib, scikit-learn`
 
-`RNAfold` versions 1.8.5 and 2.3.5 from ViennaRNA (see [config-ViennaRNA.md](https://github.com/EteRNAgame/EternaBrain/blob/master/config-ViennaRNA.md) for installation instructions)
+`RNAfold` versions `1.8.5` and `2.3.5` from ViennaRNA (see [config-ViennaRNA.md](https://github.com/EteRNAgame/EternaBrain/blob/master/config-ViennaRNA.md) for installation instructions)
 
 R: `ggplot2, reshape2`
 
@@ -44,8 +44,8 @@ Go to `fastest.py` and modify `content` and `max_moves`. `content` requires the 
 
 Example:
 ```python
-content = getPid()
-max_moves = 30
+content = getPid() # all the single state puzzles
+max_moves = 30 # all solutions in under 30 moves
 ```
 
 ### Step 2: Training the convolutional neural network (CNN)
