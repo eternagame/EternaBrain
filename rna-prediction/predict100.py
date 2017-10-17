@@ -16,6 +16,10 @@ from sap1 import sbc
 from sap2 import dsp
 import pandas as pd
 
+LOCATION_FEATURES = 8
+BASE_FEATURES = 9
+NAME = 'CNN15'
+
 p = pd.read_csv(os.getcwd()+'/movesets/eterna100.txt', sep=' ', header='infer', delimiter='\t')
 plist = list(p['Secondary Structure'])
 
@@ -60,9 +64,9 @@ def convert_to_list(base_seq):
     return str_struc
 
 with tf.Graph().as_default() as base_graph:
-    saver1 = tf.train.import_meta_graph(os.getcwd()+'/models/base/baseCNN15.meta') # CNN15
+    saver1 = tf.train.import_meta_graph(os.getcwd()+'/models/base/base' + NAME + '.meta') # CNN15
 sess1 = tf.Session(graph=base_graph) # config=tf.ConfigProto(allow_soft_placement=True,log_device_placement=True)
-saver1.restore(sess1,os.getcwd()+'/models/base/baseCNN15')
+saver1.restore(sess1,os.getcwd()+'/models/base/base' + NAME)
 
 x = base_graph.get_tensor_by_name('x_placeholder:0')
 y = base_graph.get_tensor_by_name('y_placeholder:0')
@@ -71,9 +75,9 @@ keep_prob = base_graph.get_tensor_by_name('keep_prob_placeholder:0')
 base_weights = base_graph.get_tensor_by_name('op7:0')
 
 with tf.Graph().as_default() as location_graph:
-    saver2 = tf.train.import_meta_graph(os.getcwd()+'/models/location/locationCNN15.meta')
+    saver2 = tf.train.import_meta_graph(os.getcwd()+'/models/location/location' + NAME + '.meta')
 sess2 = tf.Session(graph=location_graph) # config=tf.ConfigProto(allow_soft_placement=True,log_device_placement=True)
-saver2.restore(sess2,os.getcwd()+'/models/location/locationCNN15')
+saver2.restore(sess2,os.getcwd()+'/models/location/location' + NAME)
 
 x2 = location_graph.get_tensor_by_name('x_placeholder:0')
 y2 = location_graph.get_tensor_by_name('y_placeholder:0')
@@ -93,9 +97,9 @@ for db in plist:
     te = 0.0
     MIN_THRESHOLD = 0.5
     MAX_ITERATIONS = len_puzzle*2
-    MAX_LEN = 400
-    TF_SHAPE = 8 * MAX_LEN
-    BASE_SHAPE = 9 * MAX_LEN
+    MAX_LEN = 350
+    TF_SHAPE = LOCATION_FEATURES * MAX_LEN
+    BASE_SHAPE = BASE_FEATURES * MAX_LEN
     len_longest = MAX_LEN
 
     base_seq = (convert_to_list(NUCLEOTIDES)) + ([0]*(len_longest - len_puzzle))
@@ -108,12 +112,19 @@ for db in plist:
     locks = ([1]*len_puzzle) + ([0]*(len_longest - len_puzzle))
 
     inputs2 = np.array([base_seq,current_struc,target_struc,current_energy,target_energy,current_pm,target_pm,locks])
+
+    '''
+    Change inputs when altering number of features
+    '''
+    #inputs2 = np.array([base_seq, current_energy, target_energy, current_pm, target_pm, locks])
+
     inputs = inputs2.reshape([-1,TF_SHAPE])
 
     base_feed_dict={x:inputs,keep_prob:1.0}
     location_feed_dict = {x2:inputs,keep_prob2:1.0}
     movesets = []
     iteration = 0
+    #reg = []
     for i in range(MAX_ITERATIONS):
         try:
             if np.all(inputs2[1] == inputs2[2]):
@@ -122,7 +133,7 @@ for db in plist:
             else:
                 location_array = ((sess2.run(location_weights,location_feed_dict))[0])
 
-                inputs2 = inputs.reshape([8,TF_SHAPE/8])
+                inputs2 = inputs.reshape([LOCATION_FEATURES,TF_SHAPE/LOCATION_FEATURES])
                 location_array = location_array[:len_puzzle] - min(location_array[:len_puzzle])
                 total_l = sum(location_array)
                 location_array = location_array/total_l
@@ -147,7 +158,7 @@ for db in plist:
                 # NOT STOCHASTICALLY
                 #base_change = np.argmax(base_array) + 1
 
-                inputs2 = inputs.reshape([9,BASE_SHAPE/9])
+                inputs2 = inputs.reshape([BASE_FEATURES,BASE_SHAPE/BASE_FEATURES])
 
                 temp = copy.deepcopy(inputs2[0])
                 temp[location_change] = base_change
@@ -226,8 +237,7 @@ for db in plist:
                     print reg
                     break
         except KeyboardInterrupt:
-            print 'Puzzles solved: %i/100' % SOLVED
-            print 'Puzzles attempted: %i/100' % (plist.index(db) + 1)
+            print 'Puzzles solved: %i/%i' % (SOLVED, (plist.index(db) + 1))
             break
 
     level1,m2,S1 = sbc(DOT_BRACKET,reg)
@@ -239,4 +249,4 @@ for db in plist:
     movesets.extend(m2)
     movesets.extend(m3)
 
-print SOLVED
+print 'Puzzles solved: %i/100' % SOLVED
