@@ -13,7 +13,7 @@ import tensorflow as tf
 import pickle
 from getData import getPid
 
-NAME = 'locationCNN18'
+NAME = 'locationCNN15'
 NUM_FEATURES = 8
 TRAIN_KEEP_PROB = 0.9
 TEST_KEEP_PROB = 1.0
@@ -99,7 +99,8 @@ print abs_max
 Used for testing accuracies without certain features
 '''
 # for i in real_X:
-#     del i[8]
+#     del i[5]
+#     del i[5]
 
 print len(real_X), len(real_y)
 print np.array(real_X).shape, np.array(real_y).shape
@@ -246,9 +247,9 @@ def convNeuralNet(x):
 
     fc4 = tf.nn.sigmoid(tf.add(tf.matmul(fc3,weights['w_fc4']),biases['b_fc4']))
 
-    fc5 = tf.nn.sigmoid(tf.add(tf.matmul(fc4,weights['w_fc5']),biases['b_fc5']))
+    #fc5 = tf.nn.sigmoid(tf.add(tf.matmul(fc4,weights['w_fc5']),biases['b_fc5']))
 
-    last = tf.nn.dropout(fc5,keep_prob)
+    last = tf.nn.dropout(fc4,keep_prob)
 
     #output = tf.add(tf.matmul(fc,weights['out']),biases['out'],name='final')
     output = tf.add(tf.matmul(last, weights['out']), biases['out'], name='op7')
