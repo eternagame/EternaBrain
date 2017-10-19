@@ -21,8 +21,8 @@ NUCLEOTIDES = 'A'*len_puzzle
 ce = 0.0
 te = 0.0
 
-LOCATION_FEATURES = 6
-BASE_FEATURES = 7
+LOCATION_FEATURES = 8
+BASE_FEATURES = 9
 NAME = 'CNN15'
 
 MIN_THRESHOLD = 0.6
@@ -71,6 +71,10 @@ def convert_to_list(base_seq):
             str_struc.append(4)
     #struc = ''.join(str_struc)
     return str_struc
+
+def softmax(x):
+    e_x = np.exp(x - np.max(x))
+    return e_x / e_x.sum(axis=0)
 
 base_seq = (convert_to_list(NUCLEOTIDES)) + ([0]*(len_longest - len_puzzle))
 # cdb = '.'*len_puzzle
@@ -132,9 +136,10 @@ for i in range(MAX_ITERATIONS):
         location_array = ((sess2.run(location_weights,location_feed_dict))[0])
 
         inputs2 = inputs.reshape([LOCATION_FEATURES,TF_SHAPE/LOCATION_FEATURES])
-        location_array = location_array[:len_puzzle] - min(location_array[:len_puzzle])
-        total_l = sum(location_array)
-        location_array = location_array/total_l
+        # location_array = location_array[:len_puzzle] - min(location_array[:len_puzzle])
+        # total_l = sum(location_array)
+        # location_array = location_array/total_l
+        location_array = softmax(location_array)
         location_change = (choice(list(range(0,len(location_array))),1,p=location_array,replace=False))[0]
         #location_change = np.argmax(location_array)
         la = [0.0] * len_longest
@@ -144,10 +149,10 @@ for i in range(MAX_ITERATIONS):
         base_feed_dict = {x:inputs,keep_prob:1.0}
 
         base_array = ((sess1.run(base_weights,base_feed_dict))[0])
-        base_array = base_array - min(base_array)
-
-        total = sum(base_array)
-        base_array = base_array/total
+        # base_array = base_array - min(base_array)
+        # total = sum(base_array)
+        # base_array = base_array/total
+        base_array = softmax(base_array)
 
         #if np.random.rand() > 0.0:
         # FOR CHOOSING STOCHASTICALLY

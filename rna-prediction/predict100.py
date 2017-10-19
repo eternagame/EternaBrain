@@ -63,6 +63,10 @@ def convert_to_list(base_seq):
     #struc = ''.join(str_struc)
     return str_struc
 
+def softmax(x):
+    e_x = np.exp(x - np.max(x))
+    return e_x / e_x.sum(axis=0)
+
 with tf.Graph().as_default() as base_graph:
     saver1 = tf.train.import_meta_graph(os.getcwd()+'/models/base/base' + NAME + '.meta') # CNN15
 sess1 = tf.Session(graph=base_graph) # config=tf.ConfigProto(allow_soft_placement=True,log_device_placement=True)
@@ -134,9 +138,10 @@ for db in plist:
                 location_array = ((sess2.run(location_weights,location_feed_dict))[0])
 
                 inputs2 = inputs.reshape([LOCATION_FEATURES,TF_SHAPE/LOCATION_FEATURES])
-                location_array = location_array[:len_puzzle] - min(location_array[:len_puzzle])
-                total_l = sum(location_array)
-                location_array = location_array/total_l
+                # location_array = location_array[:len_puzzle] - min(location_array[:len_puzzle])
+                # total_l = sum(location_array)
+                # location_array = location_array/total_l
+                location_array = softmax(location_array)
                 location_change = (choice(list(range(0,len(location_array))),1,p=location_array,replace=False))[0]
                 #location_change = np.argmax(location_array)
                 la = [0.0] * len_longest
@@ -146,10 +151,10 @@ for db in plist:
                 base_feed_dict = {x:inputs,keep_prob:1.0}
 
                 base_array = ((sess1.run(base_weights,base_feed_dict))[0])
-                base_array = base_array - min(base_array)
-
-                total = sum(base_array)
-                base_array = base_array/total
+                # base_array = base_array - min(base_array)
+                # total = sum(base_array)
+                # base_array = base_array/total
+                base_array = softmax(base_array)
 
                 #if np.random.rand() > 0.0:
                 # FOR CHOOSING STOCHASTICALLY
