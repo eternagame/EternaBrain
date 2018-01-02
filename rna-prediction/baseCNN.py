@@ -13,7 +13,7 @@ import tensorflow as tf
 import pickle
 from getData import getPid
 
-NAME = 'baseCNN24'
+NAME = 'baseCNN15'
 NUM_FEATURES = 9
 TRAIN_KEEP_PROB = 0.9
 TEST_KEEP_PROB = 1.0
@@ -139,12 +139,28 @@ keep_prob = tf.placeholder('float',name='keep_prob_placeholder')
 #e1 = tf.reshape(enc0,[])
 
 def conv2d(x,W):
+    """
+    2D convolutions helper function
+    :param x: Inputs
+    :param W: Weights
+    :return: Tensorflow convolution
+    """
     return tf.nn.conv2d(x, W, strides=[1,1,1,1], padding='SAME')
 
 def maxpool2d(x):
+    """
+    2D pooling helper function
+    :param x: Inputs
+    :return: Tensorflow pooling
+    """
     return tf.nn.max_pool(x, ksize=[1,2,2,1], strides=[1,2,2,1], padding="SAME")
 
 def convNeuralNet(x):
+    """
+    Setting up the CNN architecture
+    :param x: Features placeholder
+    :return: convolutions and fully-connected
+    """
     weights = {'w_conv1':tf.get_variable('w_conv1',[NUM_FEATURES,NUM_FEATURES,1,2],initializer=tf.random_normal_initializer()),
                'w_conv2':tf.get_variable('w_conv2',[NUM_FEATURES,NUM_FEATURES,2,4],initializer=tf.random_normal_initializer()),
                'w_conv3':tf.get_variable('w_conv3',[NUM_FEATURES,NUM_FEATURES,4,8],initializer=tf.random_normal_initializer()),
@@ -191,34 +207,34 @@ def convNeuralNet(x):
 
     x = tf.reshape(x,shape=[-1,NUM_FEATURES,len_puzzle,1])
 
-    conv1 = tf.nn.sigmoid(conv2d(x, weights['w_conv1']) + biases['b_conv1'])
+    conv1 = tf.nn.relu(conv2d(x, weights['w_conv1']) + biases['b_conv1'])
     conv1 = maxpool2d(conv1)
 
-    conv2 = tf.nn.sigmoid(conv2d(conv1, weights['w_conv2']) + biases['b_conv2'])
+    conv2 = tf.nn.relu(conv2d(conv1, weights['w_conv2']) + biases['b_conv2'])
     conv2 = maxpool2d(conv2)
 
-    conv3 = tf.nn.sigmoid(conv2d(conv2, weights['w_conv3']) + biases['b_conv3'])
+    conv3 = tf.nn.relu(conv2d(conv2, weights['w_conv3']) + biases['b_conv3'])
     conv3 = maxpool2d(conv3)
 
-    conv4 = tf.nn.sigmoid(conv2d(conv3, weights['w_conv4']) + biases['b_conv4'])
+    conv4 = tf.nn.relu(conv2d(conv3, weights['w_conv4']) + biases['b_conv4'])
     conv4 = maxpool2d(conv4)
 
-    conv5 = tf.nn.sigmoid(conv2d(conv4, weights['w_conv5']) + biases['b_conv5'])
+    conv5 = tf.nn.relu(conv2d(conv4, weights['w_conv5']) + biases['b_conv5'])
     conv5 = maxpool2d(conv5)
 
-    conv6 = tf.nn.sigmoid(conv2d(conv5, weights['w_conv6']) + biases['b_conv6'])
+    conv6 = tf.nn.relu(conv2d(conv5, weights['w_conv6']) + biases['b_conv6'])
     conv6 = maxpool2d(conv6)
 
-    conv7 = tf.nn.sigmoid(conv2d(conv6, weights['w_conv7']) + biases['b_conv7'])
+    conv7 = tf.nn.relu(conv2d(conv6, weights['w_conv7']) + biases['b_conv7'])
     conv7 = maxpool2d(conv7)
 
-    conv8 = tf.nn.sigmoid(conv2d(conv7, weights['w_conv8']) + biases['b_conv8'])
+    conv8 = tf.nn.relu(conv2d(conv7, weights['w_conv8']) + biases['b_conv8'])
     conv8 = maxpool2d(conv8)
 
-    conv9 = tf.nn.sigmoid(conv2d(conv8, weights['w_conv9']) + biases['b_conv9'])
+    conv9 = tf.nn.relu(conv2d(conv8, weights['w_conv9']) + biases['b_conv9'])
     conv9 = maxpool2d(conv9)
 
-    conv10 = tf.nn.sigmoid(conv2d(conv9, weights['w_conv10']) + biases['b_conv10'])
+    conv10 = tf.nn.relu(conv2d(conv9, weights['w_conv10']) + biases['b_conv10'])
     conv10 = maxpool2d(conv10)
 
     # conv11 = conv2d(conv10, weights['w_conv11'])
@@ -237,13 +253,13 @@ def convNeuralNet(x):
     # conv15 = maxpool2d(conv15)
 
     fc1 = tf.reshape(conv10, [-1,1024])
-    fc1 = tf.nn.sigmoid(tf.add(tf.matmul(fc1,weights['w_fc1']),biases['b_fc1']))
+    fc1 = tf.nn.relu(tf.add(tf.matmul(fc1,weights['w_fc1']),biases['b_fc1']))
 
-    fc2 = tf.nn.sigmoid(tf.add(tf.matmul(fc1,weights['w_fc2']),biases['b_fc2']))
+    fc2 = tf.nn.relu(tf.add(tf.matmul(fc1,weights['w_fc2']),biases['b_fc2']))
 
-    fc3 = tf.nn.sigmoid(tf.add(tf.matmul(fc2,weights['w_fc3']),biases['b_fc3']))
+    fc3 = tf.nn.relu(tf.add(tf.matmul(fc2,weights['w_fc3']),biases['b_fc3']))
 
-    fc4 = tf.nn.sigmoid(tf.add(tf.matmul(fc3,weights['w_fc4']),biases['b_fc4']))
+    fc4 = tf.nn.relu(tf.add(tf.matmul(fc3,weights['w_fc4']),biases['b_fc4']))
 
     #fc5 = tf.nn.sigmoid(tf.add(tf.matmul(fc4,weights['w_fc5']),biases['b_fc5']))
 
@@ -297,6 +313,11 @@ def convNeuralNet(x):
 
 print "Training"
 def train(x):
+    """
+    Trains the neural net
+    :param x: Features placeholder
+    :return: Trained neural net
+    """
     prediction = convNeuralNet(x)
     #print prediction
     with tf.name_scope('cross_entropy'):
