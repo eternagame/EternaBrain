@@ -1,0 +1,4 @@
+Last Updated: Jan 1, 2018
+
+X5-exp is the best dataset to use, trained on 92 puzzles and 72 experts (over 3000 experience)
+CNN15 is the best CNN version to use
