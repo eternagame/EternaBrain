@@ -88,6 +88,9 @@ MIN_THRESHOLD = 0.65
 
 Now, you can run the model and it will attempt to find a nucleotide sequence that will fold into the secondary structure provided.
 
+## Using a pretrained model
+Go to `predict_pm.py` and change the value of `DOT_BRACKET` to the desired target RNA structure in dot-bracket notation. Configure RNAfold, then run `predict_pm.py`.
+
 ## Key Puzzles
 ### Multi-state puzzles
 6892343 - 6892348, 7254756 - 7254761
