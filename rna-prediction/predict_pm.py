@@ -15,7 +15,8 @@ from readData import format_pairmap
 from sap1 import sbc
 from sap2 import dsp
 
-DOT_BRACKET = '(..(..(..(..(..(..(..(..(..(..(..(..(..(..(.(.(..(.(.(..(.(.(..(.(.(..(......)..)..)..)..)..)..)..)..)..)..)..)..)..)..).).)..).).)..).).)..).).)..)..........'
+DOT_BRACKET = '(((((.....)))))' # Change this
+
 len_puzzle = len(DOT_BRACKET)
 NUCLEOTIDES = 'A'*len_puzzle
 ce = 0.0
@@ -84,9 +85,10 @@ current_energy = [ce] + ([0]*(len_longest - 1))
 target_energy = [te] + ([0]*(len_longest - 1))
 current_pm = format_pairmap(NUCLEOTIDES) + ([0]*(len_longest - len_puzzle))
 target_pm = format_pairmap(DOT_BRACKET) + ([0]*(len_longest - len_puzzle))
+#locks = ([2]*32 + [1] * 85 + [2]*85) + ([0]*(len_longest - len_puzzle))
 locks = ([1]*len_puzzle) + ([0]*(len_longest - len_puzzle))
 
-print len(base_seq),len(current_struc),len(DOT_BRACKET),len(target_struc),len(current_energy),len(target_energy),len(locks)
+#print len(base_seq),len(current_struc),len(DOT_BRACKET),len(target_struc),len(current_energy),len(target_energy),len(locks)
 
 inputs2 = np.array([base_seq,current_struc,target_struc,current_energy,target_energy,current_pm,target_pm,locks])
 
@@ -253,8 +255,8 @@ level1,m2,_ = sbc(DOT_BRACKET,reg)
 level2,m3,_ = dsp(DOT_BRACKET,level1)
 print level2
 
-movesets.extend(m2)
-movesets.extend(m3)
+#movesets.extend(m2)
+#movesets.extend(m3)
 #print movesets
 
 # mp = pickle.load(open(os.getcwd()+'/pickles/evolved-raw-ms','r'))
