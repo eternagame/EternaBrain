@@ -1,4 +1,8 @@
 # EternaBrain
+
+[![Python27](https://img.shields.io/badge/python-2.7-blue.svg)](https://www.python.org/download/releases/2.7/)
+[![License](https://img.shields.io/badge/license-LGPL--2.1-black.svg)](https://github.com/EteRNAgame/EternaBrain/blob/master/LICENSE)
+
 Using Eterna data to understand and predict how players solve RNA folding puzzles.
 * Neural networks to learn how top players solve Eterna players and to predict solutions to RNA folding puzzles
 * Unsupervised learning to group players based on their style of solving RNA folding puzzles
