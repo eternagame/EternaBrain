@@ -181,7 +181,7 @@ def dsp(dot_bracket,seq_str): # domain specific pipeline
                 m.append([3,i+2])
                 m.append([3,idx])
 
-        elif dot_bracket[i] == '(' and dot_bracket[i+1] == '.' and dot_bracket[i+2] == '(': # G-G in 2 pair internal loop
+        if dot_bracket[i] == '(' and dot_bracket[i+1] == '.' and dot_bracket[i+2] == '(': # G-G in 2 pair internal loop
             idx = target_pm[i]
             if dot_bracket[idx] == ')' and dot_bracket[idx-1] == '.' and dot_bracket[idx-2] == ')':
                 seq[i+1] = 'G'
@@ -193,6 +193,19 @@ def dsp(dot_bracket,seq_str): # domain specific pipeline
                 seq[idx-1] = 'G'
                 m.append([3,i+2])
                 m.append([3,idx])
+
+        if dot_bracket[i] == '(' and dot_bracket[i+1] == '.' and dot_bracket[i+2] == '.' and dot_bracket[i+3] == '.' and dot_bracket[i+4] == '(': # G-G in 2 pair internal loop
+            idx = target_pm[i]
+            if dot_bracket[idx] == ')' and dot_bracket[idx-1] == '.' and dot_bracket[idx-2] == '.' and dot_bracket[idx-3] == '.' and dot_bracket[idx-4] == ')':
+                seq[i+1] = 'G'
+                seq[idx-3] = 'G'
+                m.append([3,i+2])
+                m.append([3,idx])
+            # elif dot_bracket[idx] == ')' and dot_bracket[idx-1] == '.' and dot_bracket[idx-2] == '.' and dot_bracket[idx-3] == ')':
+            #     seq[i+1] = 'G'
+            #     seq[idx-1] = 'G'
+            #     m.append([3,i+2])
+            #     m.append([3,idx])
 
     '''
     Randomly flips base pairs
