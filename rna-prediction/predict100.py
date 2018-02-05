@@ -16,9 +16,9 @@ from sap1 import sbc
 from sap2 import dsp
 import pandas as pd
 
-LOCATION_FEATURES = 8
-BASE_FEATURES = 9
-NAME = 'CNN15'
+LOCATION_FEATURES = 6
+BASE_FEATURES = 7
+NAME = 'CNN20'
 
 p = pd.read_csv(os.getcwd()+'/movesets/eterna100.txt', sep=' ', header='infer', delimiter='\t')
 plist = list(p['Secondary Structure'])
@@ -115,7 +115,7 @@ for db in plist:
     target_pm = format_pairmap(DOT_BRACKET) + ([0]*(len_longest - len_puzzle))
     locks = ([1]*len_puzzle) + ([0]*(len_longest - len_puzzle))
 
-    inputs2 = np.array([base_seq,current_struc,target_struc,current_energy,target_energy,current_pm,target_pm,locks])
+    inputs2 = np.array([base_seq,current_energy,target_energy,current_pm,target_pm,locks])
 
     '''
     Change inputs when altering number of features
@@ -131,7 +131,7 @@ for db in plist:
     #reg = []
     for i in range(MAX_ITERATIONS):
         try:
-            if np.all(inputs2[1] == inputs2[2]):
+            if np.all(inputs2[3] == inputs2[4]):
                 print("Puzzle Solved")
                 break
             else:
