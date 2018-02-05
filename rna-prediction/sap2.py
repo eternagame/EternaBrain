@@ -166,8 +166,10 @@ def dsp(dot_bracket,seq_str): # domain specific pipeline
 
         if dot_bracket[i] == '(' and dot_bracket[i+1] == '.':
             dots = []
+            starter = 0
             for j in range(i+1, len(dot_bracket)):
                 if dot_bracket[j] == '(':
+                    starter = j
                     break
                 dots.append(dot_bracket[j])
 
@@ -179,7 +181,7 @@ def dsp(dot_bracket,seq_str): # domain specific pipeline
                     break
                 dots.append(dot_bracket[k])
 
-            if dots.count(dots[0]) == len(dots):
+            if dots.count(dots[0]) == len(dots) and target_pm[ender] == starter:
                 seq[i+1] = 'G'
                 seq[ender+1] = 'G'
 
@@ -201,26 +203,26 @@ def dsp(dot_bracket,seq_str): # domain specific pipeline
                 m.append([3,i+2])
                 m.append([3,idx])
 
-        if dot_bracket[i] == '(' and dot_bracket[i+1] == '.' and dot_bracket[i+2] == '(': # G-G in 2 pair internal loop
-            idx = target_pm[i]
-            if dot_bracket[idx] == ')' and dot_bracket[idx-1] == '.' and dot_bracket[idx-2] == ')':
-                seq[i+1] = 'G'
-                seq[idx-1] = 'G'
-                m.append([3,i+2])
-                m.append([3,idx])
-            elif dot_bracket[idx] == ')' and dot_bracket[idx-1] == '.' and dot_bracket[idx-2] == '.' and dot_bracket[idx-3] == ')':
-                seq[i+1] = 'G'
-                seq[idx-1] = 'G'
-                m.append([3,i+2])
-                m.append([3,idx])
-
-        if dot_bracket[i] == '(' and dot_bracket[i+1] == '.' and dot_bracket[i+2] == '.' and dot_bracket[i+3] == '.' and dot_bracket[i+4] == '(': # G-G in 2 pair internal loop
-            idx = target_pm[i]
-            if dot_bracket[idx] == ')' and dot_bracket[idx-1] == '.' and dot_bracket[idx-2] == '.' and dot_bracket[idx-3] == '.' and dot_bracket[idx-4] == ')':
-                seq[i+1] = 'G'
-                seq[idx-3] = 'G'
-                m.append([3,i+2])
-                m.append([3,idx])
+        # if dot_bracket[i] == '(' and dot_bracket[i+1] == '.' and dot_bracket[i+2] == '(': # G-G in 2 pair internal loop
+        #     idx = target_pm[i]
+        #     if dot_bracket[idx] == ')' and dot_bracket[idx-1] == '.' and dot_bracket[idx-2] == ')':
+        #         seq[i+1] = 'G'
+        #         seq[idx-1] = 'G'
+        #         m.append([3,i+2])
+        #         m.append([3,idx])
+        #     elif dot_bracket[idx] == ')' and dot_bracket[idx-1] == '.' and dot_bracket[idx-2] == '.' and dot_bracket[idx-3] == ')':
+        #         seq[i+1] = 'G'
+        #         seq[idx-1] = 'G'
+        #         m.append([3,i+2])
+        #         m.append([3,idx])
+        #
+        # if dot_bracket[i] == '(' and dot_bracket[i+1] == '.' and dot_bracket[i+2] == '.' and dot_bracket[i+3] == '.' and dot_bracket[i+4] == '(': # G-G in 2 pair internal loop
+        #     idx = target_pm[i]
+        #     if dot_bracket[idx] == ')' and dot_bracket[idx-1] == '.' and dot_bracket[idx-2] == '.' and dot_bracket[idx-3] == '.' and dot_bracket[idx-4] == ')':
+        #         seq[i+1] = 'G'
+        #         seq[idx-3] = 'G'
+        #         m.append([3,i+2])
+        #         m.append([3,idx])
             # elif dot_bracket[idx] == ')' and dot_bracket[idx-1] == '.' and dot_bracket[idx-2] == '.' and dot_bracket[idx-3] == ')':
             #     seq[i+1] = 'G'
             #     seq[idx-1] = 'G'
