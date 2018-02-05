@@ -15,7 +15,7 @@ from readData import format_pairmap
 from sap1 import sbc
 from sap2 import dsp
 
-DOT_BRACKET = '.....((((.(((.((....))((....)).))).(((.((....))((....)).))).(((.((....))((....)).))).(((.((....))((....)).))).)))).....' # Change this
+DOT_BRACKET = raw_input("Enter a dot-bracket structure: ") # Change this
 
 len_puzzle = len(DOT_BRACKET)
 NUCLEOTIDES = 'A'*len_puzzle
