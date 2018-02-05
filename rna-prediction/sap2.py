@@ -163,6 +163,26 @@ def dsp(dot_bracket,seq_str): # domain specific pipeline
             #     seq[i+1] = 'G'
 
     for i in range(len(dot_bracket)):
+
+        if dot_bracket[i] == '(' and dot_bracket[i+1] == '.':
+            dots = []
+            for j in range(i+1, len(dot_bracket)):
+                if dot_bracket[j] == '(':
+                    break
+                dots.append(dot_bracket[j])
+
+            idx = target_pm[i]
+            ender = 0
+            for k in range(idx-1,-1,-1):
+                if dot_bracket[k] == ')':
+                    ender = k
+                    break
+                dots.append(dot_bracket[k])
+
+            if dots.count(dots[0]) == len(dots):
+                seq[i+1] = 'G'
+                seq[ender+1] = 'G'
+
         if dot_bracket[i] == '(' and dot_bracket[i+1] == '.' and dot_bracket[i+2] == '.' and dot_bracket[i+3] == '(': # UGUG superboost
             idx = target_pm[i]
             if dot_bracket[idx] == ')' and dot_bracket[idx-1] == '.' and dot_bracket[idx-2] == '.' and dot_bracket[idx-3] == ')':
@@ -207,6 +227,7 @@ def dsp(dot_bracket,seq_str): # domain specific pipeline
             #     m.append([3,i+2])
             #     m.append([3,idx])
 
+
     '''
     Randomly flips base pairs
     '''
@@ -216,7 +237,7 @@ def dsp(dot_bracket,seq_str): # domain specific pipeline
     new_struc = formatted[1]
     new_pm = get_pairmap_from_secstruct(new_struc)
     match = SequenceMatcher(None,new_pm,target_pm).ratio()
-    for j in range(3):
+    for j in range(5):
         for i in range(len(dot_bracket)):
             if new_pm == target_pm:
                 print 'puzzle solved'
