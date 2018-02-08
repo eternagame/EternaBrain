@@ -138,6 +138,7 @@ keep_prob = tf.placeholder('float',name='keep_prob_placeholder')
 
 #e1 = tf.reshape(enc0,[])
 
+
 def conv2d(x,W):
     """
     2D convolutions helper function
@@ -147,6 +148,7 @@ def conv2d(x,W):
     """
     return tf.nn.conv2d(x, W, strides=[1,1,1,1], padding='SAME')
 
+
 def maxpool2d(x):
     """
     2D pooling helper function
@@ -154,6 +156,7 @@ def maxpool2d(x):
     :return: Tensorflow pooling
     """
     return tf.nn.max_pool(x, ksize=[1,2,2,1], strides=[1,2,2,1], padding="SAME")
+
 
 def convNeuralNet(x):
     """
@@ -312,6 +315,8 @@ def convNeuralNet(x):
 
 
 print "Training"
+
+
 def train(x):
     """
     Trains the neural net
@@ -386,4 +391,6 @@ def train(x):
         Run this:
         tensorboard --logdir=tensorboard/baseDNN-SPECIFICATIONS --debug
         '''
+
+
 train(x)

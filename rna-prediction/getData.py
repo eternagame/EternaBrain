@@ -12,6 +12,7 @@ import RNA
 import pandas as pd
 import os
 
+
 def getPid():
     '''
     Gets the puzzle IDs for all single-state RNA puzzles
@@ -29,6 +30,7 @@ def getPid():
     single = [x for x in p if x not in bad]
 
     return single
+
 
 def getData_pid(pid,pidList,movesets,structure): # returns moveset and puzzzle structure together
   i1 = pidList.index(pid)
@@ -63,14 +65,16 @@ def getStructure(sequence):
     e = [energy]+((len(base_seq)-1)*[0.0])
     return struc,e
 
-'''
-Uses RNAfold to calculate energies of RNA sequences folded into target structures
 
-:param sequence: An RNA sequence
-:param structure: A target structure in dot-bracket notation
-:return: Gibbs free energy in kcal/mol
-'''
 def getTargetEnergy(sequence,structure):
+    '''
+    Uses RNAfold to calculate energies of RNA sequences folded into target structures
+
+    :param sequence: An RNA sequence
+    :param structure: A target structure in dot-bracket notation
+    :return: Gibbs free energy in kcal/mol
+    '''
+
     base_seq = []
     for i in sequence:
         if i == 1:

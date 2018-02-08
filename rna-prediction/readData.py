@@ -50,6 +50,7 @@ def read_movesets_uid(uid): # get data from user ID
 
     return plist, pidList
 
+
 def read_movesets_uid_pid(uid,pid,df='list'): # get data from user ID
     """
     Returns move sets for a specific puzzle only 1 user has solved
@@ -80,6 +81,8 @@ def read_movesets_uid_pid(uid,pid,df='list'): # get data from user ID
 DEPRECATED
 Previous version of the experience method
 '''
+
+
 def experience_labs(puzzle,threshold):
     experience_file = pd.read_csv(os.getcwd()+'/movesets/prior-experience-labs.txt', sep=' ', header='infer', delimiter=',')
     moveset_file = pd.read_csv(os.getcwd()+'/movesets/moveset6-22a.txt', sep=' ', header='infer', delimiter='\t')
@@ -154,6 +157,7 @@ def read_locks(pid):
     except TypeError:
         return "None"
 
+
 def read_movesets_pid(moveset_file,pid): # get data from puzzle ID
     '''
     Reads and returns the move sets for a certain puzzle
@@ -210,12 +214,14 @@ def format_pairmap(struc):
 
     return pm
 
+
 def read_structure_raw(pid):
     puzzle_structure = pd.read_csv(os.getcwd()+'/movesets/puzzle-structure-data.txt', sep=" ", header='infer', delimiter='\t')
     puzzles_pid = puzzle_structure.loc[puzzle_structure['pid'] == pid]
 
     struc = ''.join(list(puzzles_pid['structure']))
     return struc
+
 
 def read_movesets_all(moveset_file): # get data from puzzle ID
   moveset_dataFrame = pd.read_csv(moveset_file, sep=" ", header="infer", delimiter='\t')
@@ -230,6 +236,7 @@ def read_movesets_all(moveset_file): # get data from puzzle ID
 
   return plist_dict
 
+
 def puzzle_attributes(moveset_file, attribute):
   moveset_dataFrame = pd.read_csv(moveset_file, sep=" ", header="infer", delimiter='\t')
   attribute_list = []
@@ -242,6 +249,7 @@ def puzzle_attributes(moveset_file, attribute):
     attribute_list.append(step5)
 
   return attribute_list
+
 
 def read_structure_all(puzzle_data):
   puzzle_structure = pd.read_csv(puzzle_data, sep=" ", header='infer', delimiter='\t')

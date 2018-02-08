@@ -173,6 +173,7 @@ keep_prob = tf.placeholder('float',name='keep_prob_placeholder')
 
 #e1 = tf.reshape(enc0,[])
 
+
 def neuralNet(data):
     hl_1 = {'weights':tf.Variable(tf.random_normal([TF_SHAPE, n_nodes_hl1]),name='Weights1'),
             'biases':tf.Variable(tf.random_normal([n_nodes_hl1]),name='Biases1')}
@@ -282,7 +283,10 @@ def neuralNet(data):
 
     return ol
 
+
 print "Training"
+
+
 def train(x):
     prediction = neuralNet(x)
     #print prediction
@@ -365,6 +369,8 @@ def train(x):
 
     sess2.close()
     '''
+
+
 train(x)
 
 # plt.plot(ta_list)

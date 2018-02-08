@@ -33,8 +33,10 @@ TF_SHAPE = LOCATION_FEATURES * MAX_LEN
 BASE_SHAPE = BASE_FEATURES * MAX_LEN
 len_longest = MAX_LEN
 
+
 def similar(a, b):
     return SequenceMatcher(None, a, b).ratio()
+
 
 def encode_struc(dots):
     s = []
@@ -47,6 +49,7 @@ def encode_struc(dots):
             s.append(3)
     return s
 
+
 def second_largest(numbers):
     count = 0
     m1 = m2 = float('-inf')
@@ -58,6 +61,7 @@ def second_largest(numbers):
             else:
                 m2 = x
     return m2 if count >= 2 else None
+
 
 def convert_to_list(base_seq):
     str_struc = []
@@ -72,6 +76,7 @@ def convert_to_list(base_seq):
             str_struc.append(4)
     #struc = ''.join(str_struc)
     return str_struc
+
 
 def softmax(x):
     e_x = np.exp(x - np.max(x))

@@ -52,11 +52,12 @@ def str_to_num(s):
     elif s == 'C':
         return 4
 
+
 dot_bracket = '.....((((..((((....)))).)))).....'
 seq_str = 'A'*len(dot_bracket)
 
 
-def dsp(dot_bracket,seq_str,vienna_path='../../../EteRNABot/eternabot/./RNAfold'):  # domain specific pipeline
+def dsp(dot_bracket, seq_str, vienna_path='../../../EteRNABot/eternabot/./RNAfold'):  # domain specific pipeline
     '''
     Adds player strategies via a MCTS
 

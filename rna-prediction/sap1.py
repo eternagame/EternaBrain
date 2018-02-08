@@ -43,6 +43,7 @@ def convert_to_struc(base_seq):
 
     return s
 
+
 def convert_to_list(base_seq):
     str_struc = []
     for i in base_seq:
@@ -56,6 +57,7 @@ def convert_to_list(base_seq):
             str_struc.append(4)
     #struc = ''.join(str_struc)
     return str_struc
+
 
 def convert_to_str(base_str):
     str_struc = []
@@ -71,6 +73,7 @@ def convert_to_str(base_str):
 
     return ''.join(str_struc)
 
+
 def encode_struc(dots):
     s = []
     for i in dots:
@@ -81,6 +84,7 @@ def encode_struc(dots):
         elif i == ')':
             s.append(3)
     return s
+
 
 def one_hot_seq(seq):
     onehot = []
@@ -96,8 +100,10 @@ def one_hot_seq(seq):
 
     return onehot
 
+
 def similar(a, b):
     return SequenceMatcher(None, a, b).ratio()
+
 
 def find_parens(s):
     toret = {}
@@ -116,14 +122,17 @@ def find_parens(s):
 
     return toret
 
+
 def all_same(items):
     return all(x == items[0] for x in items)
 
+
 len_longest = 108
 
-#current = convert(base_seq)
+# current = convert(base_seq)
 dot_bracket = '.....((((((((...((((((((((........))))))))))...((((((((((........))))))))))...((((((((((........))))))))))...)))))))).....'
 seq = 'AAAAAGUUUUGAGAAAGAAGUCUGGGGAAAAAAACUUGGGUUUCAAAGGGUGAAAUGGAAAAAAACAUUUCACCCAAAGUUCCUAUCCGAAAAAAAGGAUAGGAGCAAACUUAAAACAAAAA'
+
 
 def sbc(dot_bracket,seq): # Monte Carlo Tree Search with Depth 1
     '''
@@ -143,8 +152,9 @@ def sbc(dot_bracket,seq): # Monte Carlo Tree Search with Depth 1
     #percent_match = similar(dot_bracket,cdb)
     len_puzzle = len(target_struc)
     len_puzzle_float = len(target_struc) * 1.0
-    # GAACGCACCUGCCUGUUUGGGGAGUAUGAA   GAACGCACCUGCCUGUUUGGGUAGCAUGAA   GAACGCACCUGCCUGUCUGGGUAGCAUGAA  GAACUCACCUGCCUGUCUUGGUAGCAUCAA
-    #global current_seq
+    # GAACGCACCUGCCUGUUUGGGGAGUAUGAA   GAACGCACCUGCCUGUUUGGGUAGCAUGAA
+    # GAACGCACCUGCCUGUCUGGGUAGCAUGAA  GAACUCACCUGCCUGUCUUGGUAGCAUCAA
+    # global current_seq
     current_seq = convert_to_list(seq)
     cdb,_ = RNA.fold(seq)
     current_pm = get_pairmap_from_secstruct(cdb)
