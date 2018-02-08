@@ -11,6 +11,7 @@ import re
 from difflib import SequenceMatcher
 import copy
 
+
 def encode_struc(dots):
     s = []
     for i in dots:
@@ -21,6 +22,7 @@ def encode_struc(dots):
         elif i == ')':
             s.append(3)
     return s
+
 
 def find_parens(s):
     toret = {}
@@ -39,6 +41,7 @@ def find_parens(s):
 
     return toret
 
+
 def str_to_num(s):
     if s == 'A':
         return 1
@@ -52,7 +55,8 @@ def str_to_num(s):
 dot_bracket = '.....((((..((((....)))).)))).....'
 seq_str = 'A'*len(dot_bracket)
 
-def dsp(dot_bracket,seq_str): # domain specific pipeline
+
+def dsp(dot_bracket,seq_str,vienna_path='../../../EteRNABot/eternabot/./RNAfold'):  # domain specific pipeline
     '''
     Adds player strategies via a MCTS
 
@@ -248,7 +252,7 @@ def dsp(dot_bracket,seq_str): # domain specific pipeline
     '''
     Randomly flips base pairs
     '''
-    p = Popen(['../../../EteRNABot/eternabot/./RNAfold', '-T','37.0'], stdout=PIPE, stdin=PIPE, stderr=STDOUT)
+    p = Popen([vienna_path, '-T','37.0'], stdout=PIPE, stdin=PIPE, stderr=STDOUT)
     pair = p.communicate(input=''.join(seq))[0]
     formatted = re.split('\s+| \(?\s?',pair)
     new_struc = formatted[1]
@@ -272,7 +276,7 @@ def dsp(dot_bracket,seq_str): # domain specific pipeline
 
                     seq[i] = base2
                     seq[paired] = base1
-                    p = Popen(['../../../EteRNABot/eternabot/./RNAfold', '-T','37.0'], stdout=PIPE, stdin=PIPE, stderr=STDOUT)
+                    p = Popen([vienna_path, '-T','37.0'], stdout=PIPE, stdin=PIPE, stderr=STDOUT)
                     pair = p.communicate(input=''.join(seq))[0]
                     formatted = re.split('\s+| \(?\s?',pair)
                     new_pm = get_pairmap_from_secstruct(formatted[1])
@@ -317,7 +321,7 @@ def dsp(dot_bracket,seq_str): # domain specific pipeline
 
                     seq[i] = base2
                     seq[paired] = base1
-                    p = Popen(['../../../EteRNABot/eternabot/./RNAfold', '-T','37.0'], stdout=PIPE, stdin=PIPE, stderr=STDOUT)
+                    p = Popen([vienna_path, '-T','37.0'], stdout=PIPE, stdin=PIPE, stderr=STDOUT)
                     pair = p.communicate(input=''.join(seq))[0]
                     formatted = re.split('\s+| \(?\s?',pair)
                     new_pm = get_pairmap_from_secstruct(formatted[1])

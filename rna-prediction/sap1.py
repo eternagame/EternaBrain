@@ -18,6 +18,7 @@ def hot_one_state(seq,index,base):
     copied_seq[index] = base
     return copied_seq
 
+
 def convert_to_struc(base_seq):
     str_struc = []
     for i in base_seq:
