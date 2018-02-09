@@ -11,6 +11,7 @@ def hot_one_state(seq,index,base):
     copied_seq[index] = base
     return copied_seq
 
+
 def convert(base_seq):
     str_struc = []
     for i in base_seq:
@@ -35,6 +36,7 @@ def convert(base_seq):
 
     return np.array(return_struc)
 
+
 def encode_struc(dots):
     s = []
     for i in dots:
@@ -45,6 +47,7 @@ def encode_struc(dots):
         elif i == ')':
             s.append(3)
     return s
+
 
 def one_hot_seq(seq):
     onehot = []
@@ -60,8 +63,10 @@ def one_hot_seq(seq):
 
     return onehot
 
+
 def similar(a, b):
     return SequenceMatcher(None, a, b).ratio()
+
 
 def convert_to_list(base_seq):
     str_struc = []
@@ -77,6 +82,7 @@ def convert_to_list(base_seq):
     #struc = ''.join(str_struc)
     return str_struc
 
+
 def convert_to_str(base_str):
     str_struc = []
     for i in base_str:
@@ -90,6 +96,7 @@ def convert_to_str(base_str):
             str_struc.append('C')
 
     return ''.join(str_struc)
+
 
 def convert_to_struc(base_seq):
     str_struc = []

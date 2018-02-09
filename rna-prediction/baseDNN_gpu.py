@@ -238,7 +238,10 @@ def neuralNet(data):
     ol = tf.add(tf.matmul(dropout, output_layer['weights']), output_layer['biases'], name='op7')
     return ol
 
+
 print "Training"
+
+
 def train(x):
     tower_grads = []
     opt = tf.train.AdamOptimizer(learning_rate)
@@ -342,6 +345,8 @@ def train(x):
 
     sess2.close()
     '''
+
+
 train(x)
 
 # plt.plot(ta_list)

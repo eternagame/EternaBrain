@@ -1,3 +1,8 @@
+"""
+Plots the number of moves/time needed to solve a puzzle
+EternaBrain vs Etera human players
+"""
+
 import matplotlib.pyplot as plt
 import numpy as np
 import seaborn; seaborn.set()
@@ -31,12 +36,15 @@ print bp,'+',mp,'x'
 print be,'+',me,'x'
 # player_eq = np.poly1d(player_line)
 # brain_line = np.poly1d(brain_line)
+
+
 def player_eq_list(x):
     ylist = []
     for i in x:
         #ylist.append(bp + mp * i)
         ylist.append(p_eq[2] + (p_eq[1] * i) + (p_eq[0] * (i**2)))
     return ylist
+
 
 def brain_eq_list(x):
     ylist = []
@@ -47,11 +55,14 @@ def brain_eq_list(x):
 
 plt.scatter(x,yp,label='Top Eterna Players')
 plt.scatter(x,yb,label='EternaBrain')
+
 plt.plot(range(401),player_eq_list(range(401)),label='Curve of best fit for Players')
 plt.plot(range(401),brain_eq_list(range(401)),label='Curve of best fit for EternaBrain')
+
 plt.title("Time needed to solve a puzzle of a given length")
 plt.xlabel("Length of the puzzle (in number of nucleotides)")
 plt.ylabel("Time (in seconds)")
 plt.ylim([-50,1300])
+
 plt.legend()
 plt.show()

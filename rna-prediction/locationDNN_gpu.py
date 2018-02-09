@@ -156,6 +156,7 @@ keep_prob = tf.placeholder('float',name="keep_prob_placeholder")
 
 #e1 = tf.reshape(enc0,[])
 
+
 def neuralNet(data):
     hl_1 = {'weights':tf.get_variable('Weights1',[TF_SHAPE,n_nodes_hl1],initializer=tf.random_normal_initializer()),
             'biases':tf.get_variable('Biases1',[n_nodes_hl1],initializer=tf.random_normal_initializer())}
@@ -267,7 +268,9 @@ def neuralNet(data):
 
     return ol
 
+
 print "Training"
+
 
 def train(x):
     tower_grads = []
@@ -367,6 +370,8 @@ def train(x):
     with sess2.as_default():
     sess2.close()
     '''
+
+
 train(x)
 
 # plt.plot(ta_list)

@@ -63,6 +63,7 @@ def dsp(dot_bracket, seq_str, vienna_path='../../../EteRNABot/eternabot/./RNAfol
 
     :param dot_bracket: The target structure of the RNA in dot-bracket notation
     :param seq_str: The current RNA sequence
+    :param vienna_path: Path to the Vienna 1.8.5 RNAfold
     :return: The updated RNA sequence after the DSP
     '''
     seq = list(seq_str)
@@ -79,7 +80,7 @@ def dsp(dot_bracket, seq_str, vienna_path='../../../EteRNABot/eternabot/./RNAfol
     #print target_pm
     #print current_pm
 
-    for base1,base2 in pairs.iteritems(): # corrects incorrect base pairings
+    for base1, base2 in pairs.iteritems(): # corrects incorrect base pairings
         #print base1,base2
         if (seq[base1] == 'A' and seq[base2] == 'U') or (seq[base1] == 'U' and seq[base2] == 'A'):
             continue
