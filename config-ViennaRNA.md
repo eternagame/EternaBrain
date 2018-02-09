@@ -1,9 +1,10 @@
 # Create Python Environment with RNA package
-NOTE: This process works only with Vienna 2.1 onwards and Python 2.
+NOTE: This process works only Python 2.
 
-## First Installation
+## Vienna 2.3.5
+### First Installation
 
-Download ViennaRNA (http://www.tbi.univie.ac.at/RNA/), unpack, and navigate to the folder. Then in terminal, type
+Download [ViennaRNA v2.3.5](http://www.tbi.univie.ac.at/RNA/), unpack, and navigate to the folder. Then in terminal, type
 ```
 ./configure
 make
@@ -25,10 +26,13 @@ Now, you can run Python scripts with the Vienna RNA library installed, by doing
 import RNA
 ```
 
-## After the first Installation
+### After the first Installation
 Once you have executed the above commands, you do not need to execute them again,
 as you have already installed the ViennaRNA package. Just type
 ```
 source .bash_profile
 ```
 into your terminal window, and you're good to go.
+
+## Vienna 1.8.5
+Download [Vienna v1.8.5](https://www.tbi.univie.ac.at/RNA/#download). In `predict_pm.py`, change the value of `path` to wherever the `./RNAfold` location is.
