@@ -16,6 +16,7 @@ from sap1 import sbc
 from sap2 import dsp
 
 DOT_BRACKET = raw_input("Enter a dot-bracket structure: ") # Change this
+path = '../../../EteRNABot/eternabot/./RNAfold'
 
 len_puzzle = len(DOT_BRACKET)
 NUCLEOTIDES = 'A'*len_puzzle
@@ -257,7 +258,7 @@ for i in range(MAX_ITERATIONS):
             break
 
 level1,m2,_ = sbc(DOT_BRACKET,reg)
-level2,m3,_ = dsp(DOT_BRACKET,level1)
+level2,m3,_ = dsp(DOT_BRACKET,level1,vienna_path=path)
 print level2
 
 #movesets.extend(m2)
