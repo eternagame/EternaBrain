@@ -93,7 +93,7 @@ MIN_THRESHOLD = 0.65
 Now, you can run the model and it will attempt to find a nucleotide sequence that will fold into the secondary structure provided.
 
 ## Using a pretrained model
-Go to `predict_pm.py` and change the value of `DOT_BRACKET` to the desired target RNA structure in dot-bracket notation. Configure RNAfold, then run `predict_pm.py`.
+Go to `predict_pm.py` and change the value of `DOT_BRACKET` to the desired target RNA structure in dot-bracket notation. Configure RNAfold, and enter the correct path to Vienna 1.8.5 in the `path` field, then run `predict_pm.py`.
 
 ## Key Puzzles
 ### Multi-state puzzles
