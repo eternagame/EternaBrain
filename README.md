@@ -75,10 +75,11 @@ saver.export_meta_graph(os.getcwd()+'/models/base/baseCNN.meta')
 ```
 
 ### Step 3: Predicting
-Load your model into the appropriate locations for the base predictor and location predictor in `predict_pm.py`. Specify the RNA secondary structure and starting nucleotide sequence in `DOT_BRACKET` and `NUCLEOTIDES`, respectively. Also specify the natural energy and target energy in `current_energy` and `target_energy`, respectively (default is 0 kcal).
+Load your model into the appropriate locations for the base predictor and location predictor in `predict_pm.py`. Specify the RNA secondary structure, starting nucleotide sequence, and path to Vienna in `DOT_BRACKET`, `NUCLEOTIDES`, and `path`. Also specify the natural energy and target energy in `current_energy` and `target_energy` (default is 0 kcal).
 
 ```python
 DOT_BRACKET = '((((....))))'
+path = os.getcwd() + './RNAfold'
 len_puzzle = len(dot_bracket)
 NUCLEOTIDES = 'A'*len_puzzle
 ce = 0.0 # current energy
