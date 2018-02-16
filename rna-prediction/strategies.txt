@@ -1,0 +1,5 @@
+End pairs to GC/CG
+G-G Internal Loop Boost
+U-G-U-G Superboost
+Correcting incorrect AC/CA, UC/CU, and AG/GA to AU and GC
+Randomly flipping base pairings
