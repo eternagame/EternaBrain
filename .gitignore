@@ -9,3 +9,5 @@ movesets/
 scp.txt
 *.out
 *.ps
+*.svg
+*.png
