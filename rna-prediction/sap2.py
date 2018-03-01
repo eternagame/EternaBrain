@@ -175,7 +175,7 @@ def dsp(dot_bracket, seq_str, vienna_path='../../../EteRNABot/eternabot/./RNAfol
             leftdots = []
             starter = 0
             for j in range(i+1, len(dot_bracket)):
-                if dot_bracket[j] == '(':
+                if dot_bracket[j] == '(':# or dot_bracket[j] == ')':
                     starter = j
                     break
                 leftdots.append(dot_bracket[j])
@@ -184,14 +184,15 @@ def dsp(dot_bracket, seq_str, vienna_path='../../../EteRNABot/eternabot/./RNAfol
             idx = target_pm[i]
             ender = 0
             for k in range(idx-1,-1,-1):
-                if dot_bracket[k] == ')':
+                if dot_bracket[k] == ')':# or dot_bracket[k] == '(':
                     ender = k
                     break
                 rightdots.append(dot_bracket[k])
 
-            if (len(leftdots) > 0 and len(rightdots) > 0) and ((len(leftdots) != 2 and len(rightdots) != 2) and (math.fabs(len(rightdots) - len(leftdots)) <= 4)):
-                seq[i+1] = 'G'
-                seq[ender+1] = 'G'
+            if len(leftdots) > 0 and len(rightdots) > 0:
+                if (len(leftdots) != 2 or len(rightdots) != 2) and (math.fabs(len(rightdots) - len(leftdots)) <= 5):
+                    seq[i+1] = 'G'
+                    seq[ender+1] = 'G'
 
         # if dot_bracket[i] == ')' and dot_bracket[i+1] == '.' and dot_bracket[target_pm[i]] == "(" and dot_bracket[target_pm[i+1]] == '.':
         #     dots = []
