@@ -171,7 +171,7 @@ def dsp(dot_bracket, seq_str, vienna_path='../../../EteRNABot/eternabot/./RNAfol
 
     for i in range(len(dot_bracket)):
         #pairing = target_pm[i]
-        if dot_bracket[i] == '(' and dot_bracket[i+1] == '.':# and dot_bracket[target_pm[i]] == ")" and dot_bracket[target_pm[i-1]] == '.':
+        if dot_bracket[i] == '(' and dot_bracket[i+1] == '.' and dot_bracket[target_pm[i]] == ")" and dot_bracket[target_pm[i-1]] == '.':
             leftdots = []
             starter = 0
             for j in range(i+1, len(dot_bracket)):
@@ -184,7 +184,7 @@ def dsp(dot_bracket, seq_str, vienna_path='../../../EteRNABot/eternabot/./RNAfol
             idx = target_pm[i]
             ender = 0
             for k in range(idx-1,-1,-1):
-                if dot_bracket[k] == ')':# or dot_bracket[k] == '(':
+                if dot_bracket[k] == ')' or dot_bracket[k] == '(':
                     ender = k
                     break
                 rightdots.append(dot_bracket[k])
