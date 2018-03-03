@@ -3,6 +3,8 @@ Loads the saved TensorFlow models and runs a simulation of EternaBrain solving a
 Input a target structure in dot-bracket notation and any initial params (energy, locked bases)
 '''
 
+DOT_BRACKET = raw_input("Enter a dot-bracket structure: ")
+
 import tensorflow as tf
 import os
 import pickle
@@ -15,7 +17,7 @@ from readData import format_pairmap
 from sap1 import sbc
 from sap2 import dsp
 
-DOT_BRACKET = raw_input("Enter a dot-bracket structure: ") # Change this
+
 path = '../../../EteRNABot/eternabot/./RNAfold'
 
 len_puzzle = len(DOT_BRACKET)
