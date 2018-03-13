@@ -1,5 +1,6 @@
 # EternaBrain
 
+[![Release](https://img.shields.io/badge/release-v1.1-brightgreen.svg)](https://github.com/EteRNAgame/EternaBrain/releases)
 [![Python27](https://img.shields.io/badge/python-2.7-blue.svg)](https://www.python.org/download/releases/2.7/)
 [![License](https://img.shields.io/badge/license-LGPL--2.1-black.svg)](https://github.com/EteRNAgame/EternaBrain/blob/master/LICENSE)
 
