@@ -1,6 +1,6 @@
 import numpy as np
 import os
-from readData import experience, read_movesets_uid_pid, read_movesets_uid
+from readData import experience, experience_labs, read_movesets_uid_pid, read_movesets_uid
 from encodeRNA import base_sequence_at_current_time_pr, structure_and_energy_at_current_time
 from encodeRNA import encode_bases,encode_location,encode_movesets_style_pr
 from encodeRNA import structure_and_energy_at_current_time_with_location
@@ -15,15 +15,15 @@ with open(os.getcwd()+'/movesets/teaching-puzzle-ids.txt') as f:
 # you may also want to remove whitespace characters like `\n` at the end of each line
 progression = [x.strip() for x in progression]
 progression = [int(x) for x in progression]
-progression.extend([6502966,6502968,6502973,6502976,6502984,6502985,6502993, \
+progression.extend([6502966,6502968,6502973,6502976,6502984,6502985,6502993,
                 6502994,6502995,6502996,6502997,6502998,6502999,6503000])
 
-content = [123]
-#uidList = [36921]
-uidList = experience(3000) # top 99 percentile
+content = progression
+uidList = [36921]
+#uidList = experience(3000) # top 99 percentile
 print len(uidList)
 #print content
-len_longest = 500
+len_longest = 400
 
 def prep(pid):
     """
@@ -38,7 +38,7 @@ def prep(pid):
 
     print 'ready with pid %i' % pid
 
-    data,users,encoded_bf,lens = experience_labs(pid,threshold)
+    data,users,encoded_bf,lens = experience_labs(pid, threshold)
     print 'experience_labs'
     encoded = encode_movesets_style_pr(data)
     encoded_base = encode_bases(data)
@@ -241,8 +241,12 @@ def run(_):
 
 # for i in reversed(content[:content.index(7165340)]):
 #     read(i,uidList)
-data, pids = read_movesets_uid(36921)
-read2(data,pids)
+
+for i in range(len(content)/2):
+    read(content[i],uidList)
+
+# data, pids = read_movesets_uid(36921)
+# read2(data,pids)
 # with concurrent.futures.ProcessPoolExecutor() as executor:
 #     #x = [6502996,6502990]
 #     for i,j in zip(x,executor.map(read,content[80:])):

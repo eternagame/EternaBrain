@@ -11,9 +11,9 @@ import numpy as np
 import os
 import tensorflow as tf
 import pickle
-from getData import getPid
+#from getData import getPid
 
-NAME = 'baseCNN15'
+NAME = 'baseCNN26'
 NUM_FEATURES = 9
 TRAIN_KEEP_PROB = 0.9
 TEST_KEEP_PROB = 1.0
@@ -21,8 +21,8 @@ learning_rate = 0.0001
 ne = 150
 tb_path = '/tensorboard/' + NAME
 
-train = 30000
-test = 100
+train = 15000
+test = 15000
 abs_max = 350
 len_puzzle = abs_max
 
