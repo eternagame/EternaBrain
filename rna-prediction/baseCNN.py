@@ -19,7 +19,7 @@ TRAIN_KEEP_PROB = 0.9
 TEST_KEEP_PROB = 1.0
 learning_rate = 0.0001
 ne = 150
-tb_path = '/tensorboard/' + NAME
+tb_path = '\\tensorboard\\' + NAME
 
 train = 15000
 test = 15000
@@ -33,7 +33,7 @@ TF_SHAPE = NUM_FEATURES * len_puzzle
 # enc = np.array([[[1,2,3,4],[0,1,0,1],[1,1,1,1],[-3,0,0,0]],[[4,3,2,1],[1,0,1,0],[0,0,0,0],[9,0,0,0]]])
 # out = np.array([[4,2],[3,3]])
 
-with open(os.getcwd()+'/movesets/teaching-puzzle-ids.txt') as f:
+with open(os.getcwd()+'\\movesets\\teaching-puzzle-ids.txt') as f:
     content = f.readlines()
 # you may also want to remove whitespace characters like `\n` at the end of each line
 content = [x.strip() for x in content]
@@ -48,25 +48,26 @@ content.remove(6502976)
 content.remove(6502984)
 # content.remove(4960718)
 # content.remove(3468526)
-
+print(content)
 real_X = []
 real_y = []
 pids = []
-
+print(os.getcwd()+'\\pickle\\X5-exp-loc-4255265')
 for pid in content:
     try:
-        feats = pickle.load(open(os.getcwd()+'/pickles/X5-exp-loc-'+str(pid),'rb'))
-        ybase = pickle.load(open(os.getcwd()+'/pickles/y5-exp-base-'+str(pid),'rb'))
-        yloc = pickle.load(open(os.getcwd()+'/pickles/y5-exp-loc-'+str(pid),'rb'))
+        feats = pickle.load(open(os.getcwd()+'\\pickles\\X5-exp-loc-'+str(pid),'rb'))
+        ybase = pickle.load(open(os.getcwd()+'\\pickles\\y5-exp-base-'+str(pid),'rb'))
+        yloc = pickle.load(open(os.getcwd()+'\\pickles\\y5-exp-loc-'+str(pid),'rb'))
         for i in range(len(feats)):
             feats[i].append(yloc[i])
         real_X.extend(feats)
         real_y.extend(ybase)
         pids.append(feats)
     except IOError:
+        print('Pickle not found')
         continue
 
-print "Unpickled"
+print("Unpickled")
 
 # real_X = features6502997 + features6502995 #+ features6502990 + features6502996 + features6502963 + features6502964 \
 #          #+ features6502966 + features6502967 + features6502968 + features6502969 + features6502970 + features6502976
@@ -91,7 +92,7 @@ for i in indxs:
              for k in j:
                  k.extend([0]*(abs_max - len(k))) #k.extend([0]*(max(max_lens) - len(k)))
 
-print abs_max
+#print abs_max
 
 '''
 Used for testing accuracies without certain features
@@ -100,8 +101,8 @@ Used for testing accuracies without certain features
 #     del i[8]
 
 
-print len(real_X), len(real_y)
-print np.array(real_X).shape, np.array(real_y).shape
+print(len(real_X), len(real_y))
+print(np.array(real_X).shape, np.array(real_y).shape)
 
 #testtest = np.array(real_X[train:train+test]).reshape([-1,TF_SHAPE])
 
@@ -110,7 +111,7 @@ real_y_9 = np.array(real_y[0:train])
 test_real_X = np.array(real_X[train:train+test]).reshape([-1,TF_SHAPE])
 test_real_y = np.array(real_y[train:train+test])
 
-print "Data prepped"
+print("Data prepped")
 
 # real_X_9, test_real_X, real_y_9, test_real_y = np.array(train_test_split(real_X[0:train],real_y[0:train],test_size=0.01))
 # real_X_9, test_real_X, real_y_9, test_real_y = np.array(real_X_9).reshape([-1,TF_SHAPE]), np.array(test_real_X).reshape([-1,TF_SHAPE]), np.array(real_y_9), np.array(test_real_y)
@@ -314,7 +315,7 @@ def convNeuralNet(x):
     tf.summary.histogram('act10',conv10)
 
 
-print "Training"
+print("Training")
 
 
 def train(x):
@@ -348,13 +349,13 @@ def train(x):
         writer.add_graph(sess.graph)
         for epoch in range(num_epochs):
             epoch_loss = 0
-            for i in range(int(real_X_9.shape[0])/batch_size):#mnist.train.num_examples/batch_size)): # X.shape[0]
+            for i in range(int(int(real_X_9.shape[0])/batch_size)): # mnist.train.num_examples/batch_size)): # X.shape[0]
                 randidx = np.random.choice(real_X_9.shape[0], batch_size, replace=False)
-                epoch_x,epoch_y = real_X_9[randidx,:],real_y_9[randidx,:] #mnist.train.next_batch(batch_size) # X,y
+                epoch_x,epoch_y = real_X_9[randidx,:],real_y_9[randidx,:] # mnist.train.next_batch(batch_size) # X,y
                 j,c = sess.run([optimizer,cost],feed_dict={x:epoch_x,y:epoch_y,keep_prob:TRAIN_KEEP_PROB})
                 if i == 0:
                     [ta] = sess.run([accuracy],feed_dict={x:epoch_x,y:epoch_y,keep_prob:TRAIN_KEEP_PROB})
-                    print 'Train Accuracy', ta
+                    print('Train Accuracy', ta)
                 if epoch % 50 == 0 and i == 0:
                     #saver.save(sess,os.getcwd()+'/models/base/baseCNN18.ckpt')
                     #print 'Checkpoint saved at',os.getcwd()+'/models/base/baseCNN18'
@@ -365,14 +366,14 @@ def train(x):
                     writer.add_summary(s,i)
 
                 epoch_loss += c
-            print '\n','Epoch', epoch + 1, 'completed out of', num_epochs, '\nLoss:',epoch_loss
+            print('\n','Epoch', epoch + 1, 'completed out of', num_epochs, '\nLoss:',epoch_loss)
 
-        saver.save(sess, os.getcwd()+'/models/base/' + NAME)
-        saver.export_meta_graph(os.getcwd()+'/models/base/' + NAME + '.meta')
-        print 'Model saved'
+        saver.save(sess, os.getcwd()+'\\models\\base\\' + NAME)
+        saver.export_meta_graph(os.getcwd()+'\\models\\base\\' + NAME + '.meta')
+        print('Model saved')
 
-        print '\n','Train Accuracy', accuracy.eval(feed_dict={x:real_X_9, y:real_y_9, keep_prob:TRAIN_KEEP_PROB})
-        print '\n','Test Accuracy', accuracy.eval(feed_dict={x:test_real_X, y:test_real_y, keep_prob:1.0}) #X, y #mnist.test.images, mnist.test.labels
+        print('\n','Train Accuracy', accuracy.eval(feed_dict={x:real_X_9, y:real_y_9, keep_prob:TRAIN_KEEP_PROB}))
+        print('\n','Test Accuracy', accuracy.eval(feed_dict={x:test_real_X, y:test_real_y, keep_prob:1.0})) #X, y #mnist.test.images, mnist.test.labels
 
         #saver.save(sess,'baseDNN',global_step=1000)
 
