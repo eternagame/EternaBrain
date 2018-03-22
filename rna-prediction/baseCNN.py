@@ -13,16 +13,16 @@ import tensorflow as tf
 import pickle
 #from getData import getPid
 
-NAME = 'baseCNN26'
+NAME = 'baseCNN27'
 NUM_FEATURES = 9
 TRAIN_KEEP_PROB = 0.9
 TEST_KEEP_PROB = 1.0
 learning_rate = 0.0001
 ne = 150
-tb_path = '\\tensorboard\\' + NAME
+tb_path = '/tensorboard/' + NAME
 
-train = 15000
-test = 15000
+train = 30000
+test = 100
 abs_max = 350
 len_puzzle = abs_max
 
@@ -33,12 +33,12 @@ TF_SHAPE = NUM_FEATURES * len_puzzle
 # enc = np.array([[[1,2,3,4],[0,1,0,1],[1,1,1,1],[-3,0,0,0]],[[4,3,2,1],[1,0,1,0],[0,0,0,0],[9,0,0,0]]])
 # out = np.array([[4,2],[3,3]])
 
-with open(os.getcwd()+'\\movesets\\teaching-puzzle-ids.txt') as f:
+with open(os.getcwd()+'/movesets/teaching-puzzle-ids.txt') as f:
     content = f.readlines()
 # you may also want to remove whitespace characters like `\n` at the end of each line
 content = [x.strip() for x in content]
 content = [int(x) for x in content]
-progression = [6502966,6502968,6502973,6502976,6502984,6502985,6502993, \
+progression = [6502966,6502968,6502973,6502976,6502984,6502985,6502993,
                 6502994,6502995,6502996,6502997,6502998,6502999,6503000] # 6502957
 content.extend(progression)
 
@@ -52,12 +52,11 @@ print(content)
 real_X = []
 real_y = []
 pids = []
-print(os.getcwd()+'\\pickle\\X5-exp-loc-4255265')
 for pid in content:
     try:
-        feats = pickle.load(open(os.getcwd()+'\\pickles\\X5-exp-loc-'+str(pid),'rb'))
-        ybase = pickle.load(open(os.getcwd()+'\\pickles\\y5-exp-base-'+str(pid),'rb'))
-        yloc = pickle.load(open(os.getcwd()+'\\pickles\\y5-exp-loc-'+str(pid),'rb'))
+        feats = pickle.load(open(os.getcwd()+'/pickles/X5-exp-loc-'+str(pid),'rb'))
+        ybase = pickle.load(open(os.getcwd()+'/pickles/y5-exp-base-'+str(pid),'rb'))
+        yloc = pickle.load(open(os.getcwd()+'/pickles/y5-exp-loc-'+str(pid),'rb'))
         for i in range(len(feats)):
             feats[i].append(yloc[i])
         real_X.extend(feats)
@@ -100,16 +99,43 @@ Used for testing accuracies without certain features
 # for i in real_X:
 #     del i[8]
 
+# def chunks(l, n):
+#     n = max(1, n)
+#     return (l[i:i+n] for i in range(0, len(l), n))
 
 print(len(real_X), len(real_y))
 print(np.array(real_X).shape, np.array(real_y).shape)
 
 #testtest = np.array(real_X[train:train+test]).reshape([-1,TF_SHAPE])
+# cx = chunks(real_X, 36)
+# cy = chunks(real_y, 36)
+# test_cx = chunks(real_X[train:train+test], 36)
+# test_cy = chunks(real_y[train:train+test], 36)
+cx = ([real_X[i * 36:(i + 1) * 36] for i in range((len(real_X) + 36 - 1) // 36 )])
+cy = ([real_y[i * 36:(i + 1) * 36] for i in range((len(real_y) + 36 - 1) // 36 )])
+#print cx[0]
+cx.pop()
+cy.pop()
+print np.array(cx).shape
 
-real_X_9 = np.array(real_X[0:train]).reshape([-1,TF_SHAPE])
-real_y_9 = np.array(real_y[0:train])
-test_real_X = np.array(real_X[train:train+test]).reshape([-1,TF_SHAPE])
-test_real_y = np.array(real_y[train:train+test])
+# cx = np.array(cx).reshape(-1)
+# cy = np.array(cy).reshape(-1)
+print np.array(cx).shape
+print np.array(cy).shape
+#print len(cx)
+real_X_9 = np.array(cx[1::2]).reshape((-1,TF_SHAPE))
+real_y_9 = np.array(cy[1::2]).reshape(15192, 4)
+test_real_X = np.array(cx[0::2]).reshape((-1,TF_SHAPE))
+test_real_y = np.array(cy[0::2]).reshape(15228, 4)
+print len(real_X_9)
+print real_X_9.shape
+print real_y_9.shape
+print test_real_X.shape
+print test_real_y.shape
+# real_X_9 = np.array(real_X[0:train]).reshape([-1,TF_SHAPE])
+# real_y_9 = np.array(real_y[0:train])
+# test_real_X = np.array(real_X[train:train+test]).reshape([-1,TF_SHAPE])
+# test_real_y = np.array(real_y[train:train+test])
 
 print("Data prepped")
 
@@ -211,34 +237,34 @@ def convNeuralNet(x):
 
     x = tf.reshape(x,shape=[-1,NUM_FEATURES,len_puzzle,1])
 
-    conv1 = tf.nn.relu(conv2d(x, weights['w_conv1']) + biases['b_conv1'])
+    conv1 = tf.nn.sigmoid(conv2d(x, weights['w_conv1']) + biases['b_conv1'])
     conv1 = maxpool2d(conv1)
 
-    conv2 = tf.nn.relu(conv2d(conv1, weights['w_conv2']) + biases['b_conv2'])
+    conv2 = tf.nn.sigmoid(conv2d(conv1, weights['w_conv2']) + biases['b_conv2'])
     conv2 = maxpool2d(conv2)
 
-    conv3 = tf.nn.relu(conv2d(conv2, weights['w_conv3']) + biases['b_conv3'])
+    conv3 = tf.nn.sigmoid(conv2d(conv2, weights['w_conv3']) + biases['b_conv3'])
     conv3 = maxpool2d(conv3)
 
-    conv4 = tf.nn.relu(conv2d(conv3, weights['w_conv4']) + biases['b_conv4'])
+    conv4 = tf.nn.sigmoid(conv2d(conv3, weights['w_conv4']) + biases['b_conv4'])
     conv4 = maxpool2d(conv4)
 
-    conv5 = tf.nn.relu(conv2d(conv4, weights['w_conv5']) + biases['b_conv5'])
+    conv5 = tf.nn.sigmoid(conv2d(conv4, weights['w_conv5']) + biases['b_conv5'])
     conv5 = maxpool2d(conv5)
 
-    conv6 = tf.nn.relu(conv2d(conv5, weights['w_conv6']) + biases['b_conv6'])
+    conv6 = tf.nn.sigmoid(conv2d(conv5, weights['w_conv6']) + biases['b_conv6'])
     conv6 = maxpool2d(conv6)
 
-    conv7 = tf.nn.relu(conv2d(conv6, weights['w_conv7']) + biases['b_conv7'])
+    conv7 = tf.nn.sigmoid(conv2d(conv6, weights['w_conv7']) + biases['b_conv7'])
     conv7 = maxpool2d(conv7)
 
-    conv8 = tf.nn.relu(conv2d(conv7, weights['w_conv8']) + biases['b_conv8'])
+    conv8 = tf.nn.sigmoid(conv2d(conv7, weights['w_conv8']) + biases['b_conv8'])
     conv8 = maxpool2d(conv8)
 
-    conv9 = tf.nn.relu(conv2d(conv8, weights['w_conv9']) + biases['b_conv9'])
+    conv9 = tf.nn.sigmoid(conv2d(conv8, weights['w_conv9']) + biases['b_conv9'])
     conv9 = maxpool2d(conv9)
 
-    conv10 = tf.nn.relu(conv2d(conv9, weights['w_conv10']) + biases['b_conv10'])
+    conv10 = tf.nn.sigmoid(conv2d(conv9, weights['w_conv10']) + biases['b_conv10'])
     conv10 = maxpool2d(conv10)
 
     # conv11 = conv2d(conv10, weights['w_conv11'])
@@ -257,13 +283,13 @@ def convNeuralNet(x):
     # conv15 = maxpool2d(conv15)
 
     fc1 = tf.reshape(conv10, [-1,1024])
-    fc1 = tf.nn.relu(tf.add(tf.matmul(fc1,weights['w_fc1']),biases['b_fc1']))
+    fc1 = tf.nn.sigmoid(tf.add(tf.matmul(fc1,weights['w_fc1']),biases['b_fc1']))
 
-    fc2 = tf.nn.relu(tf.add(tf.matmul(fc1,weights['w_fc2']),biases['b_fc2']))
+    fc2 = tf.nn.sigmoid(tf.add(tf.matmul(fc1,weights['w_fc2']),biases['b_fc2']))
 
-    fc3 = tf.nn.relu(tf.add(tf.matmul(fc2,weights['w_fc3']),biases['b_fc3']))
+    fc3 = tf.nn.sigmoid(tf.add(tf.matmul(fc2,weights['w_fc3']),biases['b_fc3']))
 
-    fc4 = tf.nn.relu(tf.add(tf.matmul(fc3,weights['w_fc4']),biases['b_fc4']))
+    fc4 = tf.nn.sigmoid(tf.add(tf.matmul(fc3,weights['w_fc4']),biases['b_fc4']))
 
     #fc5 = tf.nn.sigmoid(tf.add(tf.matmul(fc4,weights['w_fc5']),biases['b_fc5']))
 
@@ -368,8 +394,8 @@ def train(x):
                 epoch_loss += c
             print('\n','Epoch', epoch + 1, 'completed out of', num_epochs, '\nLoss:',epoch_loss)
 
-        saver.save(sess, os.getcwd()+'\\models\\base\\' + NAME)
-        saver.export_meta_graph(os.getcwd()+'\\models\\base\\' + NAME + '.meta')
+        saver.save(sess, os.getcwd()+'/models/base/' + NAME)
+        saver.export_meta_graph(os.getcwd()+'/models/base/' + NAME + '.meta')
         print('Model saved')
 
         print('\n','Train Accuracy', accuracy.eval(feed_dict={x:real_X_9, y:real_y_9, keep_prob:TRAIN_KEEP_PROB}))
