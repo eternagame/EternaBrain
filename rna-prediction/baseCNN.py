@@ -13,7 +13,7 @@ import tensorflow as tf
 import pickle
 #from getData import getPid
 
-NAME = 'baseCNN29'
+NAME = 'baseCNN30'
 NUM_FEATURES = 9
 TRAIN_KEEP_PROB = 0.9
 TEST_KEEP_PROB = 1.0
@@ -231,34 +231,34 @@ def convNeuralNet(x):
 
     x = tf.reshape(x,shape=[-1,NUM_FEATURES,len_puzzle,1])
 
-    conv1 = tf.nn.sigmoid(conv2d(x, weights['w_conv1']))
+    conv1 = (conv2d(x, weights['w_conv1']))
     conv1 = maxpool2d(conv1)
 
-    conv2 = tf.nn.sigmoid(conv2d(conv1, weights['w_conv2']))
+    conv2 = (conv2d(conv1, weights['w_conv2']))
     conv2 = maxpool2d(conv2)
 
-    conv3 = tf.nn.sigmoid(conv2d(conv2, weights['w_conv3']))
+    conv3 = (conv2d(conv2, weights['w_conv3']))
     conv3 = maxpool2d(conv3)
 
-    conv4 = tf.nn.sigmoid(conv2d(conv3, weights['w_conv4']))
+    conv4 = (conv2d(conv3, weights['w_conv4']))
     conv4 = maxpool2d(conv4)
 
-    conv5 = tf.nn.sigmoid(conv2d(conv4, weights['w_conv5']))
+    conv5 = (conv2d(conv4, weights['w_conv5']))
     conv5 = maxpool2d(conv5)
 
-    conv6 = tf.nn.sigmoid(conv2d(conv5, weights['w_conv6']))
+    conv6 = (conv2d(conv5, weights['w_conv6']))
     conv6 = maxpool2d(conv6)
 
-    conv7 = tf.nn.sigmoid(conv2d(conv6, weights['w_conv7']))
+    conv7 = (conv2d(conv6, weights['w_conv7']))
     conv7 = maxpool2d(conv7)
 
-    conv8 = tf.nn.sigmoid(conv2d(conv7, weights['w_conv8']))
+    conv8 = (conv2d(conv7, weights['w_conv8']))
     conv8 = maxpool2d(conv8)
 
-    conv9 = tf.nn.sigmoid(conv2d(conv8, weights['w_conv9']))
+    conv9 = (conv2d(conv8, weights['w_conv9']))
     conv9 = maxpool2d(conv9)
 
-    conv10 = tf.nn.sigmoid(conv2d(conv9, weights['w_conv10']))
+    conv10 = (conv2d(conv9, weights['w_conv10']))
     conv10 = maxpool2d(conv10)
 
     # conv11 = conv2d(conv10, weights['w_conv11'])
