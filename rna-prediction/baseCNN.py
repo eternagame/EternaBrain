@@ -205,7 +205,7 @@ def convNeuralNet(x):
                'w_fc3':tf.get_variable('w_fc3',[2048,4096],initializer=tf.random_normal_initializer()),
                'w_fc4':tf.get_variable('w_fc4',[4096,8192],initializer=tf.random_normal_initializer()),
                #'w_fc5':tf.get_variable('w_fc5',[8192,16384],initializer=tf.random_normal_initializer()),
-               'out':tf.get_variable('w_out',[8192,n_classes],initializer=tf.random_normal_initializer())}
+               'out':tf.get_variable('w_out',[4096,n_classes],initializer=tf.random_normal_initializer())}
 
     biases = {'b_conv1':tf.get_variable('b_conv1',[2],initializer=tf.random_normal_initializer()),
               'b_conv2':tf.get_variable('b_conv2',[4],initializer=tf.random_normal_initializer()),
@@ -277,17 +277,17 @@ def convNeuralNet(x):
     # conv15 = maxpool2d(conv15)
 
     fc1 = tf.reshape(conv10, [-1,1024])
-    fc1 = tf.nn.sigmoid(tf.matmul(fc1,weights['w_fc1']),biases['b_fc1'])
+    fc1 = tf.nn.sigmoid(tf.add(tf.matmul(fc1,weights['w_fc1']),biases['b_fc1']))
 
-    fc2 = tf.nn.sigmoid(tf.matmul(fc1,weights['w_fc2']),biases['b_fc2'])
+    fc2 = tf.nn.sigmoid(tf.add(tf.matmul(fc1,weights['w_fc2']),biases['b_fc2']))
 
-    fc3 = tf.nn.sigmoid(tf.matmul(fc2,weights['w_fc3']),biases['b_fc3'])
+    fc3 = tf.nn.sigmoid(tf.add(tf.matmul(fc2,weights['w_fc3']),biases['b_fc3']))
 
-    fc4 = tf.nn.sigmoid(tf.matmul(fc3,weights['w_fc4']),biases['b_fc4'])
+    #fc4 = tf.nn.sigmoid(tf.add(tf.matmul(fc3,weights['w_fc4']),biases['b_fc4']))
 
     #fc5 = tf.nn.sigmoid(tf.add(tf.matmul(fc4,weights['w_fc5']),biases['b_fc5']))
 
-    last = tf.nn.dropout(fc4,keep_prob)
+    last = tf.nn.dropout(fc3,keep_prob)
 
     #output = tf.add(tf.matmul(fc,weights['out']),biases['out'],name='final')
     output = tf.add(tf.matmul(last, weights['out']), biases['out'], name='op7')
@@ -386,14 +386,14 @@ def train(x):
                     writer.add_summary(s,i)
 
                 epoch_loss += c
-            print('\n','Epoch', epoch + 1, 'completed out of', num_epochs, '\nLoss:',epoch_loss)
+            print '\n','Epoch', epoch + 1, 'completed out of', num_epochs, '\nLoss:',epoch_loss
 
         saver.save(sess, os.getcwd()+'/models/base/' + NAME)
         saver.export_meta_graph(os.getcwd()+'/models/base/' + NAME + '.meta')
-        print('Model saved')
+        print 'Model saved'
 
-        print('\n','Train Accuracy', accuracy.eval(feed_dict={x:real_X_9, y:real_y_9, keep_prob:TRAIN_KEEP_PROB}))
-        print('\n','Test Accuracy', accuracy.eval(feed_dict={x:test_real_X, y:test_real_y, keep_prob:1.0})) #X, y #mnist.test.images, mnist.test.labels
+        print '\n','Train Accuracy', accuracy.eval(feed_dict={x:real_X_9, y:real_y_9, keep_prob:TRAIN_KEEP_PROB})
+        print '\n','Test Accuracy', accuracy.eval(feed_dict={x:test_real_X, y:test_real_y, keep_prob:1.0}) #X, y #mnist.test.images, mnist.test.labels
 
         #saver.save(sess,'baseDNN',global_step=1000)
 
