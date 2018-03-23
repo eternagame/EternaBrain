@@ -13,7 +13,7 @@ import tensorflow as tf
 import pickle
 from getData import getPid
 
-NAME = 'locationCNN26'
+NAME = 'locationCNN28'
 NUM_FEATURES = 8
 TRAIN_KEEP_PROB = 0.9
 TEST_KEEP_PROB = 1.0
@@ -107,32 +107,34 @@ print np.array(real_X).shape, np.array(real_y).shape
 
 #testtest = np.array(real_X[train:train+test]).reshape([-1,TF_SHAPE])
 
+'''
+Uncomment for altering training data (training on half experts)
+'''
 
-cx = ([real_X[i * 36:(i + 1) * 36] for i in range((len(real_X) + 36 - 1) // 36 )])
-cy = ([real_y[i * 36:(i + 1) * 36] for i in range((len(real_y) + 36 - 1) // 36 )])
-#print cx[0]
-cx.pop()
-cy.pop()
-print np.array(cx).shape
+# cx = ([real_X[i * 36:(i + 1) * 36] for i in range((len(real_X) + 36 - 1) // 36 )])
+# cy = ([real_y[i * 36:(i + 1) * 36] for i in range((len(real_y) + 36 - 1) // 36 )])
+# #print cx[0]
+# cx.pop()
+# cy.pop()
+# print np.array(cx).shape
+#
+#
+# print np.array(cx).shape
+# print np.array(cy).shape
+# real_X_9 = np.array(cx[1::2]).reshape((-1,TF_SHAPE))
+# real_y_9 = np.array(cy[1::2]).reshape(15192, 350)
+# test_real_X = np.array(cx[0::2]).reshape((-1,TF_SHAPE))
+# test_real_y = np.array(cy[0::2]).reshape(15228, 350)
+# print len(real_X_9)
+# print real_X_9.shape
+# print real_y_9.shape
+# print test_real_X.shape
+# print test_real_y.shape
 
-# cx = np.array(cx).reshape(-1)
-# cy = np.array(cy).reshape(-1)
-print np.array(cx).shape
-print np.array(cy).shape
-#print len(cx)
-real_X_9 = np.array(cx[1::2]).reshape((-1,TF_SHAPE))
-real_y_9 = np.array(cy[1::2]).reshape(15192, 350)
-test_real_X = np.array(cx[0::2]).reshape((-1,TF_SHAPE))
-test_real_y = np.array(cy[0::2]).reshape(15228, 350)
-print len(real_X_9)
-print real_X_9.shape
-print real_y_9.shape
-print test_real_X.shape
-print test_real_y.shape
-# real_X_9 = np.array(real_X[0:train]).reshape([-1,TF_SHAPE])
-# real_y_9 = np.array(real_y[0:train])
-# test_real_X = np.array(real_X[train:train+test]).reshape([-1,TF_SHAPE])
-# test_real_y = np.array(real_y[train:train+test])
+real_X_9 = np.array(real_X[0:train]).reshape([-1,TF_SHAPE])
+real_y_9 = np.array(real_y[0:train])
+test_real_X = np.array(real_X[train:train+test]).reshape([-1,TF_SHAPE])
+test_real_y = np.array(real_y[train:train+test])
 
 print "Data prepped"
 
