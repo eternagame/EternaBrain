@@ -6,7 +6,8 @@
 
 Using Eterna data to understand and predict how players solve RNA folding puzzles.
 * Neural networks to learn how top players solve Eterna players and to predict solutions to RNA folding puzzles
-* Unsupervised learning to group players based on their style of solving RNA folding puzzles
+* Unsupervised learning to group Eterna players based on their style of solving RNA folding puzzles
+* These data are donated by Eterna players to accelerate scientific research into RNA design. Data were captured in accordance with [Stanford IRB Protocol 34669](http://humansubjects.stanford.edu/).
 
 ## Author
 [Rohan Koodli](https://github.com/rk900)
@@ -23,7 +24,9 @@ Python: `numpy, tensorflow, pandas, seaborn, matplotlib, scikit-learn`
 R: `ggplot2, reshape2`
 
 ## To Use
-### Step 1: Generate the training data
+### Step 1: Generate the training data 
+Following curates a subset of training data "eternamoves-select" which trains an effective CNN move predictor with reasonable test accuracy.
+
 #### Selecting expert solutions
 Go to `experts.py` and modify the variables `content` and `uidList`. `content` is the puzzle IDs of the puzzles you want movesets on, and `uidList` is the user ID's of the players you want movesets from. You can either specify these manually, or you can use functions to get them for you. `getPid()` will retrieve all the single state puzzles, and `experience` will retrieve all players with an experience above a certain threshold.
 
