@@ -1,6 +1,6 @@
 import numpy as np
 import os
-from readData import experience, experience_labs, read_movesets_uid_pid, read_movesets_uid
+from readData import experience, experience_labs, read_movesets_uid_pid, read_movesets_uid, stats, structure_avg
 from encodeRNA import base_sequence_at_current_time_pr, structure_and_energy_at_current_time
 from encodeRNA import encode_bases,encode_location,encode_movesets_style_pr
 from encodeRNA import structure_and_energy_at_current_time_with_location
@@ -18,9 +18,10 @@ progression = [int(x) for x in progression]
 progression.extend([6502966,6502968,6502973,6502976,6502984,6502985,6502993,
                 6502994,6502995,6502996,6502997,6502998,6502999,6503000])
 
+extra = [6502966,6502968,6502973,6502976,6502984,6502985,6502993,6502994,6502995,6502996,6502997,6502998,6502999,6503000]
 content = progression
-uidList = [36921]
-#uidList = experience(3000) # top 99 percentile
+#uidList = [36921]
+uidList = experience(3000) # top 99 percentile
 print len(uidList)
 #print content
 len_longest = 400
@@ -242,8 +243,15 @@ def run(_):
 # for i in reversed(content[:content.index(7165340)]):
 #     read(i,uidList)
 
-for i in range(len(content)/2):
-    read(content[i],uidList)
+# for i in range(len(content)/2):
+#     read(content[i],uidList)
+
+from pandas import ExcelWriter
+writer = ExcelWriter(os.getcwd() + '/movesets/supplementaltable1.xlsx')
+x = stats(content, uidList)
+x.to_excel(writer)
+
+# print structure_avg(extra)
 
 # data, pids = read_movesets_uid(36921)
 # read2(data,pids)

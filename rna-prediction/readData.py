@@ -51,6 +51,42 @@ def read_movesets_uid(uid): # get data from user ID
     return plist, pidList
 
 
+def stats(pidList, uidList):
+    moveset_dataFrame = pd.read_csv(os.getcwd() + '/movesets/moveset6-22a.txt', sep=" ", header="infer", delimiter='\t')
+    num_sols = []
+    num_moves = []
+    for uid in uidList:
+        sum_moves = 0
+        #for pid in pidList:
+        puzzles1 = moveset_dataFrame.loc[moveset_dataFrame['uid'] == uid]
+        # puzzles2 = puzzles1.loc[puzzles1['pid'] == pid]
+        ms = list(puzzles1['move_set'])
+        for i in ms:
+            #print i
+            #print type(i)
+            try:
+                i = ast.literal_eval(i)
+            except ValueError:
+                continue
+            #print i['num_moves']
+            sum_moves += int(i['num_moves'])
+
+        if len(ms) > 0:
+            num_sols.append(len(ms))
+            num_moves.append(sum_moves)
+        else:
+            num_sols.append(0)
+            num_moves.append(0)
+
+        print('Completed %i out of %i' %(uidList.index(uid) + 1, len(uidList)))
+
+    print len(uidList),len(num_sols),len(num_moves)
+    d = {'User_IDs': uidList, 'Num_solutions': num_sols, 'Num_moves': num_moves}
+    df = pd.DataFrame(data=d)
+
+    return df
+
+
 def read_movesets_uid_pid(uid,pid,df='list'): # get data from user ID
     """
     Returns move sets for a specific puzzle only 1 user has solved
@@ -201,6 +237,16 @@ def read_structure(pid):
             enc_struc.append(3)
 
     return enc_struc
+
+def structure_avg(pidList):
+    puzzle_structure = pd.read_csv(os.getcwd()+'/movesets/puzzle-structure-data.txt', sep=" ", header='infer', delimiter='\t')
+    avgs = []
+    for pid in pidList:
+        puzzles_pid = puzzle_structure.loc[puzzle_structure['pid'] == pid]
+        str_struc = ''.join(list(puzzles_pid['structure']))
+        avgs.append(1.0/len(str_struc))
+
+    return sum(avgs)/float(len(pidList))
 
 def format_pairmap(struc):
     pm = get_pairmap_from_secstruct(struc)
