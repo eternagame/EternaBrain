@@ -4,10 +4,10 @@
 [![Python27](https://img.shields.io/badge/python-2.7-blue.svg)](https://www.python.org/download/releases/2.7/)
 [![License](https://img.shields.io/badge/license-LGPL--2.1-black.svg)](https://github.com/EteRNAgame/EternaBrain/blob/master/LICENSE)
 
-Using Eterna data to understand and predict how players solve RNA folding puzzles.
+Using [Eterna](http://eternagame.org) data to understand and predict how players solve RNA folding puzzles.
+* These data are move sets graciously donated by Eterna players to accelerate scientific research into RNA design
 * Neural networks to learn how top players solve Eterna players and to predict solutions to RNA folding puzzles
 * Unsupervised learning to group Eterna players based on their style of solving RNA folding puzzles
-* These data are donated by Eterna players to accelerate scientific research into RNA design. Data were captured in accordance with [Stanford IRB Protocol 34669](http://humansubjects.stanford.edu/).
 
 ## Author
 [Rohan Koodli](https://github.com/rk900)
