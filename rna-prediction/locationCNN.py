@@ -13,7 +13,7 @@ import tensorflow as tf
 import pickle
 from getData import getPid
 
-NAME = 'locationCNN30'
+NAME = 'locationCNN32'
 NUM_FEATURES = 8
 TRAIN_KEEP_PROB = 0.9
 TEST_KEEP_PROB = 1.0
@@ -117,7 +117,6 @@ Uncomment for altering training data (training on half experts)
 # cx.pop()
 # cy.pop()
 # print np.array(cx).shape
-#
 #
 # print np.array(cx).shape
 # print np.array(cy).shape

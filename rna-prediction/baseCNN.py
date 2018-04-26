@@ -13,7 +13,7 @@ import tensorflow as tf
 import pickle
 #from getData import getPid
 
-NAME = 'baseCNN30'
+NAME = 'baseCNN32'
 NUM_FEATURES = 9
 TRAIN_KEEP_PROB = 0.9
 TEST_KEEP_PROB = 1.0
