@@ -1,3 +1,4 @@
+![EternaBrain](https://github.com/EteRNAgame/EternaBrain/blob/master/eternabrain_logo.png)
 # EternaBrain
 
 [![Release](https://img.shields.io/badge/release-v1.1-brightgreen.svg)](https://github.com/EteRNAgame/EternaBrain/releases)
