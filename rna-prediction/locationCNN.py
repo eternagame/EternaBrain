@@ -53,14 +53,20 @@ content.remove(6502984)
 real_X = []
 real_y = []
 pids = []
-
+specs_X = []
+specs_y = []
 for pid in content:
     try:
         feats = pickle.load(open(os.getcwd()+'/pickles/X5-exp-loc-'+str(pid),'rb'))
         yloc = pickle.load(open(os.getcwd()+'/pickles/y5-exp-loc-'+str(pid),'rb'))
-        real_X.extend(feats)
-        real_y.extend(yloc)
-        pids.append(feats)
+        if np.count_nonzero(np.array(feats[0])) <= 50:
+            specs_X.extend(feats)
+            specs_y.extend(yloc)
+        else:
+            real_X.extend(feats)
+            real_y.extend(yloc)
+            pids.append(feats)
+
     except IOError:
         continue
 
@@ -102,6 +108,7 @@ Used for testing accuracies without certain features
 #     del i[5]
 #     del i[5]
 
+
 print len(real_X), len(real_y)
 print np.array(real_X).shape, np.array(real_y).shape
 
@@ -130,10 +137,10 @@ Uncomment for altering training data (training on half experts)
 # print test_real_X.shape
 # print test_real_y.shape
 
-real_X_9 = np.array(real_X[0:train]).reshape([-1,TF_SHAPE])
-real_y_9 = np.array(real_y[0:train])
-test_real_X = np.array(real_X[train:train+test]).reshape([-1,TF_SHAPE])
-test_real_y = np.array(real_y[train:train+test])
+real_X_9 = np.array(real_X[0:train] + specs_X[:len(specs_X)/2]).reshape([-1,TF_SHAPE])
+real_y_9 = np.array(real_y[0:train] + specs_y[:len(specs_y)/2])
+test_real_X = np.array(real_X[train:train+test] + specs_X[len(specs_X)/2:]).reshape([-1,TF_SHAPE])
+test_real_y = np.array(real_y[train:train+test] + specs_y[len(specs_y)/2:])
 
 print "Data prepped"
 
