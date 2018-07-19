@@ -20,7 +20,9 @@ Using [Eterna](http://eternagame.org) data to understand and predict how players
 ## Dependencies
 Python: `numpy, tensorflow, pandas, seaborn, matplotlib, scikit-learn`
 
-`RNAfold` versions `1.8.5` and `2.3.5` from ViennaRNA (see [config-ViennaRNA.md](https://github.com/EteRNAgame/EternaBrain/blob/master/config-ViennaRNA.md) for installation instructions)
+Conda: `viennarna` (run `conda install -c viennarna`, you should be able to run `python -c "import RNA"` without any errors.
+
+`RNAfold` version `1.8.5` from ViennaRNA (see [config-ViennaRNA.md](https://github.com/EteRNAgame/EternaBrain/blob/master/config-ViennaRNA.md) for installation instructions)
 
 R: `ggplot2, reshape2`
 
