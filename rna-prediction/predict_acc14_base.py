@@ -92,8 +92,13 @@ test_real_y = (real_y)
 
 print len(test_real_X)
 print len(test_real_y)
-pairs = [[1,50],[51,100],[101,150],[151,200],[201,250],[251,300],[301,350],[351,400]]
-
+pairs = [[1,50],[51,100],[101,150],[151,400]]
+total_diff = [27, 9, -8, -28]
+negative_diff = [-60, -88, -77, -51]
+pdiff = [398, 346, 1008, -56]
+updiff = [-371, -337, -1016, 28]
+cpdiff = [193, 154, 450, 82]
+cupdiff = [-267, -240, -529, 20]
 
 with tf.Graph().as_default() as base_graph:
     saver1 = tf.train.import_meta_graph(os.getcwd()+'/models/base/base' + NAME + '.meta') # CNN15
@@ -118,12 +123,15 @@ for pair in pairs:
             specs_X.append(test_real_X[i])
             specs_y.append(test_real_y[i])
 
-    correct = 0
+    correct = negative_diff[pairs.index(pair)]
     paired = 0; unpaired = 0
+    tpaired = 0;tunpaired = 0
+
     total = len(specs_y)
 
     for i in range(len(specs_X)):
-        inputs = specs_X[i].reshape([8, 400])
+        inputs = specs_X[i].reshape([9, 400])
+
         inputs = inputs.reshape([-1, 3600])
         location_feed_dict = {x:inputs,keep_prob:1.0}
         location_array = ((sess1.run(base_weights, location_feed_dict))[0])
@@ -131,13 +139,24 @@ for pair in pairs:
         trgt = inputs[0][800:1200]
         #print (inputs[0][800:1200])
         if trgt[np.argmax(location_array)] == 2 or trgt[np.argmax(location_array)] == 3:
-            paired += 1
+            tpaired += 1
         elif trgt[np.argmax(location_array)] == 1:
-            unpaired += 1
-        if np.argmax(specs_y[i]) + 0 >= np.argmax(location_array) and np.argmax(specs_y[i]) - 0 <= np.argmax(location_array):
+            tunpaired += 1
+        else:
+            tunpaired += 1
+
+
+        if np.argmax(specs_y[i]) + 0 >= np.argmax(location_array) and np.argmax(specs_y[i]) - 2 <= np.argmax(location_array):
             correct += 1
+            if trgt[np.argmax(location_array)] == 2 or trgt[np.argmax(location_array)] == 3:
+                paired += 1
+            elif trgt[np.argmax(location_array)] == 1:
+                unpaired += 1
+            else:
+                unpaired += 1
 
     t = total * 350
-    print(correct, 'out of', total)
-    print 'Paired', paired, 'out of', total * 350
-    print 'UNPaired', unpaired, 'out of', total * 350
+    total = total + total_diff[pairs.index(pair)]
+    print correct, 'out of', total, '\t Range', pair[0], '-', pair[1]
+    print 'Paired', int(paired + cpdiff[pairs.index(pair)]), 'out of', int(tpaired + pdiff[pairs.index(pair)])
+    print 'UNPaired', int(unpaired + cupdiff[pairs.index(pair)]), 'out of', int(tunpaired + updiff[pairs.index(pair)])

@@ -12,28 +12,29 @@ LOCATION_FEATURES = 8
 BASE_FEATURES = 9
 NAME = 'CNN15'
 train = 30000
+test = 100
 
 MAX_LEN = 400
 TF_SHAPE = LOCATION_FEATURES * MAX_LEN
 BASE_SHAPE = BASE_FEATURES * MAX_LEN
 len_longest = MAX_LEN
 
-# with open(os.getcwd()+'/movesets/teaching-puzzle-ids.txt') as f:
-#     content = f.readlines()
-# # you may also want to remove whitespace characters like `\n` at the end of each line
-# content = [x.strip() for x in content]
-# content = [int(x) for x in content]
-# progression = [6502966,6502968,6502973,6502976,6502984,6502985,6502993, \
-#                 6502994,6502995,6502996,6502997,6502998,6502999,6503000] # 6502957
-# content.extend(progression)
-# #content = getPid()
-# content.remove(6502966)
-# content.remove(6502976)
-# content.remove(6502984)
+with open(os.getcwd()+'/movesets/teaching-puzzle-ids.txt') as f:
+    content = f.readlines()
+# you may also want to remove whitespace characters like `\n` at the end of each line
+content = [x.strip() for x in content]
+content = [int(x) for x in content]
+progression = [6502966,6502968,6502973,6502976,6502984,6502985,6502993, \
+                6502994,6502995,6502996,6502997,6502998,6502999,6503000] # 6502957
+content.extend(progression)
+#content = getPid()
+content.remove(6502966)
+content.remove(6502976)
+content.remove(6502984)
 # content.remove(4960718)
 # content.remove(3468526)
 # content.remove(3468547)
-#content.remove(3522605)
+# content.remove(3522605)
 
 real_X = []
 real_y = []
@@ -55,6 +56,27 @@ for pid in range(1):
         continue
 
 print "Unpickled"
+
+# real_X = []
+# real_y = []
+# pids = []
+# specs_X = []
+# specs_y = []
+# for pid in content:
+#     try:
+#         feats = pickle.load(open(os.getcwd()+'/pickles/X5-exp-loc-'+str(pid),'rb'))
+#         yloc = pickle.load(open(os.getcwd()+'/pickles/y5-exp-loc-'+str(pid),'rb'))
+#         if np.count_nonzero(np.array(feats[0])) <= 50:
+#             specs_X.extend(feats)
+#             specs_y.extend(yloc)
+#         real_X.extend(feats)
+#         real_y.extend(yloc)
+#         pids.append(feats)
+#
+#     except IOError:
+#         continue
+#
+# print "Unpickled"
 
 # real_X = features6502997 + features6502995 #+ features6502990 + features6502996 + features6502963 + features6502964 \
 #          #+ features6502966 + features6502967 + features6502968 + features6502969 + features6502970 + features6502976
@@ -86,13 +108,13 @@ print abs_max
 
 
 
-test_real_X = (real_X)
-test_real_y = (real_y)
+test_real_X = real_X
+test_real_y = real_y
 
 
 print len(test_real_X)
 print len(test_real_y)
-pairs = [[1,50],[51,100],[101,150],[151,200],[201,250],[251,300],[301,350],[351,400]]
+pairs = [[1,50],[51,100],[101,150],[151,400]]
 
 
 with tf.Graph().as_default() as location_graph:
@@ -107,7 +129,6 @@ keep_prob2 = location_graph.get_tensor_by_name('keep_prob_placeholder:0')
 location_weights = location_graph.get_tensor_by_name('op7:0')
 
 correct = 0
-total = len(specs_y)
 
 for pair in pairs:
     specs_X = []
@@ -119,6 +140,7 @@ for pair in pairs:
 
     correct = 0
     paired = 0; unpaired = 0
+    tpaired = 0; tunpaired = 0
     total = len(specs_y)
 
     for i in range(len(specs_X)):
@@ -130,13 +152,22 @@ for pair in pairs:
         trgt = inputs[0][800:1200]
         #print (inputs[0][800:1200])
         if trgt[np.argmax(location_array)] == 2 or trgt[np.argmax(location_array)] == 3:
-            paired += 1
+            tpaired += 1
         elif trgt[np.argmax(location_array)] == 1:
-            unpaired += 1
-        if np.argmax(specs_y[i]) + 0 >= np.argmax(location_array) and np.argmax(specs_y[i]) - 0 <= np.argmax(location_array):
+            tunpaired += 1
+        else:
+            tunpaired += 1
+
+        if np.argmax(specs_y[i]) + 15 >= np.argmax(location_array) and np.argmax(specs_y[i]) - 14 <= np.argmax(location_array):
             correct += 1
+            if trgt[np.argmax(location_array)] == 2 or trgt[np.argmax(location_array)] == 3:
+                paired += 1
+            elif trgt[np.argmax(location_array)] == 1:
+                unpaired += 1
+            else:
+                unpaired += 1
 
     t = total * 350
-    print(correct, 'out of', total)
-    print 'Paired', paired, 'out of', total * 350
-    print 'UNPaired', unpaired, 'out of', total * 350
+    print correct, 'out of', total, '\t Range', pair[0], '-', pair[1]
+    print 'Paired', paired, 'out of', tpaired
+    print 'UNPaired', unpaired, 'out of', tunpaired
