@@ -113,7 +113,7 @@ print np.array(real_X).shape, np.array(real_y).shape
 #testtest = np.array(real_X[train:train+test]).reshape([-1,TF_SHAPE])
 
 '''
-Uncomment for altering training data (training on half experts)
+Uncomment for altering training data
 '''
 
 # cx = ([real_X[i * 36:(i + 1) * 36] for i in range((len(real_X) + 36 - 1) // 36 )])
@@ -125,10 +125,17 @@ Uncomment for altering training data (training on half experts)
 #
 # print np.array(cx).shape
 # print np.array(cy).shape
-# real_X_9 = np.array(cx[1::2]).reshape((-1,TF_SHAPE))
-# real_y_9 = np.array(cy[1::2]).reshape(15192, 350)
-# test_real_X = np.array(cx[0::2]).reshape((-1,TF_SHAPE))
-# test_real_y = np.array(cy[0::2]).reshape(15228, 350)
+'''
+The first '#' is for half experts, the second is for half players. Swap out the two commands below for either one.
+'''
+# real_X_9 = np.array(cx[1::2]).reshape((-1,TF_SHAPE)) # real_X_9 = np.array(cx[:15192]).reshape((-1,TF_SHAPE))
+# real_y_9 = np.array(cy[1::2]).reshape(15192, 350) # real_y_9 = np.array(cy[:15192]).reshape(15192, 350)
+'''
+The first '#' is for half experts, the second is for half players
+'''
+# test_real_X = np.array(cx[0::2]).reshape((-1,TF_SHAPE)) # test_real_X = np.array(cx[15192:30420]).reshape((-1,TF_SHAPE))
+# test_real_y = np.array(cy[0::2]).reshape(15228, 350) # # test_real_y = np.array(cy[15192:30420]).reshape(15228, 350)
+########
 # print len(real_X_9)
 # print real_X_9.shape
 # print real_y_9.shape

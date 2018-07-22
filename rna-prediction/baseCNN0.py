@@ -107,23 +107,23 @@ print(np.array(real_X).shape, np.array(real_y).shape)
 Uncomment for altering training data (training on half experts)
 '''
 
-# cx = ([real_X[i * 36:(i + 1) * 36] for i in range((len(real_X) + 36 - 1) // 36 )])
-# cy = ([real_y[i * 36:(i + 1) * 36] for i in range((len(real_y) + 36 - 1) // 36 )])
-# cx.pop()
-# cy.pop()
-# print np.array(cx).shape
-#
-# print np.array(cx).shape
-# print np.array(cy).shape
-# real_X_9 = np.array(cx[1::2]).reshape((-1,TF_SHAPE))
-# real_y_9 = np.array(cy[1::2]).reshape(15192, 4)
-# test_real_X = np.array(cx[0::2]).reshape((-1,TF_SHAPE))
-# test_real_y = np.array(cy[0::2]).reshape(15228, 4)
-# print len(real_X_9)
-# print real_X_9.shape
-# print real_y_9.shape
-# print test_real_X.shape
-# print test_real_y.shape
+cx = ([real_X[i * 36:(i + 1) * 36] for i in range((len(real_X) + 36 - 1) // 36 )])
+cy = ([real_y[i * 36:(i + 1) * 36] for i in range((len(real_y) + 36 - 1) // 36 )])
+cx.pop()
+cy.pop()
+print np.array(cx).shape
+
+print np.array(cx).shape
+print np.array(cy).shape
+real_X_9 = np.array(cx[:587]).reshape((-1,TF_SHAPE))
+real_y_9 = np.array(cy[:587]).reshape(587, 4)
+test_real_X = np.array(cx[587:30420]).reshape((-1,TF_SHAPE))
+test_real_y = np.array(cy[587:30420]).reshape(29833, 4)
+print len(real_X_9)
+print real_X_9.shape
+print real_y_9.shape
+print test_real_X.shape
+print test_real_y.shape
 
 
 real_X_9 = np.array(real_X[0:train]).reshape([-1,TF_SHAPE])

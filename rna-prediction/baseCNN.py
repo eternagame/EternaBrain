@@ -116,10 +116,17 @@ Uncomment for altering training data (training on half experts)
 #
 # print np.array(cx).shape
 # print np.array(cy).shape
-# real_X_9 = np.array(cx[1::2]).reshape((-1,TF_SHAPE))
-# real_y_9 = np.array(cy[1::2]).reshape(15192, 4)
-# test_real_X = np.array(cx[0::2]).reshape((-1,TF_SHAPE))
-# test_real_y = np.array(cy[0::2]).reshape(15228, 4)
+'''
+The first '#' in the real_X_9 statement is for half experts, the second is for half players. Swap out the two commands below for either one.
+'''
+# real_X_9 = np.array(cx[1::2]).reshape((-1,TF_SHAPE)) # real_X_9 = np.array(cx[:15192]).reshape((-1,TF_SHAPE))
+# real_y_9 = np.array(cy[1::2]).reshape(15192, 4) # real_y_9 = np.array(cy[:15192]).reshape(15192, 4)
+'''
+The first '#' statement is for half experts, the second is for half players
+'''
+# test_real_X = np.array(cx[0::2]).reshape((-1,TF_SHAPE)) # test_real_X = np.array(cx[15192:30420]).reshape((-1,TF_SHAPE))
+# test_real_y = np.array(cy[0::2]).reshape(15228, 4) # test_real_y = np.array(cy[15192:30420]).reshape(15228, 4)
+##########
 # print len(real_X_9)
 # print real_X_9.shape
 # print real_y_9.shape
