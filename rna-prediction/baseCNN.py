@@ -12,8 +12,9 @@ import os
 import tensorflow as tf
 import pickle
 #from getData import getPid
+from random import shuffle
 
-NAME = 'baseCNN32'
+NAME = 'baseCNNX'
 NUM_FEATURES = 9
 TRAIN_KEEP_PROB = 0.9
 TEST_KEEP_PROB = 1.0
@@ -23,7 +24,7 @@ tb_path = '/tensorboard/' + NAME
 
 train = 30000
 test = 100
-abs_max = 350
+abs_max = 400
 len_puzzle = abs_max
 
 TF_SHAPE = NUM_FEATURES * len_puzzle
@@ -130,6 +131,9 @@ real_X_9 = np.array(real_X[0:train]).reshape([-1,TF_SHAPE])
 real_y_9 = np.array(real_y[0:train])
 test_real_X = np.array(real_X[train:train+test]).reshape([-1,TF_SHAPE])
 test_real_y = np.array(real_y[train:train+test])
+
+# pickle.dump(test_real_X, open(os.getcwd()+'/pickles/test_real_X_base','wb'))
+# pickle.dump(test_real_y, open(os.getcwd()+'/pickles/test_real_y_base','wb'))
 
 print("Data prepped")
 
