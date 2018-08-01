@@ -1,3 +1,27 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:69bce3d4bd82ed711c47ba5064e44c905d08afb9455d0b690ff12698a1056376
-size 631
+Base
+590 out of 1034 	 Range 1 - 50
+Paired 371 out of 683
+UNPaired 219 out of 351
+404 out of 771 	 Range 51 - 100
+Paired 330 out of 674
+UNPaired 74 out of 97
+626 out of 1329 	 Range 101 - 150
+Paired 560 out of 1206
+UNPaired 66 out of 123
+153 out of 313 	 Range 151 - 400
+Paired 125 out of 264
+UNPaired 28 out of 49
+
+Location
+447 out of 1034 	 Range 1 - 50
+Paired 289 out of 683
+UNPaired 158 out of 351
+279 out of 771 	 Range 51 - 100
+Paired 241 out of 674
+UNPaired 38 out of 97
+402 out of 1329 	 Range 101 - 150
+Paired 369 out of 1206
+UNPaired 33 out of 123
+39 out of 313 	 Range 151 - 400
+Paired 30 out of 264
+UNPaired 9 out of 49

@@ -97,8 +97,8 @@ total_diff = [27, 9, -8, -28]
 negative_diff = [-60, -88, -77, -51]
 pdiff = [398, 346, 1008, -56]
 updiff = [-371, -337, -1016, 28]
-cpdiff = [193, 154, 450, 82]
-cupdiff = [-267, -240, -529, 20]
+cpdiff = [199, 153, 451, -71]
+cupdiff = [-259, -241, -528, 20]
 
 with tf.Graph().as_default() as base_graph:
     saver1 = tf.train.import_meta_graph(os.getcwd()+'/models/base/base' + NAME + '.meta') # CNN15
