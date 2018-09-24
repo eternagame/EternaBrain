@@ -81,7 +81,7 @@ def dsp(dot_bracket, seq_str, vienna_path='../../../EteRNABot/eternabot/./RNAfol
     #print target_pm
     #print current_pm
 
-    for base1, base2 in pairs.iteritems(): # corrects incorrect base pairings
+    for base1, base2 in pairs.items(): # corrects incorrect base pairings
         #print base1,base2
         if (seq[base1] == 'A' and seq[base2] == 'U') or (seq[base1] == 'U' and seq[base2] == 'A'):
             continue
@@ -279,7 +279,7 @@ def dsp(dot_bracket, seq_str, vienna_path='../../../EteRNABot/eternabot/./RNAfol
     '''
     Randomly flips base pairs
     '''
-    p = Popen([vienna_path, '-T','37.0'], stdout=PIPE, stdin=PIPE, stderr=STDOUT)
+    p = Popen([vienna_path, '-T','37.0'], stdout=PIPE, stdin=PIPE, stderr=STDOUT, encoding='utf8')
     pair = p.communicate(input=''.join(seq))[0]
     formatted = re.split('\s+| \(?\s?',pair)
     new_struc = formatted[1]
@@ -288,7 +288,7 @@ def dsp(dot_bracket, seq_str, vienna_path='../../../EteRNABot/eternabot/./RNAfol
     for j in range(5):
         for i in range(len(dot_bracket)):
             if new_pm == target_pm:
-                print 'puzzle solved'
+                print('puzzle solved')
                 SOLVE = True
                 break
             else:
@@ -303,7 +303,7 @@ def dsp(dot_bracket, seq_str, vienna_path='../../../EteRNABot/eternabot/./RNAfol
 
                     seq[i] = base2
                     seq[paired] = base1
-                    p = Popen([vienna_path, '-T','37.0'], stdout=PIPE, stdin=PIPE, stderr=STDOUT)
+                    p = Popen([vienna_path, '-T','37.0'], stdout=PIPE, stdin=PIPE, stderr=STDOUT, encoding='utf8')
                     pair = p.communicate(input=''.join(seq))[0]
                     formatted = re.split('\s+| \(?\s?',pair)
                     new_pm = get_pairmap_from_secstruct(formatted[1])
@@ -333,7 +333,7 @@ def dsp(dot_bracket, seq_str, vienna_path='../../../EteRNABot/eternabot/./RNAfol
     for j in range(3):
         for i in range(len(dot_bracket)):
             if new_pm == target_pm:
-                print 'puzzle solved'
+                print('puzzle solved')
                 SOLVE = True
                 break
             else:
@@ -348,7 +348,7 @@ def dsp(dot_bracket, seq_str, vienna_path='../../../EteRNABot/eternabot/./RNAfol
 
                     seq[i] = base2
                     seq[paired] = base1
-                    p = Popen([vienna_path, '-T','37.0'], stdout=PIPE, stdin=PIPE, stderr=STDOUT)
+                    p = Popen([vienna_path, '-T','37.0'], stdout=PIPE, stdin=PIPE, stderr=STDOUT, encoding='utf8')
                     pair = p.communicate(input=''.join(seq))[0]
                     formatted = re.split('\s+| \(?\s?',pair)
                     new_pm = get_pairmap_from_secstruct(formatted[1])
