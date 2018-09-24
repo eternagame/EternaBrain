@@ -3,7 +3,12 @@ Loads the saved TensorFlow models and runs a simulation of EternaBrain solving a
 Input a target structure in dot-bracket notation and any initial params (energy, locked bases)
 '''
 
-DOT_BRACKET = input("Enter a dot-bracket structure: ")
+import sys
+
+if sys.version_info[:3] > (3,0):
+    DOT_BRACKET = input("Enter a dot-bracket structure: ")
+else:
+    DOT_BRACKET = raw_input("Enter a dot-bracket structure: ")
 
 import tensorflow as tf
 import os
