@@ -3,7 +3,12 @@ Loads the saved TensorFlow models and runs a simulation of EternaBrain solving a
 Input a target structure in dot-bracket notation and any initial params (energy, locked bases)
 '''
 
-DOT_BRACKET = raw_input("Enter a dot-bracket structure: ")
+import sys
+
+if sys.version_info[:3] > (3,0):
+    DOT_BRACKET = input("Enter a dot-bracket structure: ")
+else:
+    DOT_BRACKET = raw_input("Enter a dot-bracket structure: ")
 
 import tensorflow as tf
 import os
@@ -132,7 +137,7 @@ keep_prob2 = location_graph.get_tensor_by_name('keep_prob_placeholder:0')
 
 location_weights = location_graph.get_tensor_by_name('op7:0')
 
-print 'models loaded'
+print('models loaded')
 
 location_feed_dict = {x2:inputs,keep_prob2:1.0}
 movesets = []
@@ -145,7 +150,7 @@ for i in range(MAX_ITERATIONS):
     else:
         location_array = ((sess2.run(location_weights,location_feed_dict))[0])
 
-        inputs2 = inputs.reshape([LOCATION_FEATURES,TF_SHAPE/LOCATION_FEATURES])
+        inputs2 = inputs.reshape([LOCATION_FEATURES,TF_SHAPE//LOCATION_FEATURES])
         location_array = location_array[:len_puzzle] - min(location_array[:len_puzzle])
         total_l = sum(location_array)
         location_array = location_array/total_l
@@ -171,7 +176,7 @@ for i in range(MAX_ITERATIONS):
         # NOT STOCHASTICALLY
         #base_change = np.argmax(base_array) + 1
 
-        inputs2 = inputs.reshape([BASE_FEATURES,BASE_SHAPE/BASE_FEATURES])
+        inputs2 = inputs.reshape([BASE_FEATURES,BASE_SHAPE//BASE_FEATURES])
 
         # if inputs2[0][location_change] == base_change:
         #     second = second_largest(base_array)
@@ -197,9 +202,9 @@ for i in range(MAX_ITERATIONS):
         str_seq = ''.join(str_seq)
         str_struc,current_e = RNA.fold(str_seq)
         current_pm = format_pairmap(str_struc)
-        print str_struc
+        print(str_struc)
         #print len(str_struc)
-        print similar(str_struc,DOT_BRACKET)
+        print(similar(str_struc,DOT_BRACKET))
         rna_struc = []
         for i in inputs2[2]:
             if i == 1:
@@ -246,22 +251,22 @@ for i in range(MAX_ITERATIONS):
                 continue
         reg = ''.join(reg)
         #print inputs2[0][:len_puzzle]
-        print reg
-        print iteration
+        print(reg)
+        print(iteration)
         #print current_struc[:len(enc_struc)]
         #print target_struc[:len(enc_struc)]
         #print inputs2[1][:len(enc_struc)]
         #print format_pairmap(str_struc)
         if similar(str_struc,DOT_BRACKET) >= MIN_THRESHOLD:
-            print 'similar'
-            print str_struc
-            print DOT_BRACKET
-            print reg
+            print('similar')
+            print(str_struc)
+            print(DOT_BRACKET)
+            print(reg)
             break
 
 level1,m2,_ = sbc(DOT_BRACKET,reg)
 level2,m3,_ = dsp(DOT_BRACKET,level1,vienna_path=path)
-print level2
+print(level2)
 
 #movesets.extend(m2)
 #movesets.extend(m3)

@@ -190,15 +190,15 @@ def sbc(dot_bracket,seq): # Monte Carlo Tree Search with Depth 1
                 # # print c_struc
                 # print dot_bracket
 
-                a_reward = SequenceMatcher(None,a_struc,pm)
-                u_reward = SequenceMatcher(None,u_struc,pm)
-                g_reward = SequenceMatcher(None,g_struc,pm)
-                c_reward = SequenceMatcher(None,c_struc,pm)
+                # a_reward = SequenceMatcher(None,a_struc,pm)
+                # u_reward = SequenceMatcher(None,u_struc,pm)
+                # g_reward = SequenceMatcher(None,g_struc,pm)
+                # c_reward = SequenceMatcher(None,c_struc,pm)
 
-                # a_reward = similar(a_struc,pm)
-                # u_reward = similar(u_struc,pm)
-                # g_reward = similar(g_struc,pm)
-                # c_reward = similar(c_struc,pm)
+                a_reward = similar(a_struc,pm)
+                u_reward = similar(u_struc,pm)
+                g_reward = similar(g_struc,pm)
+                c_reward = similar(c_struc,pm)
 
                 # a_reward = eternabot_score(a_struc)
                 # u_reward = eternabot_score(u_struc)
