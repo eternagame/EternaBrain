@@ -3,6 +3,8 @@ Implements the Domain Specific Pipeline (DSP)
 Runs an MCTS modified to implement Eterna player strategies
 Second process of the SAP
 '''
+
+import sys
 import numpy as np
 from eterna_score import get_pairmap_from_secstruct
 import RNA
@@ -279,7 +281,10 @@ def dsp(dot_bracket, seq_str, vienna_path='../../../EteRNABot/eternabot/./RNAfol
     '''
     Randomly flips base pairs
     '''
-    p = Popen([vienna_path, '-T','37.0'], stdout=PIPE, stdin=PIPE, stderr=STDOUT, encoding='utf8')
+    if sys.version_info[:3] > (3,0):
+        p = Popen([vienna_path, '-T','37.0'], stdout=PIPE, stdin=PIPE, stderr=STDOUT, encoding='utf8')
+    else:
+        p = Popen([vienna_path, '-T','37.0'], stdout=PIPE, stdin=PIPE, stderr=STDOUT)
     pair = p.communicate(input=''.join(seq))[0]
     formatted = re.split('\s+| \(?\s?',pair)
     new_struc = formatted[1]
@@ -303,7 +308,10 @@ def dsp(dot_bracket, seq_str, vienna_path='../../../EteRNABot/eternabot/./RNAfol
 
                     seq[i] = base2
                     seq[paired] = base1
-                    p = Popen([vienna_path, '-T','37.0'], stdout=PIPE, stdin=PIPE, stderr=STDOUT, encoding='utf8')
+                    if sys.version_info[:3] > (3,0):
+                        p = Popen([vienna_path, '-T','37.0'], stdout=PIPE, stdin=PIPE, stderr=STDOUT, encoding='utf8')
+                    else:
+                        p = Popen([vienna_path, '-T','37.0'], stdout=PIPE, stdin=PIPE, stderr=STDOUT)
                     pair = p.communicate(input=''.join(seq))[0]
                     formatted = re.split('\s+| \(?\s?',pair)
                     new_pm = get_pairmap_from_secstruct(formatted[1])
@@ -348,7 +356,10 @@ def dsp(dot_bracket, seq_str, vienna_path='../../../EteRNABot/eternabot/./RNAfol
 
                     seq[i] = base2
                     seq[paired] = base1
-                    p = Popen([vienna_path, '-T','37.0'], stdout=PIPE, stdin=PIPE, stderr=STDOUT, encoding='utf8')
+                    if sys.version_info[:3] > (3,0):
+                        p = Popen([vienna_path, '-T','37.0'], stdout=PIPE, stdin=PIPE, stderr=STDOUT, encoding='utf8')
+                    else:
+                        p = Popen([vienna_path, '-T','37.0'], stdout=PIPE, stdin=PIPE, stderr=STDOUT)
                     pair = p.communicate(input=''.join(seq))[0]
                     formatted = re.split('\s+| \(?\s?',pair)
                     new_pm = get_pairmap_from_secstruct(formatted[1])
