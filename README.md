@@ -1,8 +1,9 @@
 ![EternaBrain](https://github.com/EteRNAgame/EternaBrain/blob/master/eternabrain_logo.png)
 # EternaBrain
 
-[![Release](https://img.shields.io/badge/release-v1.1-brightgreen.svg)](https://github.com/EteRNAgame/EternaBrain/releases)
+[![Release](https://img.shields.io/badge/release-v2.0-brightgreen.svg)](https://github.com/EteRNAgame/EternaBrain/releases)
 [![Python27](https://img.shields.io/badge/python-2.7-blue.svg)](https://www.python.org/download/releases/2.7/)
+[![Python36](https://img.shields.io/badge/python-3.6-yellow.svg)](https://www.python.org/downloads/release/python-360/)
 [![License](https://img.shields.io/badge/license-LGPL--2.1-black.svg)](https://github.com/EteRNAgame/EternaBrain/blob/master/LICENSE)
 
 Using [Eterna](http://eternagame.org) data to understand and predict how players solve RNA folding puzzles.
@@ -13,6 +14,11 @@ Using [Eterna](http://eternagame.org) data to understand and predict how players
 ## Author
 [Rohan Koodli](https://github.com/rk900)
 
+## Notes
+* Link to paper on [bioRxiv](https://www.biorxiv.org/content/early/2018/05/21/326736).
+* EternaBrain 1.2 is the version referenced in the above paper, and supports Python 2. EternaBrain 2.0 supports both Python 2 and 3.
+* Many thanks to the contributing authors who provided guidance, ran benchmarks, and did testing: [Benjamin Keep](https://github.com/bekeep), [Katherine Coppess](https://github.com/kcoppess), [Fernando Portela](https://github.com/elnando888), and [Rhiju Das](https://github.com/rhiju).
+
 ## Benchmarks
 ### [Eterna100](https://daslab.stanford.edu/site_data/pub_pdf/2016_Anderson-Lee_JMB.pdf)
 61/100
@@ -20,7 +26,7 @@ Using [Eterna](http://eternagame.org) data to understand and predict how players
 ## Dependencies
 Python: `numpy, tensorflow, pandas, seaborn, matplotlib, scikit-learn`
 
-Conda: `viennarna` (run `conda install -c viennarna`, you should be able to run `python -c "import RNA"` without any errors.
+Conda: `viennarna` (run `conda install -c bioconda viennarna`, you should be able to run `python -c "import RNA"` without any errors.
 
 `RNAfold` version `1.8.5` from ViennaRNA (see [config-ViennaRNA.md](https://github.com/EteRNAgame/EternaBrain/blob/master/config-ViennaRNA.md) for installation instructions)
 
