@@ -8,7 +8,7 @@ Created on Sat Apr  8 12:18:56 2017
 import os
 import pandas as pd
 import ast
-#import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt
 import numpy as np
 import pickle
 from readData import read_movesets_uid_pid, experience
@@ -43,13 +43,13 @@ def plot_moves():
             s2 = int(s1['num_moves'])
             plist_dict.append(s2)
         total[str(pid)] = plist_dict
-        print 'done with pid %i' % pid
+        print('done with pid %i' % pid)
         plt.hist(total[str(pid)],bins=l[::10])
 
     #plt.savefig('/Users/rohankoodli/Desktop/allsinglestate.png')
     #pickle.dump(total, open(os.getcwd()+'/pickles/num_moves'+str(pid),'wb'))
     #total = pickle.load(open(os.getcwd()+'/pickles/num_moves6503000','rb'))
-    print total['6502997']
+    print(total['6502997'])
     # plt.hist(total['6502997'],bins=l[::10])
     # plt.hist(total['6502995'],bins=l[::10])
     # plt.hist(total['6502990'],bins=l[::10])
@@ -97,9 +97,9 @@ for i in [8627]:
             #print "thunder", 392
             s1 = ast.literal_eval(j)
             s2 = int(s1['num_moves'])
-            print i
-            print list(puzzles1['pid'])[d.index(j)]
-            print s2
+            print(i)
+            print(list(puzzles1['pid'])[d.index(j)])
+            print(s2)
         #print '\n'
         except ValueError:
             continue
@@ -109,7 +109,7 @@ for i in [8627]:
 def num_puzzles():
     pidlist = list(ms_df['pid'])
     individual_pids = list(set(pidlist))
-    print len(individual_pids)
+    print(len(individual_pids))
 
     over = 0
     midhigh = 0
@@ -133,9 +133,9 @@ def num_puzzles():
         elif counts < 100: # 8952
             verylow += 1
 
-    print over
-    print midhigh
-    print midlow
-    print less
-    print low
-    print verylow
+    print(over)
+    print(midhigh)
+    print(midlow)
+    print(less)
+    print(low)
+    print(verylow)

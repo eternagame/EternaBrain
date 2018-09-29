@@ -89,11 +89,11 @@ keep_prob2 = location_graph.get_tensor_by_name('keep_prob_placeholder:0')
 
 location_weights = location_graph.get_tensor_by_name('op7:0')
 
-print 'models loaded'
+print('models loaded')
 SOLVED = 0
 
 for db in plist:
-    print db
+    print(db)
     DOT_BRACKET = db
     len_puzzle = len(DOT_BRACKET)
     NUCLEOTIDES = 'A'*len_puzzle
@@ -137,7 +137,7 @@ for db in plist:
             else:
                 location_array = ((sess2.run(location_weights,location_feed_dict))[0])
 
-                inputs2 = inputs.reshape([LOCATION_FEATURES,TF_SHAPE/LOCATION_FEATURES])
+                inputs2 = inputs.reshape([LOCATION_FEATURES,TF_SHAPE//LOCATION_FEATURES])
                 # location_array = location_array[:len_puzzle] - min(location_array[:len_puzzle])
                 # total_l = sum(location_array)
                 # location_array = location_array/total_l
@@ -163,7 +163,7 @@ for db in plist:
                 # NOT STOCHASTICALLY
                 #base_change = np.argmax(base_array) + 1
 
-                inputs2 = inputs.reshape([BASE_FEATURES,BASE_SHAPE/BASE_FEATURES])
+                inputs2 = inputs.reshape([BASE_FEATURES,BASE_SHAPE//BASE_FEATURES])
 
                 temp = copy.deepcopy(inputs2[0])
                 temp[location_change] = base_change
@@ -185,9 +185,9 @@ for db in plist:
                 str_seq = ''.join(str_seq)
                 str_struc,current_e = RNA.fold(str_seq)
                 current_pm = format_pairmap(str_struc)
-                print str_struc
+                print(str_struc)
                 #print len(str_struc)
-                print similar(str_struc,DOT_BRACKET)
+                print(similar(str_struc,DOT_BRACKET))
                 rna_struc = []
                 for i in inputs2[2]:
                     if i == 1:
@@ -233,16 +233,16 @@ for db in plist:
                     else:
                         continue
                 reg = ''.join(reg)
-                print reg
-                print iteration
+                print(reg)
+                print(iteration)
                 if similar(str_struc,DOT_BRACKET) >= MIN_THRESHOLD:
-                    print 'similar'
-                    print str_struc
-                    print DOT_BRACKET
-                    print reg
+                    print('similar')
+                    print(str_struc)
+                    print(DOT_BRACKET)
+                    print(reg)
                     break
         except KeyboardInterrupt:
-            print 'Puzzles solved: %i/%i' % (SOLVED, (plist.index(db) + 1))
+            print('Puzzles solved: %i/%i' % (SOLVED, (plist.index(db) + 1)))
             break
 
     level1,m2,S1 = sbc(DOT_BRACKET,reg)
@@ -254,4 +254,4 @@ for db in plist:
     movesets.extend(m2)
     movesets.extend(m3)
 
-print 'Puzzles solved: %i/100' % SOLVED
+print('Puzzles solved: %i/100' % SOLVED)

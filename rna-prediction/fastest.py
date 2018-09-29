@@ -41,7 +41,7 @@ def speed(pid):
     bf_list = []
 
     #for pid in pidList:
-    print pid
+    print(pid)
     puzzles_pid = moveset_dataFrame.loc[moveset_dataFrame['pid'] == pid]
     plist = list(puzzles_pid['move_set'])
     ulist = list(puzzles_pid['uid'])
@@ -50,7 +50,7 @@ def speed(pid):
         s1 = (ast.literal_eval(i))
         s2 = int(s1['num_moves'])
         if s2 <= max_moves: # solved in 50 moves or less
-            print 'fast'
+            print('fast')
             s3 = s1['moves']
             s4 = s1['begin_from']
             final_dict.append(s3)
@@ -58,7 +58,7 @@ def speed(pid):
         else:
             continue
 
-    print "complete data read"
+    print("complete data read")
     encoded_bf = []
     for start in bf_list:
        enc = []
@@ -72,21 +72,21 @@ def speed(pid):
            elif i == 'C':
                enc.append(4)
        encoded_bf.append(enc)
-    print "encoded begin_from"
-    print len(final_dict)
+    print("encoded begin_from")
+    print(len(final_dict))
     encoded = encode_movesets_style_pr(final_dict)
     encoded_base = (encode_bases(final_dict))
     encoded_loc = (encode_location(final_dict,len_longest))
-    print 'encoded base and location'
-    print len(encoded), len(encoded_bf), len(final_dict)
+    print('encoded base and location')
+    print(len(encoded), len(encoded_bf), len(final_dict))
     bases = base_sequence_at_current_time_pr(encoded,encoded_bf)
-    print 'encoded base seqs'
+    print('encoded base seqs')
     #print len(bases[0][0])
     #bases = base_sequence_at_current_time_pr(encoded[1006],encoded_bf[1006])
     X = (structure_and_energy_at_current_time(bases,pid))
     #X2 = (structure_and_energy_at_current_time_with_location(bases,pid,final_dict,len_longest))
-    print 'encoded strucs energy and locks'
-    print len(X)
+    print('encoded strucs energy and locks')
+    print(len(X))
     # np.save(open(os.getcwd()+'/npsaves/X-exp-base-eli.npy','wb'),X2)
     # np.save(open(os.getcwd()+'/npsaves/X-exp-loc-eli.npy','wb'),X)
     # np.save(open(os.getcwd()+'/npsaves/y-exp-base-eli.npy','wb'),encoded_base)

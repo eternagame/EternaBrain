@@ -55,7 +55,7 @@ for pid in range(1):
     except IOError:
         continue
 
-print "Unpickled"
+print("Unpickled")
 
 # real_X = []
 # real_y = []
@@ -104,7 +104,7 @@ print "Unpickled"
 # for i in real_y:
 #     i.extend([0]*50)
 
-print abs_max
+print(abs_max)
 
 
 
@@ -112,8 +112,8 @@ test_real_X = real_X
 test_real_y = real_y
 
 
-print len(test_real_X)
-print len(test_real_y)
+print(len(test_real_X))
+print(len(test_real_y))
 pairs = [[1,50],[51,100],[101,150],[151,400]]
 
 
@@ -168,6 +168,6 @@ for pair in pairs:
                 unpaired += 1
 
     t = total * 350
-    print correct, 'out of', total, '\t Range', pair[0], '-', pair[1]
-    print 'Paired', paired, 'out of', tpaired
-    print 'UNPaired', unpaired, 'out of', tunpaired
+    print(correct, 'out of', total, '\t Range', pair[0], '-', pair[1])
+    print('Paired', paired, 'out of', tpaired)
+    print('UNPaired', unpaired, 'out of', tunpaired)

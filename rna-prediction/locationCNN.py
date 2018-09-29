@@ -69,7 +69,7 @@ for pid in content:
     except IOError:
         continue
 
-print "Unpickled"
+print("Unpickled")
 
 # real_X = features6502997 + features6502995 #+ features6502990 + features6502996 + features6502963 + features6502964 \
 #          #+ features6502966 + features6502967 + features6502968 + features6502969 + features6502970 + features6502976
@@ -97,7 +97,7 @@ for i in indxs:
 # for i in real_y:
 #     i.extend([0]*50)
 
-print abs_max
+print(abs_max)
 
 '''
 Used for testing accuracies without certain features
@@ -107,8 +107,8 @@ Used for testing accuracies without certain features
 #     del i[5]
 
 
-print len(real_X), len(real_y)
-print np.array(real_X).shape, np.array(real_y).shape
+print(len(real_X), len(real_y))
+print(np.array(real_X).shape, np.array(real_y).shape)
 
 #testtest = np.array(real_X[train:train+test]).reshape([-1,TF_SHAPE])
 
@@ -150,7 +150,7 @@ test_real_y = np.array(real_y[train:train+test])
 # pickle.dump(test_real_X, open(os.getcwd()+'/pickles/test_real_X_base','wb'))
 # pickle.dump(test_real_y, open(os.getcwd()+'/pickles/test_real_y_base','wb'))
 
-print "Data prepped"
+print("Data prepped")
 
 # real_X_9, test_real_X, real_y_9, test_real_y = np.array(train_test_split(real_X[0:train],real_y[0:train],test_size=0.01))
 # real_X_9, test_real_X, real_y_9, test_real_y = np.array(real_X_9).reshape([-1,TF_SHAPE]), np.array(test_real_X).reshape([-1,TF_SHAPE]), np.array(real_y_9), np.array(test_real_y)
@@ -354,7 +354,7 @@ def convNeuralNet(x):
     tf.summary.histogram('act10',conv10)
 
 
-print "Training"
+print("Training")
 
 
 def train(x):
@@ -394,7 +394,7 @@ def train(x):
                 j,c = sess.run([optimizer,cost],feed_dict={x:epoch_x,y:epoch_y,keep_prob:TRAIN_KEEP_PROB})
                 if i == 0:
                     [ta] = sess.run([accuracy],feed_dict={x:epoch_x,y:epoch_y,keep_prob:TRAIN_KEEP_PROB})
-                    print 'Train Accuracy', ta
+                    print('Train Accuracy', ta)
                 if epoch % 50 == 0 and i == 0:
                     #saver.save(sess,os.getcwd()+'/models/location/locationCNN18.ckpt')
                     #print 'Checkpoint saved at',os.getcwd()+'/models/location/locationCNN18'
@@ -405,14 +405,14 @@ def train(x):
                     writer.add_summary(s,i)
 
                 epoch_loss += c
-            print '\n','Epoch', epoch + 1, 'completed out of', num_epochs, '\nLoss:',epoch_loss
+            print('\n','Epoch', epoch + 1, 'completed out of', num_epochs, '\nLoss:',epoch_loss)
 
         saver.save(sess, os.getcwd() + '/models/location/' + NAME)
         saver.export_meta_graph(os.getcwd() + '/models/location/' + NAME + '.meta')
-        print "Model saved"
+        print("Model saved")
 
-        print '\n','Train Accuracy', accuracy.eval(feed_dict={x:real_X_9, y:real_y_9, keep_prob:TRAIN_KEEP_PROB})
-        print '\n','Test Accuracy', accuracy.eval(feed_dict={x:test_real_X, y:test_real_y, keep_prob:1.0}) #X, y #mnist.test.images, mnist.test.labels
+        print('\n','Train Accuracy', accuracy.eval(feed_dict={x:real_X_9, y:real_y_9, keep_prob:TRAIN_KEEP_PROB}))
+        print('\n','Test Accuracy', accuracy.eval(feed_dict={x:test_real_X, y:test_real_y, keep_prob:1.0})) #X, y #mnist.test.images, mnist.test.labels
 
         #saver.save(sess,'baseDNN',global_step=1000)
 

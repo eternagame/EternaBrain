@@ -54,7 +54,7 @@ for pid in range(1):
     except IOError:
         continue
 
-print "Unpickled"
+print("Unpickled")
 
 # real_X = features6502997 + features6502995 #+ features6502990 + features6502996 + features6502963 + features6502964 \
 #          #+ features6502966 + features6502967 + features6502968 + features6502969 + features6502970 + features6502976
@@ -82,7 +82,7 @@ print "Unpickled"
 # for i in real_y:
 #     i.extend([0]*50)
 
-print abs_max
+print(abs_max)
 
 
 
@@ -90,8 +90,8 @@ test_real_X = (real_X)
 test_real_y = (real_y)
 
 
-print len(test_real_X)
-print len(test_real_y)
+print(len(test_real_X))
+print(len(test_real_y))
 pairs = [[1,50],[51,100],[101,150],[151,400]]
 total_diff = [27, 9, -8, -28]
 negative_diff = [-60, -88, -77, -51]
@@ -157,6 +157,6 @@ for pair in pairs:
 
     t = total * 350
     total = total + total_diff[pairs.index(pair)]
-    print correct, 'out of', total, '\t Range', pair[0], '-', pair[1]
-    print 'Paired', int(paired + cpdiff[pairs.index(pair)]), 'out of', int(tpaired + pdiff[pairs.index(pair)])
-    print 'UNPaired', int(unpaired + cupdiff[pairs.index(pair)]), 'out of', int(tunpaired + updiff[pairs.index(pair)])
+    print(correct, 'out of', total, '\t Range', pair[0], '-', pair[1])
+    print('Paired', int(paired + cpdiff[pairs.index(pair)]), 'out of', int(tpaired + pdiff[pairs.index(pair)]))
+    print('UNPaired', int(unpaired + cupdiff[pairs.index(pair)]), 'out of', int(tunpaired + updiff[pairs.index(pair)]))
