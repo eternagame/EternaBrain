@@ -32,7 +32,11 @@ Conda: `viennarna` (run `conda install -c bioconda viennarna`, you should be abl
 
 R: `ggplot2, reshape2`
 
-## To Use
+## Using a pretrained model
+Go to `predict_pm.py` and change the value of `DOT_BRACKET` to the desired target RNA structure in dot-bracket notation. Configure RNAfold, and enter the correct path to Vienna 1.8.5 in the `path` field, then run `predict_pm.py`.
+
+## Generating your own data and CNNs
+
 ### Step 1: Generate the training data 
 Following curates a subset of training data "eternamoves-select" which trains an effective CNN move predictor with reasonable test accuracy.
 
@@ -105,9 +109,6 @@ MIN_THRESHOLD = 0.65
 ```
 
 Now, you can run the model and it will attempt to find a nucleotide sequence that will fold into the secondary structure provided.
-
-## Using a pretrained model
-Go to `predict_pm.py` and change the value of `DOT_BRACKET` to the desired target RNA structure in dot-bracket notation. Configure RNAfold, and enter the correct path to Vienna 1.8.5 in the `path` field, then run `predict_pm.py`.
 
 ## Key Puzzles
 ### Multi-state puzzles
