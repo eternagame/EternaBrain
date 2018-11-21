@@ -83,6 +83,11 @@ def dsp(dot_bracket, seq_str, vienna_path='../../../EteRNABot/eternabot/./RNAfol
     #print target_pm
     #print current_pm
 
+
+    """
+    Correcting incorrect base pairings
+    """
+    ############ Comment out from here to remove this strategy #############
     for base1, base2 in pairs.items(): # corrects incorrect base pairings
         #print base1,base2
         if (seq[base1] == 'A' and seq[base2] == 'U') or (seq[base1] == 'U' and seq[base2] == 'A'):
@@ -130,7 +135,12 @@ def dsp(dot_bracket, seq_str, vienna_path='../../../EteRNABot/eternabot/./RNAfol
             m.append([1,i+1])
         else:
             continue
+    ######################################################################
 
+    """
+    End pairs to G-C
+    """
+    ############ Comment out from here to remove this strategy #############
     for i in range(len(dot_bracket)):
         try:
             if dot_bracket[i] == '(':# or dot_bracket[i] == ')':
@@ -162,7 +172,12 @@ def dsp(dot_bracket, seq_str, vienna_path='../../../EteRNABot/eternabot/./RNAfol
 
         except IndexError:
             continue
+    ######################################################################
 
+    """
+    G External Loop Boost
+    """
+    ############ Comment out from here to remove this strategy #############
     for i in range(len(dot_bracket)):
         if dot_bracket[i] == '(':
             if dot_bracket[i+1] == '.' and dot_bracket[i+2] == '.' and dot_bracket[i+3] == '.' and dot_bracket[i+4] == '.':
@@ -170,7 +185,12 @@ def dsp(dot_bracket, seq_str, vienna_path='../../../EteRNABot/eternabot/./RNAfol
                 m.append([3,i+2])
             # elif (dot_bracket[i+1] == '.' and dot_bracket[i+2] == '('):
             #     seq[i+1] = 'G'
+    ########################################################################
 
+    """
+    G-A Internal Loop Boost
+    """
+    ############ Comment out ######################################################
     for i in range(len(dot_bracket)):
         #pairing = target_pm[i]
         if dot_bracket[i] == '(' and dot_bracket[i+1] == '.':# and dot_bracket[target_pm[i]] == ")" and dot_bracket[target_pm[i-1]] == '.':
@@ -196,6 +216,7 @@ def dsp(dot_bracket, seq_str, vienna_path='../../../EteRNABot/eternabot/./RNAfol
                     if target_pm[starter] == starter or target_pm[starter] == ender:
                         seq[i+1] = 'G'
                         seq[ender+1] = 'G'
+    ##############################################################################
 
         # if dot_bracket[i] == ')' and dot_bracket[i+1] == '.' and dot_bracket[target_pm[i]] == "(" and dot_bracket[target_pm[i+1]] == '.':
         #     dots = []
@@ -218,6 +239,10 @@ def dsp(dot_bracket, seq_str, vienna_path='../../../EteRNABot/eternabot/./RNAfol
         #         seq[i+1] = 'G'
         #         seq[ender+1] = 'G'
 
+        """
+        U-G-U-G Superboost
+        """
+        ############ Comment out from here to remove this strategy #############
         if dot_bracket[i] == '(' and dot_bracket[i+1] == '.' and dot_bracket[i+2] == '.' and dot_bracket[i+3] == '(': # UGUG superboost
             idx = target_pm[i]
             dots = []
@@ -250,7 +275,7 @@ def dsp(dot_bracket, seq_str, vienna_path='../../../EteRNABot/eternabot/./RNAfol
                 seq[idx-1] = 'G'
                 m.append([3,i+2])
                 m.append([3,idx])
-
+        ######################################################################
         # if dot_bracket[i] == '(' and dot_bracket[i+1] == '.' and dot_bracket[i+2] == '(': # G-G in 2 pair internal loop
         #     idx = target_pm[i]
         #     if dot_bracket[idx] == ')' and dot_bracket[idx-1] == '.' and dot_bracket[idx-2] == ')':
@@ -279,8 +304,9 @@ def dsp(dot_bracket, seq_str, vienna_path='../../../EteRNABot/eternabot/./RNAfol
 
 
     '''
-    Randomly flips base pairs
+    Flips base pairs
     '''
+    ############ Comment out from here to remove this strategy #############
     if sys.version_info[:3] > (3,0):
         p = Popen([vienna_path, '-T','37.0'], stdout=PIPE, stdin=PIPE, stderr=STDOUT, encoding='utf8')
     else:
@@ -325,8 +351,7 @@ def dsp(dot_bracket, seq_str, vienna_path='../../../EteRNABot/eternabot/./RNAfol
                     else:
                         seq[i] = base1
                         seq[paired] = base2
-
-
+    ######################################################################
 
     for i in range(len(dot_bracket)):
         if new_pm[i] == target_pm[i]:
