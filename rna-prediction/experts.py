@@ -1,6 +1,6 @@
 import numpy as np
 import os
-from readData import experience, experience_labs, read_movesets_uid_pid, read_movesets_uid, stats, structure_avg
+from readData import experience, experience_labs, read_movesets_uid_pid, read_movesets_uid, structure_avg
 from encodeRNA import base_sequence_at_current_time_pr, structure_and_energy_at_current_time
 from encodeRNA import encode_bases,encode_location,encode_movesets_style_pr
 from encodeRNA import structure_and_energy_at_current_time_with_location
@@ -9,6 +9,7 @@ import concurrent.futures
 import time
 import pickle
 from getData import getPid
+from stats import stats
 
 with open(os.getcwd()+'/movesets/teaching-puzzle-ids.txt') as f:
     progression = f.readlines()
@@ -160,6 +161,74 @@ def read(pid,uidList):
     pickle.dump(encoded_base,open(os.getcwd()+'/pickles/y-hog-base-'+str(pid),'wb'))
     pickle.dump(encoded_loc,open(os.getcwd()+'/pickles/y-hog-loc-'+str(pid),'wb'))
 
+def read_uid(uidList):
+    """
+    Returns training data for expert players of one puzzle
+
+    :param pid: Puzzle ID
+    :param uidList: List of user IDs
+    :return: Pickled training data
+    """
+
+    #print 'ready with pid %i' % pid
+
+    #uidList.remove(87216)
+    #uidList = [8627]
+    #print uidList
+    final_dict = []
+    bf_list = []
+    count = 0
+    #start = time.time()
+    for user in uidList:
+        #print user
+        data = read_movesets_uid(user)
+        #data = read_movesets_uid(user)
+        #print 'data read'
+        if not data:
+            #print 'user %i with pid %i list empty' % (user,pid)
+            continue
+        else:
+            for i in data:
+                #print 'formatting into list'
+                try:
+                    s1 = ast.literal_eval(i)
+                    s2 = s1['moves']
+                    s3 = s1['begin_from']
+                    final_dict.append(s2)
+                    bf_list.append(s3)
+                    print(s2, s3)
+                    count += len(s2)
+                except:
+                    continue
+                #print 'done formatting list'
+        print('Comnpleted %i/%i' % (uidList.index(user), len(uidList)))
+    ##print time.time() - start()
+    #print "complete data read"
+    encoded_bf = []
+    for start in bf_list:
+       enc = []
+       for i in start:
+           if i == 'A':
+               enc.append(1)
+           elif i == 'U':
+               enc.append(2)
+           elif i == 'G':
+               enc.append(3)
+           elif i == 'C':
+               enc.append(4)
+       encoded_bf.append(enc)
+    #print "encoded begin_from"
+
+    encoded = encode_movesets_style_pr(final_dict)
+    encoded_base = (encode_bases(final_dict))
+    encoded_loc = (encode_location(final_dict,len_longest))
+
+    bases = base_sequence_at_current_time_pr(encoded,encoded_bf)
+
+    X = (structure_and_energy_at_current_time(bases,pid))
+    return X
+
+
 def read2(data,pids):
     """
     Returns CNN-ready training data for expert players of several
@@ -246,10 +315,11 @@ def run(_):
 # for i in range(len(content)/2):
 #     read(content[i],uidList)
 
-from pandas import ExcelWriter
-writer = ExcelWriter(os.getcwd() + '/movesets/supplementaltable1.xlsx')
-x = stats(content, uidList)
-x.to_excel(writer)
+if __name__ == '__main__':
+    from pandas import ExcelWriter
+    writer = ExcelWriter(os.getcwd() + '/movesets/supplementaltable1.xlsx')
+    x = stats(content, uidList)
+    x.to_excel(writer)
 
 # #print structure_avg(extra)
 
