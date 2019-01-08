@@ -8,7 +8,7 @@ library(reshape2)
 #ggplot(data) + geom_tile(aes(x=algorithm, y=name, fill=solved)) + scale_x_discrete("", labels=names) + scale_y_discrete("") + scale_fill_manual(values = c("#DD3333", "#33DD33"), na.value="gray50")+ theme(axis.text.x = element_text(angle = 90, colour=cols), legend.position="none")
 
 png("eb-2222",height=495,width = 315)
-df = read.table('/Volumes/RohanDataVault/EternaBrain-data-archive/cnnresults1.txt', header=TRUE, sep='\t')
+df = read.table('~/cnnresults2.txt', header=TRUE, sep='\t')
 df$EteRNABot...27 = NULL
 print(colnames(df))
 
@@ -33,6 +33,6 @@ ggplot(new.df) + geom_tile(aes(x=algorithm, y=name, fill=solved == "0")) + scale
 #   scale_y_discrete("") + scale_fill_manual(values = c("#33DD33", "#DD3333"), na.value="gray50") +
 #   theme(axis.text.x = element_text(angle = 90), legend.position="none")
 
-ggsave('~/Desktop/eb-2222.png')
+ggsave('~/Desktop/eterna100_51-100_ordered.png')
 
 
