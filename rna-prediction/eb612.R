@@ -1,7 +1,7 @@
 library(ggplot2)
 library(reshape2)
 
-png("/hyper_50-100.png",height=495,width = 330)
+png("/hyper_50-100.png",height=495,width = 335)
 
 df = read.table('~/hyperparameterresults2.txt', header=T)
 

@@ -7,7 +7,7 @@ library(reshape2)
 #new.df = melt(data, id.vars='name', variable.name='name', value.name='solved')
 #ggplot(data) + geom_tile(aes(x=algorithm, y=name, fill=solved)) + scale_x_discrete("", labels=names) + scale_y_discrete("") + scale_fill_manual(values = c("#DD3333", "#33DD33"), na.value="gray50")+ theme(axis.text.x = element_text(angle = 90, colour=cols), legend.position="none")
 
-png("eb-2222",height=495,width = 315)
+png("eb-2222",height=495,width = 335)
 df = read.table('~/cnnresults2.txt', header=TRUE, sep='\t')
 df$EteRNABot...27 = NULL
 print(colnames(df))
