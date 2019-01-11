@@ -41,7 +41,7 @@ def stats(pidList, uidList):
 
         print('Completed %i out of %i' %(uidList.index(uid) + 1, len(uidList)))
 
-    print len(uidList),len(num_sols),len(num_moves)
+    print(len(uidList),len(num_sols),len(num_moves))
     d = {'User_IDs': uidList, 'Num_solutions': num_sols, 'Num_moves': num_moves}
     df = pd.DataFrame(data=d)
 
@@ -53,24 +53,27 @@ def convert():
     old_df = pd.read_excel(os.getcwd() + '/movesets/old_supplementaltable1.xlsx')
     old_df['IDs'] = uidList
     for i, r in old_df[::-1].iterrows():
-        print i, r['User_IDs']
+        print(i, r['User_IDs'])
         if r['Num_moves'] == 0:
             old_df = old_df.drop([i])
 
     old_df.to_excel(writer)
 
-def all_uids():
+def all_uids(write=True):
     moveset_dataFrame = pd.read_csv(os.getcwd() + '/movesets/moveset6-22a.txt', sep=" ", header="infer", delimiter='\t')
 
     puzzles1 = list(moveset_dataFrame['uid'].values)
     puzzles2 = list(moveset_dataFrame['uid'].unique())
-    print len(puzzles1)
-    print len(puzzles2)
-    print len(set(puzzles1))
-    f = open(os.getcwd() + '/movesets/supplementaltable2.txt', 'wb')
-    for i in list(set(puzzles1)):
-        f.write("%i\n" % i)
-    f.close()
+    print(len(puzzles1))
+    print(len(puzzles2))
+    print(len(set(puzzles1)))
+    if write:
+        f = open(os.getcwd() + '/movesets/supplementaltable2.txt', 'wb')
+        for i in list(set(puzzles1)):
+            f.write("%i\n" % i)
+        f.close()
+    else:
+        return list(set(puzzles1))
 
 def moves_and_uids():
     import operator
@@ -99,7 +102,7 @@ def moves_and_uids():
             #print i['num_moves']
             sum_moves += int(i['num_moves'])
         out[names[ids.index(uid)]] = sum_moves
-        print 'Completed %i users out of %i' % (ids.index(uid) + 1, l)
+        print('Completed %i users out of %i' % (ids.index(uid) + 1, l))
 
     f = open(os.getcwd() + '/movesets/supplementaltable2-1.txt', 'wb')
     sorted_dict = sorted(out.items(), key=operator.itemgetter(1))
