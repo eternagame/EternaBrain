@@ -17,11 +17,13 @@ df = df.set_index('pid')
 teachingpuzzles = map(int, content)
 
 for pid in teachingpuzzles:
-    file = open(os.getcwd() + 's4/p%i.txt' % pid, 'wb')
+    file = open(os.getcwd() + '/s4/p%i.txt' % pid, 'w')
     file.write(str(pid))
     struc = df.loc[pid, 'structure']
-    file.write('\n' + 'A'*len*struc)
+    file.write('\n' + 'A'*len(struc))
     file.write('\n' + struc)
     file.close()
 
     call(['python', 'draw_all.py', 's4/p%i.txt' % pid])
+
+    print('########### Completed %i out of %i ############' % (teachingpuzzles.index(pid) + 1, len(teachingpuzzles)))
