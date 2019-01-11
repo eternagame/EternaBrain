@@ -20,14 +20,9 @@ def experience(threshold):
     full_problems = pd.read_csv(os.getcwd()+'/movesets/full-problems-nov2016.txt', sep=" ", header="infer", delimiter='\t')
     user_df = full_problems[['uid']]
     users = np.array(user_df,dtype=int) # list of users
-    experienced_players = []
     unique, counts = np.unique(users, return_counts=True) # unique and counts are same length
 
-    for i in range(len(unique)):
-        if counts[i] >= threshold:
-            experienced_players.append(unique[i])
-
-    return experienced_players
+    return [unique[i] for i in range(len(unique)) if counts[i] >= threshold]
 
 
 def read_movesets_uid(uid): # get data from user ID
