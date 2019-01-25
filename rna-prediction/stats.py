@@ -104,13 +104,47 @@ def moves_and_uids():
         out[names[ids.index(uid)]] = sum_moves
         print('Completed %i users out of %i' % (ids.index(uid) + 1, l))
 
-    f = open(os.getcwd() + '/movesets/supplementaltable2-1.txt', 'wb')
+    f = open('supplementaltable2-1.txt', 'wb')
     sorted_dict = sorted(out.items(), key=operator.itemgetter(1))
     for i in sorted_dict[::-1]:
         f.write('%s\t%s\n' % (i[1], i[0]))
     f.close()
 
+def uids():
+    import operator
+
+    moveset_dataFrame = pd.read_csv(os.getcwd() + '/movesets/moveset6-22a.txt', sep=" ", header="infer", delimiter='\t')
+    player_dataFrame = pd.read_csv(os.getcwd() + '/movesets/move-set-contributors.txt', sep=" ", header="infer", delimiter='\t')
+
+    names = list(player_dataFrame['User.name'])
+    ids = list(player_dataFrame['User.ID'])
+    puzzles2 = list(moveset_dataFrame['uid'].unique())
+    out = {}
+    l = len(ids)
+    for uid in ids:
+        sum_moves = 0
+        u = moveset_dataFrame.loc[moveset_dataFrame['uid'] == uid]
+        ms = list(u['move_set'])
+        for i in ms:
+            #print i
+            #print type(i)
+            try:
+                i = ast.literal_eval(i)
+            except ValueError:
+                continue
+            except SyntaxError:
+                continue
+            #print i['num_moves']
+            sum_moves += int(i['num_moves'])
+        out[names[ids.index(uid)]] = sum_moves
+        print('Completed %i users out of %i' % (ids.index(uid) + 1, l))
+
+    f = open('uids.txt', 'wb')
+    sorted_dict = sorted(out.items(), key=operator.itemgetter(1))
+    for i in sorted_dict[::-1]:
+        f.write('%s, ' % (i[0]))
+    f.close()
 
 
 if __name__ == '__main__':
-    moves_and_uids()
+    uids()
