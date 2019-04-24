@@ -1,4 +1,4 @@
-tensorflow==1.0.1
+tensorflow>=1.6.0
 sklearn==0.18.1
 numpy==1.12.1
 seaborn==0.7.1
