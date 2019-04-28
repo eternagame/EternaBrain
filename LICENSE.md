@@ -1,4 +1,4 @@
-## LICENSE for EternaBrain
+## LICENSE for EternaBrain, SAP, & _eternamoves_ data sets
 
 1. Copyright &copy; 2017-2019 The Board of Trustees of the Leland Stanford Junior University. All Rights Reserved. Permission to use, copy, and modify, (but not to distribute, transfer or sublicense), this software and its documentation for educational, research and non-profit purposes, without fee, and without a written agreement is hereby granted, provided that you comply with the following terms.  (To obtain a license for commercial use, please contact Rhiju Das (rhiju@stanford.edu), who will put you in contact with the Stanford Office of Technology Licensing)
 
