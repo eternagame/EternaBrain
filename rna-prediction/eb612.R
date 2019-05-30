@@ -1,9 +1,9 @@
 library(ggplot2)
 library(reshape2)
 
-png("/hyper_50-100.png",height=775,width = 465)
+png("/hyper_50-100.png",height=1270,width = 465)
 
-df = read.table('~/Desktop/hyperparameterresults1.txt', header=T)
+df = read.table('~/Desktop/hyperparameterresultstotal.txt', header=T)
 
 df$name = as.character(df$name)
 df$name <- factor(df$name, levels=unique(df$name))
@@ -13,6 +13,6 @@ new.df = melt(df, id.vars='name', variable.name='algorithm', value.name='solved'
 
 ggplot(new.df) + geom_tile(aes(x=algorithm, y=name, fill=solved == "0")) + scale_x_discrete("") + 
   scale_y_discrete(limits = rev(levels(df$name))) + scale_fill_manual(values = c("#33DD33", "#DD3333"), na.value="gray50") + 
-  theme(axis.text.x = element_text(angle = 90), legend.position="none", text=element_text(size=16))
+  theme(axis.text.x = element_text(angle = 90), legend.position="none", text=element_text(size=16, face = "bold"))
   
-ggsave('~/Desktop/LARGE_hyper100_1_50.svg')
+ggsave('~/Desktop/LARGE_hyper100_1_100.png')
