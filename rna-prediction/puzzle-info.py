@@ -12,7 +12,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pickle
 from readData import read_movesets_uid_pid, experience
-#import seaborn; seaborn.set()
+import seaborn; seaborn.set()
 
 def plot_moves():
     # filepath = os.getcwd() + '/movesets/move-set-11-14-2016.txt'
@@ -77,33 +77,38 @@ def plot_experience():
     experienced_players = []
     unique, counts = np.unique(users, return_counts=True) # unique and counts are same length
 
-    return counts
+    # return counts
 
-# plt.hist(plot_experience(),bins=range(5001)[::50])
-# plt.yscale('log')
-# plt.ylabel('Number of Players (logarithmic scale)')
-# plt.xlabel('Number of total Puzzle Solutions')
-# plt.title('Distribution of Player Experience by number of puzzles solved')
-# plt.show()
-new_ms = os.getcwd() + '/movesets/moveset6-22a.txt'
+    plt.figure(figsize=(8, 7), dpi=300)
+    plt.rc('xtick', labelsize=20)
+    plt.rc('ytick', labelsize=20)
+    plt.hist(counts,bins=range(5001)[::50])
+    plt.yscale('log')
+    plt.ylabel('Number of players (logarithmic scale)', fontsize=20, fontweight='bold')
+    plt.xlabel('Number of total puzzle solutions', fontsize=20, fontweight='bold')
+    plt.xlim(0, 5000)
+    #plt.show()
+    plt.savefig("~/Desktop/new2.png")
 
-moveset_dataFrame = pd.read_csv(new_ms, sep=' ', header='infer', delimiter='\t')
-#puzzles_pid = moveset_dataFrame.loc[moveset_dataFrame['pid'] == 1005956]
-for i in [8627]:
-    puzzles1 = moveset_dataFrame.loc[moveset_dataFrame['uid'] == i]
-    d = list(puzzles1['move_set'])
-    for j in d[1000:1010]:
-        try:
-            #print "thunder", 392
-            s1 = ast.literal_eval(j)
-            s2 = int(s1['num_moves'])
-            print(i)
-            print(list(puzzles1['pid'])[d.index(j)])
-            print(s2)
-        #print '\n'
-        except ValueError:
-            continue
-    #print d
+# new_ms = os.getcwd() + '/movesets/moveset6-22a.txt'
+#
+# moveset_dataFrame = pd.read_csv(new_ms, sep=' ', header='infer', delimiter='\t')
+# #puzzles_pid = moveset_dataFrame.loc[moveset_dataFrame['pid'] == 1005956]
+# for i in [8627]:
+#     puzzles1 = moveset_dataFrame.loc[moveset_dataFrame['uid'] == i]
+#     d = list(puzzles1['move_set'])
+#     for j in d[1000:1010]:
+#         try:
+#             #print "thunder", 392
+#             s1 = ast.literal_eval(j)
+#             s2 = int(s1['num_moves'])
+#             print(i)
+#             print(list(puzzles1['pid'])[d.index(j)])
+#             print(s2)
+#         #print '\n'
+#         except ValueError:
+#             continue
+#     #print d
 
 
 def num_puzzles():
@@ -139,3 +144,6 @@ def num_puzzles():
     print(less)
     print(low)
     print(verylow)
+
+if __name__ == '__main__':
+    plot_experience()
