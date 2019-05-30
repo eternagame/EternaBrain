@@ -6,8 +6,8 @@
 [![Python27](https://img.shields.io/badge/python-2.7-blue.svg)](https://www.python.org/download/releases/2.7/)
 [![Python36](https://img.shields.io/badge/python-3.6-yellow.svg)](https://www.python.org/downloads/release/python-360/)
 [![Paper](https://img.shields.io/badge/paper-bioRxiv-maroon.svg)](https://www.biorxiv.org/content/early/2018/05/21/326736)
-[![License](https://img.shields.io/badge/license-LGPL--2.1-black.svg)](https://github.com/EteRNAgame/EternaBrain/blob/master/LICENSE)
 
+ 
 Using [Eterna](http://eternagame.org) data to understand and predict how players solve RNA folding puzzles.
 * These data are move sets graciously donated by Eterna players to accelerate scientific research into RNA design
 * Neural networks to learn how top players solve Eterna players and to predict solutions to RNA folding puzzles
@@ -20,6 +20,7 @@ Using [Eterna](http://eternagame.org) data to understand and predict how players
 * Link to paper on [bioRxiv](https://www.biorxiv.org/content/early/2018/05/21/326736).
 * EternaBrain 1.2 is the version referenced in the above paper, and supports Python 2. EternaBrain 2.0 supports both Python 2 and 3.
 * Many thanks to the contributing authors who provided guidance, ran benchmarks, and did testing: [Benjamin Keep](https://github.com/bekeep), [Katherine Coppess](https://github.com/kcoppess), [Fernando Portela](https://github.com/elnando888), and [Rhiju Das](https://github.com/rhiju).
+* This software is freely available for non-commercial use. Royalties for commercial use will come back to fund research on Eterna, administered by Stanford University. Please see [license](LICENSE.md).
 
 ## Benchmarks
 ### [Eterna100](https://daslab.stanford.edu/site_data/pub_pdf/2016_Anderson-Lee_JMB.pdf)
