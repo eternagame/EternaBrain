@@ -10,7 +10,7 @@
  
 Using [Eterna](http://eternagame.org) data to understand and predict how players solve RNA folding puzzles.
 * These data are move sets graciously donated by Eterna players to accelerate scientific research into RNA design
-* Neural networks to learn how top players solve Eterna players and to predict solutions to RNA folding puzzles
+* Neural networks to learn how top players solve Eterna puzzles and to predict solutions to RNA folding puzzles
 * Unsupervised learning to group Eterna players based on their style of solving RNA folding puzzles
 
 ## Author
