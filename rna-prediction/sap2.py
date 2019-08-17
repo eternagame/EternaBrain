@@ -60,15 +60,24 @@ dot_bracket = '.....((((..((((....)))).)))).....'
 seq_str = 'A'*len(dot_bracket)
 
 
-def dsp(dot_bracket, seq_str, vienna_path='../../../EteRNABot/eternabot/./RNAfold'):  # domain specific pipeline
+def dsp(dot_bracket, seq_str, vienna_version='1', vienna_path='../../../EteRNABot/eternabot/./RNAfold'):  # domain specific pipeline
     '''
     Adds player strategies via a MCTS
 
     :param dot_bracket: The target structure of the RNA in dot-bracket notation
     :param seq_str: The current RNA sequence
+    :param vienna_version: Vienna 1.8.5 or Vienna 2
     :param vienna_path: Path to the Vienna 1.8.5 RNAfold
     :return: The updated RNA sequence after the DSP
     '''
+
+    try:
+        vienna_version = int(vienna_version)
+    except TypeError:
+        raise TypeError('Please pass in a valid Vienna version')
+    assert(vienna_version <= 2, "Please pass in a valid Vienna version")
+    assert(vienna_version >= 1, "Please pass in a valid Vienna version")
+
     seq = list(seq_str)
     m = []
     SOLVE = False
