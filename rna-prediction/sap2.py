@@ -56,6 +56,21 @@ def str_to_num(s):
         return 4
 
 
+def pairmap_from_sequence(seq, vienna_version, vienna_path='../../../EteRNABot/eternabot/./RNAfold'):
+    new_struc = ''
+    if vienna_version == 1:
+        if sys.version_info[:3] > (3,0):
+            p = Popen([vienna_path, '-T','37.0'], stdout=PIPE, stdin=PIPE, stderr=STDOUT, encoding='utf8')
+        else:
+            p = Popen([vienna_path, '-T','37.0'], stdout=PIPE, stdin=PIPE, stderr=STDOUT)
+        pair = p.communicate(input=''.join(seq))[0]
+        formatted = re.split('\s+| \(?\s?',pair)
+        new_struc = formatted[1]
+    elif vienna_version == 2:
+        new_struc = RNA.fold(''.join(seq))[0]
+
+    return get_pairmap_from_secstruct(new_struc)
+
 dot_bracket = '.....((((..((((....)))).)))).....'
 seq_str = 'A'*len(dot_bracket)
 
@@ -316,14 +331,7 @@ def dsp(dot_bracket, seq_str, vienna_version='1', vienna_path='../../../EteRNABo
     Flips base pairs
     '''
     ############ Comment out from here to remove this strategy #############
-    if sys.version_info[:3] > (3,0):
-        p = Popen([vienna_path, '-T','37.0'], stdout=PIPE, stdin=PIPE, stderr=STDOUT, encoding='utf8')
-    else:
-        p = Popen([vienna_path, '-T','37.0'], stdout=PIPE, stdin=PIPE, stderr=STDOUT)
-    pair = p.communicate(input=''.join(seq))[0]
-    formatted = re.split('\s+| \(?\s?',pair)
-    new_struc = formatted[1]
-    new_pm = get_pairmap_from_secstruct(new_struc)
+    new_pm = pairmap_from_sequence(seq, vienna_version)
     match = SequenceMatcher(None,new_pm,target_pm).ratio()
     for j in range(5):
         for i in range(len(dot_bracket)):
@@ -343,13 +351,7 @@ def dsp(dot_bracket, seq_str, vienna_version='1', vienna_path='../../../EteRNABo
 
                     seq[i] = base2
                     seq[paired] = base1
-                    if sys.version_info[:3] > (3,0):
-                        p = Popen([vienna_path, '-T','37.0'], stdout=PIPE, stdin=PIPE, stderr=STDOUT, encoding='utf8')
-                    else:
-                        p = Popen([vienna_path, '-T','37.0'], stdout=PIPE, stdin=PIPE, stderr=STDOUT)
-                    pair = p.communicate(input=''.join(seq))[0]
-                    formatted = re.split('\s+| \(?\s?',pair)
-                    new_pm = get_pairmap_from_secstruct(formatted[1])
+                    new_pm = pairmap_from_sequence(seq, vienna_version)
 
                     new_match = SequenceMatcher(None,new_pm,target_pm).ratio()
 
@@ -390,13 +392,7 @@ def dsp(dot_bracket, seq_str, vienna_version='1', vienna_path='../../../EteRNABo
 
                     seq[i] = base2
                     seq[paired] = base1
-                    if sys.version_info[:3] > (3,0):
-                        p = Popen([vienna_path, '-T','37.0'], stdout=PIPE, stdin=PIPE, stderr=STDOUT, encoding='utf8')
-                    else:
-                        p = Popen([vienna_path, '-T','37.0'], stdout=PIPE, stdin=PIPE, stderr=STDOUT)
-                    pair = p.communicate(input=''.join(seq))[0]
-                    formatted = re.split('\s+| \(?\s?',pair)
-                    new_pm = get_pairmap_from_secstruct(formatted[1])
+                    new_pm = pairmap_from_sequence(seq, vienna_version)
 
                     new_match = SequenceMatcher(None,new_pm,target_pm).ratio()
 
