@@ -5,10 +5,7 @@ Input a target structure in dot-bracket notation and any initial params (energy,
 
 import sys
 
-if sys.version_info[:3] > (3,0):
-    DOT_BRACKET = input("Enter a dot-bracket structure: ")
-else:
-    DOT_BRACKET = raw_input("Enter a dot-bracket structure: ")
+DOT_BRACKET = sys.argv[1]
 
 import tensorflow as tf
 import os
@@ -22,6 +19,7 @@ from readData import format_pairmap
 from sap1 import sbc
 from sap2 import dsp
 
+print(69)
 
 path = '../../../EteRNABot/eternabot/./RNAfold'
 
