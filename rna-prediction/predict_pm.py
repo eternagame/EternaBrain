@@ -4,9 +4,6 @@ Input a target structure in dot-bracket notation and any initial params (energy,
 '''
 
 import sys
-
-DOT_BRACKET = sys.argv[1]
-
 import tensorflow as tf
 import os
 import pickle
@@ -19,25 +16,8 @@ from readData import format_pairmap
 from sap1 import sbc
 from sap2 import dsp
 
-print(69)
 
 path = '../../../EteRNABot/eternabot/./RNAfold'
-
-len_puzzle = len(DOT_BRACKET)
-NUCLEOTIDES = 'A'*len_puzzle
-ce = 0.0
-te = 0.0
-
-LOCATION_FEATURES = 8
-BASE_FEATURES = 9
-NAME = 'CNN15'
-
-MIN_THRESHOLD = 0.6
-MAX_ITERATIONS = len_puzzle*2
-MAX_LEN = 400
-TF_SHAPE = LOCATION_FEATURES * MAX_LEN
-BASE_SHAPE = BASE_FEATURES * MAX_LEN
-len_longest = MAX_LEN
 
 
 def similar(a, b):
@@ -89,7 +69,33 @@ def softmax(x):
     return e_x / e_x.sum(axis=0)
 
 
-def predict(secondary_structure):
+def predict(secondary_structure, bool_print=True):
+    """Runs EternaBrain algorithm
+    
+    Arguments:
+        secondary_structure {String} -- Secondary structure in dot bracket notation
+    
+    Returns:
+        boolean -- True if puzzle solved, False otherwise
+    """
+
+    # Define constants often used in this function
+    len_puzzle = len(secondary_structure)
+    NUCLEOTIDES = 'A'*len_puzzle
+    ce = 0.0
+    te = 0.0
+
+    LOCATION_FEATURES = 8
+    BASE_FEATURES = 9
+    NAME = 'CNN15'
+
+    MIN_THRESHOLD = 0.6
+    MAX_ITERATIONS = len_puzzle*2
+    MAX_LEN = 400
+    TF_SHAPE = LOCATION_FEATURES * MAX_LEN
+    BASE_SHAPE = BASE_FEATURES * MAX_LEN
+    len_longest = MAX_LEN
+
     base_seq = (convert_to_list(NUCLEOTIDES)) + ([0]*(len_longest - len_puzzle))
     # cdb = '.'*len_puzzle
     current_struc = (encode_struc(RNA.fold(NUCLEOTIDES)[0])) + ([0]*(len_longest - len_puzzle))
@@ -137,7 +143,8 @@ def predict(secondary_structure):
 
     location_weights = location_graph.get_tensor_by_name('op7:0')
 
-    print('models loaded')
+    if bool_print:
+        print('models loaded')
 
     location_feed_dict = {x2:inputs,keep_prob2:1.0}
     movesets = []
@@ -145,8 +152,9 @@ def predict(secondary_structure):
     reg = []
     for i in range(MAX_ITERATIONS):
         if np.all(inputs2[1] == inputs2[2]):
-            print("Puzzle Solved")
-            break
+            if bool_print:
+                print("Puzzle Solved")
+            return True
         else:
             location_array = ((sess2.run(location_weights,location_feed_dict))[0])
 
@@ -202,9 +210,11 @@ def predict(secondary_structure):
             str_seq = ''.join(str_seq)
             str_struc,current_e = RNA.fold(str_seq)
             current_pm = format_pairmap(str_struc)
-            print(str_struc)
-            #print len(str_struc)
-            print(similar(str_struc,secondary_structure))
+
+            if bool_print:
+                print(str_struc)
+                print(similar(str_struc,secondary_structure))
+
             rna_struc = []
             for i in inputs2[2]:
                 if i == 1:
@@ -250,26 +260,27 @@ def predict(secondary_structure):
                 else:
                     continue
             reg = ''.join(reg)
-            #print inputs2[0][:len_puzzle]
-            print(reg)
-            print(iteration)
-            #print current_struc[:len(enc_struc)]
-            #print target_struc[:len(enc_struc)]
-            #print inputs2[1][:len(enc_struc)]
-            #print format_pairmap(str_struc)
-            if similar(str_struc,secondary_structure) >= MIN_THRESHOLD:
-                print('similar')
-                print(str_struc)
-                print(secondary_structure)
+
+            if bool_print:
                 print(reg)
+                print(iteration)
+
+            if similar(str_struc,secondary_structure) >= MIN_THRESHOLD:
+                if bool_print:
+                    print('similar')
+                    print(str_struc)
+                    print(secondary_structure)
+                    print(reg)
                 break
 
-    level1,m2,_ = sbc(secondary_structure,reg)
-    level2,m3,_ = dsp(secondary_structure,level1,vienna_version=2,vienna_path=path)
+    level1,m2,solved_sap1 = sbc(secondary_structure,reg)
+    level2,m3,solved_sap2 = dsp(secondary_structure,level1,vienna_version=2,vienna_path=path)
     print(level2)
+    return solved_sap1 or solved_sap2
 
 if __name__ == '__main__':
-    predict(DOT_BRACKET)
+    struc = sys.argv[1]
+    predict(struc, False)
 
 
 #movesets.extend(m2)
