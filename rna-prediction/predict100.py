@@ -22,15 +22,21 @@ LOCATION_FEATURES = 6
 BASE_FEATURES = 7
 NAME = 'CNN20'
 
-p = pd.read_csv(os.getcwd()+'/movesets/eterna100.txt', sep=' ', header='infer', delimiter='\t')
-plist = list(p['Secondary Structure'])
-
 if __name__ == '__main__':
+    p = pd.read_csv(os.getcwd()+'/movesets/eterna100.txt', sep=' ', header='infer', delimiter='\t')
+    plist = list(p['Secondary Structure'])
+
     num_completed, num_solved = 0, 0
-    for struc in range(len(plist)):
-        solved = predict(plist[struc], False)
+    with open('predict100_results.txt', 'r+') as f:
+        contents = f.read()
+        num_completed = int(contents[-1])
+        num_solved = int(contents[-3])
+
+    while num_completed <= 100:
+        solved = predict(plist[num_completed], False)
         num_completed += 1
         if solved:
             num_solved += 1
-        
+        with open('predict100_results.txt', 'w+') as f:
+            f.write('\nSolved %i/%i' % (num_solved, num_completed))
         print('Solved %i/%i' % (num_solved, num_completed))
