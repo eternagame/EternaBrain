@@ -25,18 +25,26 @@ NAME = 'CNN20'
 if __name__ == '__main__':
     p = pd.read_csv(os.getcwd()+'/movesets/eterna100.txt', sep=' ', header='infer', delimiter='\t')
     plist = list(p['Secondary Structure'])
+    slist = [0] * 100
 
     num_completed, num_solved = 0, 0
-    with open('predict100_results.txt', 'r+') as f:
+    with open('predict100_progress.txt', 'r+') as f:
         contents = f.readlines()
         num_completed = int(contents[-1])
         num_solved = int(contents[-3])
 
     while num_completed <= 100:
         solved = predict(plist[num_completed], False)
-        num_completed += 1
         if solved:
             num_solved += 1
-        with open('predict100_results.txt', 'w+') as f:
-            f.write('Solved\n%i\noutof\n%i' % (num_solved, num_completed))
+            slist[num_completed] = 1
+
+        num_completed += 1
+        with open('predict100_progress.txt', 'w+') as f:
+            f.write('Solved\n%i\nout of\n%i' % (num_solved, num_completed))
         print('Solved %i/%i' % (num_solved, num_completed))
+    
+    solved_dict = dict(zip(plist, slist))
+    with open('predict100_results.txt', 'w+') as f:
+        for key, value in solved_dict.items():
+            f.write('%s:%s\n' % (key, value))
