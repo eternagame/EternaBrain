@@ -25,6 +25,7 @@ NAME = 'CNN20'
 if __name__ == '__main__':
     p = pd.read_csv(os.getcwd()+'/movesets/eterna100_vienna2.txt', sep=' ', header='infer', delimiter='\t')
     plist = list(p['Secondary Structure'])
+    nlist = list(p['Puzzle Name'])
     slist = [0] * 100
 
     num_completed, num_solved = 0, 0
@@ -40,7 +41,7 @@ if __name__ == '__main__':
             slist[num_completed] = 1
 
         with open('predict100_results.txt', 'a') as f:
-            f.write('%s: %i\n' % (plist[num_completed], slist[num_completed]))
+            f.write('%s: %i\n' % (nlist[num_completed], slist[num_completed]))
         
         num_completed += 1
         with open('predict100_progress.txt', 'w+') as f:
