@@ -23,7 +23,7 @@ BASE_FEATURES = 7
 NAME = 'CNN20'
 
 if __name__ == '__main__':
-    p = pd.read_csv(os.getcwd()+'/movesets/eterna100.txt', sep=' ', header='infer', delimiter='\t')
+    p = pd.read_csv(os.getcwd()+'/movesets/eterna100_vienna2.txt', sep=' ', header='infer', delimiter='\t')
     plist = list(p['Secondary Structure'])
     slist = [0] * 100
 
@@ -39,12 +39,11 @@ if __name__ == '__main__':
             num_solved += 1
             slist[num_completed] = 1
 
+        with open('predict100_results.txt', 'a') as f:
+            f.write('%s: %i\n' % (plist[num_completed], slist[num_completed]))
+        
         num_completed += 1
         with open('predict100_progress.txt', 'w+') as f:
             f.write('Solved\n%i\nout of\n%i' % (num_solved, num_completed))
+        
         print('Solved %i/%i' % (num_solved, num_completed))
-    
-    solved_dict = dict(zip(plist, slist))
-    with open('predict100_results.txt', 'w+') as f:
-        for key, value in solved_dict.items():
-            f.write('%s:%s\n' % (key, value))
