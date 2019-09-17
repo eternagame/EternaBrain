@@ -36,7 +36,7 @@ Conda: `viennarna` (run `conda install -c bioconda viennarna`, you should be abl
 R: `ggplot2, reshape2`
 
 ## Using a pretrained model
-Configure RNAfold, and enter the correct path to Vienna 1.8.5 in the `path` in `predict_pm.py` field, then run `predict_pm.py`.
+Configure RNAfold, and enter the correct path to Vienna 1.8.5 in the `path` in `predict_pm.py` field, then run `python predict_pm.py "<valid structure in dot-bracket notation>"`.
 
 ## Generating your own data and CNNs
 
