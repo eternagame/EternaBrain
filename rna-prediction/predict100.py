@@ -17,13 +17,15 @@ from sap2 import dsp
 import pandas as pd
 from predict_pm import predict
 
+NAME = 'CNN20'
+VIENNA_VERSION = 1
 
+# DO NOT CHANGE THESE
 LOCATION_FEATURES = 6
 BASE_FEATURES = 7
-NAME = 'CNN20'
 
 if __name__ == '__main__':
-    p = pd.read_csv(os.getcwd()+'/movesets/eterna100_vienna2.txt', sep=' ', header='infer', delimiter='\t')
+    p = pd.read_csv(os.getcwd()+'/movesets/eterna100_vienna%i.txt' % VIENNA_VERSION, sep=' ', header='infer', delimiter='\t')
     plist = list(p['Secondary Structure'])
     nlist = list(p['Puzzle Name'])
     slist = [0] * 100
@@ -35,7 +37,7 @@ if __name__ == '__main__':
         num_solved = int(contents[-3])
 
     while num_completed <= 100:
-        solved = predict(plist[num_completed], False)
+        solved = predict(plist[num_completed], vienna_version=VIENNA_VERSION, bool_print=False)
         if solved:
             num_solved += 1
             slist[num_completed] = 1
