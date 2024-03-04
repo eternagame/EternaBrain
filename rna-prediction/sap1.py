@@ -5,12 +5,31 @@ First process of the SAP
 '''
 
 import copy
+import sys
+import re
 import RNA
 #from eterna_score import eternabot_score
 from difflib import SequenceMatcher
 #from eterna_score import eternabot_score
 from random import choice
 from eterna_score import get_pairmap_from_secstruct
+from subprocess import Popen, PIPE, STDOUT
+
+vienna_path='../../../EteRNABot/eternabot/./RNAfold'
+
+def fold(seq, vienna_version=1, vienna_path='../../../EteRNABot/eternabot/./RNAfold'):
+    if vienna_version == 1:
+        if sys.version_info[:3] > (3,0):
+            p = Popen([vienna_path, '-T','37.0'], stdout=PIPE, stdin=PIPE, stderr=STDOUT, encoding='utf8')
+        else:
+            p = Popen([vienna_path, '-T','37.0'], stdout=PIPE, stdin=PIPE, stderr=STDOUT)
+        pair = p.communicate(input=''.join(seq))[0]
+        formatted = re.split('\s+| \(?\s?',pair)
+        s = formatted[1]
+    else:
+        s, _ = RNA.fold(seq)
+    return s
+    
 
 def hot_one_state(seq,index,base):
     #array = np.zeros(NUM_STATES)
@@ -19,7 +38,7 @@ def hot_one_state(seq,index,base):
     return copied_seq
 
 
-def convert_to_struc(base_seq):
+def convert_to_struc(base_seq, vienna_version=1):
     str_struc = []
     for i in base_seq:
         if i == 1:
@@ -31,7 +50,7 @@ def convert_to_struc(base_seq):
         elif i == 4:
             str_struc.append('C')
     struc = ''.join(str_struc)
-    s,_ = RNA.fold(struc)
+    s = fold(struc, vienna_version, vienna_path)
     return_struc = []
     for i in s:
         if i == '.':
@@ -134,7 +153,7 @@ dot_bracket = '.....((((((((...((((((((((........))))))))))...((((((((((........
 seq = 'AAAAAGUUUUGAGAAAGAAGUCUGGGGAAAAAAACUUGGGUUUCAAAGGGUGAAAUGGAAAAAAACAUUUCACCCAAAGUUCCUAUCCGAAAAAAAGGAUAGGAGCAAACUUAAAACAAAAA'
 
 
-def sbc(dot_bracket,seq): # Monte Carlo Tree Search with Depth 1
+def sbc(dot_bracket,seq, vienna_version=1, vienna_path='../../../EteRNABot/eternabot/./RNAfold'): # Monte Carlo Tree Search with Depth 1
     '''
     Mutates individual bases with MCTS
 
@@ -156,7 +175,7 @@ def sbc(dot_bracket,seq): # Monte Carlo Tree Search with Depth 1
     # GAACGCACCUGCCUGUCUGGGUAGCAUGAA  GAACUCACCUGCCUGUCUUGGUAGCAUCAA
     # global current_seq
     current_seq = convert_to_list(seq)
-    cdb,_ = RNA.fold(seq)
+    cdb = fold(seq, vienna_version, vienna_path)
     current_pm = get_pairmap_from_secstruct(cdb)
     for i in range(4):
         for location in range(len_puzzle):

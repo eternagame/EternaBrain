@@ -69,7 +69,7 @@ def softmax(x):
     return e_x / e_x.sum(axis=0)
 
 
-def predict(secondary_structure, vienna_version=1, bool_print=True):
+def predict(secondary_structure, vienna_version=1, bool_print=True, vienna_path='../../../EteRNABot/eternabot/./RNAfold'):
     """Runs EternaBrain algorithm
     
     Arguments:
@@ -273,7 +273,7 @@ def predict(secondary_structure, vienna_version=1, bool_print=True):
                     print(reg)
                 break
 
-    level1,m2,solved_sap1 = sbc(secondary_structure,reg)
+    level1,m2,solved_sap1 = sbc(secondary_structure,reg, vienna_version=vienna_version,vienna_path=path)
     level2,m3,solved_sap2 = dsp(secondary_structure,level1,vienna_version=vienna_version,vienna_path=path)
     print(level2)
     return solved_sap1 or solved_sap2, level2
