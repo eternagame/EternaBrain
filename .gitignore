@@ -3,9 +3,7 @@
 pickles/
 tensorboard/
 clustering-graphs/
-models/
 *.sbatch
-movesets/
 scp.txt
 *.out
 *.ps
