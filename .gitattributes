@@ -1,4 +1,4 @@
-*.psd filter=lfs diff=lfs merge=lfs -text
-*.txt filter=lfs diff=lfs merge=lfs -text
-.txt filter=lfs diff=lfs merge=lfs -text
 rna-prediction/movesets/move-set-11-14-2016.txt filter=lfs diff=lfs merge=lfs -text
+rna-prediction/movesets/moveset6-22a.txt filter=lfs diff=lfs merge=lfs -text
+rna-prediction/movesets/full-problems-nov2016.txt filter=lfs diff=lfs merge=lfs -text
+rna-prediction/models/**/*.data-* filter=lfs diff=lfs merge=lfs -text
